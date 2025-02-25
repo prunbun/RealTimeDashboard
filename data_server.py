@@ -5,42 +5,68 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from contextlib import asynccontextmanager
 
 '''
-database listener
+redis database listener
 '''
-redis_client = redis.Redis(host='localhost', port = 6379, db = 0, decode_responses=True)
-connected_clients = set()
+class BackgroundRunner:
+    def __init__(self):
+        self.redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+        self.subscriber = self.redis_client.pubsub()
+        
+        self.subscriber.subscribe("quote_updates")
+        self.connected_clients = set()
+        self.listening = True
 
-async def redis_listener():
-    subscriber = redis_client.pubsub()
-    subscriber.subscribe("quote_updates")
+    async def redis_listener(self):
+        try:
+            async for message in self.listen(): # this will infinitely return messages as they come in from the subscriber pipeline
+                if not self.listening:
+                    break
+                if message['type'] == 'message':
+                    for client in self.connected_clients:
+                        await client.send_text(message["data"])
+        except asyncio.CancelledError:
+            print("Redis listener stopped.")
 
-    while True:
-        for message in subscriber.listen():
-            if message['type'] == 'message':
-                for client in connected_clients:
-                    await client.send_text(message["data"])
+    async def listen(self):
+        loop = asyncio.get_event_loop()
+        while self.listening:
+            message = await loop.run_in_executor(None, self.subscriber.get_message, True, 1.0)
+            if message:
+                yield message
 
+    def stop(self):
+        self.listening = False
+        self.subscriber.unsubscribe()
+        self.subscriber.close()
 
 '''
-the FastAPI app
+FastAPI server setup
 '''
-
+runner = BackgroundRunner()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    asyncio.create_task(redis_listener())
-    yield
+    task = asyncio.create_task(runner.redis_listener()) # Start the Redis listener in the background
+    yield # yields control to FastAPI
+    runner.stop() # stops the listen() loop
+    task.cancel() # sends a CancelledError signal to redis_listener()
 
 app = FastAPI(lifespan=lifespan)
 
+'''
+endpoints
+'''
 @app.websocket("/ws")
-def subscribe_stock_data(websocket: WebSocket):
-    websocket.accept()
-    connected_clients.add(websocket)
+async def subscribe_stock_data(websocket: WebSocket):
+    await websocket.accept()
+    runner.connected_clients.add(websocket)
 
     try:
         while True:
-            asyncio.sleep(1000)
-
+            await websocket.receive()
     except WebSocketDisconnect:
-        connected_clients.remove(websocket)
+        runner.connected_clients.remove(websocket)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
