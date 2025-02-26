@@ -21,7 +21,7 @@ class BackgroundRunner:
             async for message in self.listen(): # this will infinitely return messages as they come in from the subscriber pipeline
                 if not self.listening:
                     break
-                
+
                 if message['type'] == 'message':
 
                     disconnected_clients = set()
@@ -49,6 +49,9 @@ class BackgroundRunner:
         self.listening = False
         self.subscriber.unsubscribe()
         self.subscriber.close()
+
+    async def add_ingestor_ticker(self, ticker):
+        self.redis_client.publish("subscribe_requests", json.dumps({"ticker": ticker}))
 
 '''
 FastAPI server setup

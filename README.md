@@ -20,3 +20,8 @@ pip install "fastapi[standard]" - similar to node.js and flask, but has better d
 
 <br>
 read more about parcel, redis, fastapi
+
+<br>
+
+- step 1 was to get a flow of prices from back to front for 1 stock
+- step 2 is to get a flow of prices for 2 stocks
