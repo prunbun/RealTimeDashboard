@@ -10,6 +10,7 @@ import random
 from datetime import datetime
 import asyncio
 import time
+from collections import defaultdict
 
 
 class RedisClient:
@@ -26,16 +27,23 @@ class RedisClient:
 
 class DataIngestor:
 
-    def __init__(self):
+    def __init__(self, max_updates_per_second=2):
+        
+        # alpaca client setup
         ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
         ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
         self.alpaca_client = StockDataStream(ALPACA_API_KEY, ALPACA_SECRET_KEY, raw_data=True)
-        self.rate_limiter = AsyncLimiter(2, 1) # rate limiter with leaky bucket algorithm, num requests / time_stamp
+        self.rate_limiters = defaultdict(lambda: AsyncLimiter(max_updates_per_second, 1)) # rate limiter with leaky bucket algorithm, num requests / time_stamp
 
+        # database setup
         self.redis_client = RedisClient()
 
+        # managed state initialization
+        self.subscribed_quote_tickers = set()
+
     async def quote_data_handler(self, data):
-        async with self.rate_limiter:
+        stock = data['S']
+        async with self.rate_limiters[stock]:
             
             quote_dict = {
                 'ticker': data['S'], 
@@ -47,19 +55,10 @@ class DataIngestor:
             await self.redis_client.store_quote_to_redis(quote_dict)
 
     def subscribe_quotes(self, tickers):
-        self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers))
+        self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers)) 
 
     def start(self):
         self.alpaca_client.run()
-
-
-
-def run_data_ingestor():
-    ingestor = DataIngestor()
-    ingestor.subscribe_quotes(['AAPL'])
-    ingestor.start()
-
-
 
 '''
 simulator
@@ -77,7 +76,7 @@ def generate_random_quote(ticker):
     }
 
 async def simulate_quotes():
-    tickers = ['AAPL']
+    tickers = ['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG']
     redis_client = RedisClient()
     while True:
         for ticker in tickers:
@@ -85,12 +84,13 @@ async def simulate_quotes():
             print('simulated', quote_dict)
             await redis_client.store_quote_to_redis(quote_dict)
 
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.01)
 
 def run_simulator():
     loop = asyncio.get_event_loop()
     loop.create_task(simulate_quotes())
     loop.run_forever()
+
 
 if __name__ == "__main__":
     simulate_trades = False
@@ -99,7 +99,9 @@ if __name__ == "__main__":
         run_simulator()
     else:
         print('LIVE DATA')
-        run_data_ingestor()
+        ingestor = DataIngestor()
+        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG'])
+        ingestor.start()
 
 
 

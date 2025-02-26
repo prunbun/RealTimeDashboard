@@ -1,6 +1,7 @@
 # RealTimeDashboard
 
 - pip3 install websocket
+- pip install aiolimiter
 - brew install postgresql@17
 - brew install redis
 - pip install redis asyncio
