@@ -21,9 +21,20 @@ class BackgroundRunner:
             async for message in self.listen(): # this will infinitely return messages as they come in from the subscriber pipeline
                 if not self.listening:
                     break
+                
                 if message['type'] == 'message':
+
+                    disconnected_clients = set()
                     for client in self.connected_clients:
-                        await client.send_text(message["data"])
+                        try:
+                            await client.send_text(message["data"])
+                        except:
+                            disconnected_clients.add(client)  # Mark for removal
+
+                    # remove stal connections
+                    for client in disconnected_clients:
+                        self.connected_clients.remove(client)
+
         except asyncio.CancelledError:
             print("Redis listener stopped.")
 
@@ -62,7 +73,7 @@ async def subscribe_stock_data(websocket: WebSocket):
 
     try:
         while True:
-            await websocket.receive()
+            await asyncio.sleep(1000)
     except WebSocketDisconnect:
         runner.connected_clients.remove(websocket)
 
