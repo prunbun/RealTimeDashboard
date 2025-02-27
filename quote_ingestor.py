@@ -12,7 +12,7 @@ import asyncio
 import time
 from collections import defaultdict, deque
 
-
+# stock_counts = defaultdict(int)
 class RedisClient:
 
     def __init__(self, port=6379, db_idx=0, decode_responses=True):
@@ -60,6 +60,7 @@ class LeakyBucket:
                     'timestamp': str(data['t'].to_datetime())
                 }
                 print('leaky consumer', data)
+                # stock_counts[data['S']] += 1
                 await self.redis_client.store_quote_to_redis(quote_dict)
 
                 await self.capacity_lock.acquire()
@@ -106,8 +107,9 @@ class DataIngestor:
 
     async def quote_data_handler(self, data):
         async with self.rate_limiter:
-            
+            # stock_counts[data['S']] += 1
             await self.leaky_buckets[data['S']].accept(data)
+            # print(stock_counts)
 
     def subscribe_quotes(self, tickers):
         self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers)) 
