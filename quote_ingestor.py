@@ -74,7 +74,7 @@ class LeakyBucket:
         
         while True:
             async with self.queue_lock, self.capacity_lock:
-                if len(self.messages) < self.current_threshold:
+                if len(self.messages) < self.IDLE_CAPACITY:
                     self.current_threshold += 1
 
             await asyncio.sleep(1 / self.REFRESH_RATE)
