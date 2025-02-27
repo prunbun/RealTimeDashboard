@@ -10,7 +10,7 @@ import random
 from datetime import datetime
 import asyncio
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 
 
 class RedisClient:
@@ -25,40 +25,110 @@ class RedisClient:
         self.redis_client.publish("quote_updates", json.dumps(quote_dict))
 
 
+class LeakyBucket:
+
+    def __init__(self, redis_client: RedisClient, capacity = 2, num_refresh_per_second = 0.2):
+        self.redis_client = redis_client
+        self.messages = deque()
+        self.current_threshold = capacity
+
+        self.IDLE_CAPACITY = capacity
+        self.REFRESH_RATE = num_refresh_per_second
+
+        self.queue_lock = asyncio.Lock()
+        self.capacity_lock = asyncio.Lock()
+
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.leak())
+        loop.create_task(self.refresh())
+
+    async def leak(self, amount = 2, num_seconds = 1):
+
+        while True:
+            await self.queue_lock.acquire()
+
+            if not self.messages:
+                self.queue_lock.release()
+
+            else:
+                data = self.messages.popleft()
+
+                quote_dict = {
+                    'ticker': data['S'], 
+                    'bid_price': data['bp'], 
+                    'ask_price': data['ap'], 
+                    'timestamp': str(data['t'].to_datetime())
+                }
+                print('leaky consumer', data)
+                await self.redis_client.store_quote_to_redis(quote_dict)
+
+                await self.capacity_lock.acquire()
+                self.current_threshold = max(self.IDLE_CAPACITY, self.current_threshold - 1)
+                self.capacity_lock.release()
+
+                self.queue_lock.release()
+
+            await asyncio.sleep(num_seconds / amount)
+
+    async def refresh(self):
+        
+        while True:
+            async with self.queue_lock, self.capacity_lock:
+                if len(self.messages) < self.current_threshold:
+                    self.current_threshold += 1
+
+            await asyncio.sleep(1 / self.REFRESH_RATE)
+
+    async def accept(self, data):
+        async with self.queue_lock, self.capacity_lock:
+            if len(self.messages) < self.current_threshold:
+                self.messages.append(data)
+            
+        return
+    
+
+
 class DataIngestor:
 
-    def __init__(self, max_updates_per_second=2):
-        
+    def __init__(self, max_updates_per_second=100):
+        # database setup
+        self.redis_client = RedisClient()
+
         # alpaca client setup
         ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
         ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
         self.alpaca_client = StockDataStream(ALPACA_API_KEY, ALPACA_SECRET_KEY, raw_data=True)
-        self.rate_limiters = defaultdict(lambda: AsyncLimiter(max_updates_per_second, 1)) # rate limiter with leaky bucket algorithm, num requests / time_stamp
-
-        # database setup
-        self.redis_client = RedisClient()
+        self.rate_limiter = AsyncLimiter(max_updates_per_second,1) # rate limiter with leaky bucket algorithm, num requests / time_stamp
+        self.leaky_buckets = defaultdict(lambda: LeakyBucket(self.redis_client))
 
         # managed state initialization
         self.subscribed_quote_tickers = set()
 
     async def quote_data_handler(self, data):
-        stock = data['S']
-        async with self.rate_limiters[stock]:
+        async with self.rate_limiter:
             
-            quote_dict = {
-                'ticker': data['S'], 
-                'bid_price': data['bp'], 
-                'ask_price': data['ap'], 
-                'timestamp': str(data['t'].to_datetime())
-            }
-            print(data)
-            await self.redis_client.store_quote_to_redis(quote_dict)
+            await self.leaky_buckets[data['S']].accept(data)
 
     def subscribe_quotes(self, tickers):
         self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers)) 
 
     def start(self):
         self.alpaca_client.run()
+
+
+
+if __name__ == "__main__":
+    simulate_trades = False
+    if simulate_trades:
+        print('SIMULATION, NOT LIVE DATA')
+        # run_simulator()
+    else:
+        print('LIVE DATA')
+        ingestor = DataIngestor()
+        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD'])
+        ingestor.start()
+
+
 
 '''
 simulator
@@ -90,19 +160,4 @@ def run_simulator():
     loop = asyncio.get_event_loop()
     loop.create_task(simulate_quotes())
     loop.run_forever()
-
-
-if __name__ == "__main__":
-    simulate_trades = False
-    if simulate_trades:
-        print('SIMULATION, NOT LIVE DATA')
-        run_simulator()
-    else:
-        print('LIVE DATA')
-        ingestor = DataIngestor()
-        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG'])
-        ingestor.start()
-
-
-
 
