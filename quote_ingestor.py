@@ -115,21 +115,6 @@ class DataIngestor:
     def start(self):
         self.alpaca_client.run()
 
-
-
-if __name__ == "__main__":
-    simulate_trades = False
-    if simulate_trades:
-        print('SIMULATION, NOT LIVE DATA')
-        # run_simulator()
-    else:
-        print('LIVE DATA')
-        ingestor = DataIngestor()
-        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD'])
-        ingestor.start()
-
-
-
 '''
 simulator
 '''
@@ -160,4 +145,15 @@ def run_simulator():
     loop = asyncio.get_event_loop()
     loop.create_task(simulate_quotes())
     loop.run_forever()
+
+if __name__ == "__main__":
+    simulate_trades = False
+    if simulate_trades:
+        print('SIMULATION, NOT LIVE DATA')
+        run_simulator()
+    else:
+        print('LIVE DATA')
+        ingestor = DataIngestor()
+        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD'])
+        ingestor.start()
 
