@@ -31,7 +31,7 @@ class BackgroundRunner:
                         except:
                             disconnected_clients.add(client)  # Mark for removal
 
-                    # remove stal connections
+                    # remove stale connections
                     for client in disconnected_clients:
                         self.connected_clients.remove(client)
 
@@ -41,7 +41,8 @@ class BackgroundRunner:
     async def listen(self):
         loop = asyncio.get_event_loop()
         while self.listening:
-            message = await loop.run_in_executor(None, self.subscriber.get_message, True, 1.0)
+            # 'None' is for use specific thread pool, 'True' is is_blocking, and 1.0 is timeout in seconds
+            message = await loop.run_in_executor(None, self.subscriber.get_message, True, 1.0) 
             if message:
                 yield message
 
@@ -49,9 +50,6 @@ class BackgroundRunner:
         self.listening = False
         self.subscriber.unsubscribe()
         self.subscriber.close()
-
-    async def add_ingestor_ticker(self, ticker):
-        self.redis_client.publish("subscribe_requests", json.dumps({"ticker": ticker}))
 
 '''
 FastAPI server setup

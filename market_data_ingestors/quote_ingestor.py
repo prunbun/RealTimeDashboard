@@ -12,6 +12,8 @@ import asyncio
 import time
 from collections import defaultdict, deque
 
+TICKERS = ['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']
+
 # stock_counts = defaultdict(int)
 class RedisClient:
 
@@ -23,7 +25,6 @@ class RedisClient:
         # overwrites previous price for this ticker
         self.redis_client.set(f"ticker:{quote_dict['ticker']}", json.dumps(quote_dict))
         self.redis_client.publish("quote_updates", json.dumps(quote_dict))
-
 
 class LeakyBucket:
 
@@ -87,8 +88,6 @@ class LeakyBucket:
             
         return
     
-
-
 class DataIngestor:
 
     def __init__(self, max_updates_per_second=100):
@@ -120,30 +119,30 @@ class DataIngestor:
 '''
 simulator
 '''
-def generate_random_quote(ticker):
-    bid_price = round(random.uniform(100, 150), 2)
-    ask_price = round(bid_price + random.uniform(0.01, 1), 2)  # Ask price slightly higher than bid
-    timestamp = datetime.now().isoformat()  # Use current time as timestamp
-    
-    return {
-        'ticker': ticker,
-        'bid_price': bid_price,
-        'ask_price': ask_price,
-        'timestamp': timestamp
-    }
-
-async def simulate_quotes():
-    tickers = ['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG']
-    redis_client = RedisClient()
-    while True:
-        for ticker in tickers:
-            quote_dict = generate_random_quote(ticker)
-            print('simulated', quote_dict)
-            await redis_client.store_quote_to_redis(quote_dict)
-
-        await asyncio.sleep(0.01)
-
 def run_simulator():
+
+    def generate_random_quote(ticker):
+        bid_price = round(random.uniform(100, 150), 2)
+        ask_price = round(bid_price + random.uniform(0.01, 1), 2)  # Ask price slightly higher than bid
+        timestamp = datetime.now().isoformat()  # Use current time as timestamp
+        
+        return {
+            'ticker': ticker,
+            'bid_price': bid_price,
+            'ask_price': ask_price,
+            'timestamp': timestamp
+        }
+
+    async def simulate_quotes():
+        redis_client = RedisClient()
+        while True:
+            for ticker in TICKERS:
+                quote_dict = generate_random_quote(ticker)
+                print('simulated', quote_dict)
+                await redis_client.store_quote_to_redis(quote_dict)
+
+            await asyncio.sleep(0.01)
+
     loop = asyncio.get_event_loop()
     loop.create_task(simulate_quotes())
     loop.run_forever()
@@ -156,6 +155,6 @@ if __name__ == "__main__":
     else:
         print('LIVE DATA')
         ingestor = DataIngestor()
-        ingestor.subscribe_quotes(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD'])
+        ingestor.subscribe_quotes(TICKERS)
         ingestor.start()
 

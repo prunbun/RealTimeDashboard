@@ -9,6 +9,7 @@
 - npm install react react-dom
 - npm install --save-dev parcel
 - npm start
+- pip freeze > requirements.txt (pretty cool for dependencies)
 
 <br>
 rate limiter with leaky bucket
@@ -26,3 +27,9 @@ read more about parcel, redis, fastapi
 
 - step 1 was to get a flow of prices from back to front for 1 stock
 - step 2 is to get a flow of prices for 2 stocks
+
+<br>
+
+- need to add info about why we choose postgres and diff b/w postgres and sql, and why not choose timescale bc its not free (i think)
+- brew services start postgresql@17 / brew services stop postgresql@17
+- pip install psycopg2-binary (postgres adaptor for python)
