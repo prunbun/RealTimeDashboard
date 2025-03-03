@@ -33,3 +33,6 @@ read more about parcel, redis, fastapi
 - need to add info about why we choose postgres and diff b/w postgres and sql, and why not choose timescale bc its not free (i think)
 - brew services start postgresql@17 / brew services stop postgresql@17
 - pip install psycopg2-binary (postgres adaptor for python)
+- createuser -s postgres
+- psql -U postgres
+- "-#" means we are in a multiline statement, so we can use \q to get out of the psql console and restart

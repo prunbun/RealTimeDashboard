@@ -1,3 +1,4 @@
 .DS_Store
 dump.rdb
 .parcel-cache/
+./database_utils/database.ini
