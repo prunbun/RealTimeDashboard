@@ -36,3 +36,6 @@ read more about parcel, redis, fastapi
 - createuser -s postgres
 - psql -U postgres
 - "-#" means we are in a multiline statement, so we can use \q to get out of the psql console and restart
+- change database.ini for postgres user details
+- CREATE ROLE newuser WITH LOGIN PASSWORD 'password';
+- GRANT ALL PRIVILEGES ON DATABASE your_database TO newuser;
