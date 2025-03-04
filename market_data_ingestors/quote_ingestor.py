@@ -11,24 +11,13 @@ from datetime import datetime
 import asyncio
 import time
 from collections import defaultdict, deque
+from database_utils.redis_client import ProducerRedisClient, RedisChannel
 
 TICKERS = ['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']
 
-# stock_counts = defaultdict(int)
-class RedisClient:
-
-    def __init__(self, port=6379, db_idx=0, decode_responses=True):
-        self.redis_client = redis.Redis(host='localhost', port=port, db=db_idx, decode_responses=decode_responses)
-        self.redis_client.flushdb()
-
-    async def store_quote_to_redis(self, quote_dict):
-        # overwrites previous price for this ticker
-        self.redis_client.set(f"ticker:{quote_dict['ticker']}", json.dumps(quote_dict))
-        self.redis_client.publish("quote_updates", json.dumps(quote_dict))
-
 class LeakyBucket:
 
-    def __init__(self, redis_client: RedisClient, capacity = 2, num_refresh_per_second = 0.2):
+    def __init__(self, redis_client: ProducerRedisClient, capacity = 2, num_refresh_per_second = 0.2):
         self.redis_client = redis_client
         self.messages = deque()
         self.current_threshold = capacity
@@ -64,7 +53,7 @@ class LeakyBucket:
                 }
                 print('leaky consumer', data)
                 # stock_counts[data['S']] += 1
-                await self.redis_client.store_quote_to_redis(quote_dict)
+                await self.redis_client.store_and_publish(key=data['S'], data_dict=quote_dict, channels=[RedisChannel.QUOTE_UPDATES])
 
                 await self.capacity_lock.acquire()
                 self.current_threshold = max(self.IDLE_CAPACITY, self.current_threshold - 1)
@@ -94,7 +83,7 @@ class DataIngestor:
 
     def __init__(self, max_updates_per_second=100):
         # database setup
-        self.redis_client = RedisClient()
+        self.redis_client = ProducerRedisClient()
 
         # alpaca client setup
         ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
@@ -136,12 +125,12 @@ def run_simulator():
         }
 
     async def simulate_quotes():
-        redis_client = RedisClient()
+        redis_client = ProducerRedisClient()
         while True:
             for ticker in TICKERS:
                 quote_dict = generate_random_quote(ticker)
                 print('simulated', quote_dict)
-                await redis_client.store_quote_to_redis(quote_dict)
+                await redis_client.store_and_publish(key=ticker, data_dict=quote_dict, channels=[RedisChannel.QUOTE_UPDATES])
 
             await asyncio.sleep(0.01)
 
