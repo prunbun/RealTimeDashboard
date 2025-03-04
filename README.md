@@ -39,3 +39,6 @@ read more about parcel, redis, fastapi
 - change database.ini for postgres user details
 - CREATE ROLE newuser WITH LOGIN PASSWORD 'password';
 - GRANT ALL PRIVILEGES ON DATABASE your_database TO newuser;
+- ALTER DATABASE quotes_time_series OWNER TO dashboard_admin;
+- \dt is tables, \l is databases \du is users \d [table name] gives schema access, \dt+ shows tables and sizes
+- maybe create a single database and have multiple tables so we can join based on ticker

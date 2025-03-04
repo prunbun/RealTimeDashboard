@@ -57,7 +57,9 @@ class LeakyBucket:
                 quote_dict = {
                     'ticker': data['S'], 
                     'bid_price': data['bp'], 
-                    'ask_price': data['ap'], 
+                    'bid_qty': data['bs'],
+                    'ask_price': data['ap'],
+                    'ask_qty': data['as'], 
                     'timestamp': str(data['t'].to_datetime())
                 }
                 print('leaky consumer', data)
