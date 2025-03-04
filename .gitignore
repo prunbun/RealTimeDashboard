@@ -2,3 +2,4 @@
 dump.rdb
 .parcel-cache/
 database_utils/database.ini
+__pycache__
