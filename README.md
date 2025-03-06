@@ -42,10 +42,12 @@ read more about parcel, redis, fastapi
 - ALTER DATABASE quotes_time_series OWNER TO dashboard_admin;
 - \dt is tables, \l is databases \du is users \d [table name] gives schema access, \dt+ shows tables and sizes
 - maybe create a single database and have multiple tables so we can join based on ticker
+- add sql to insert
+- add sql to remove stale data from the ticker that we get last in the query for that batch, write batched updates
 
 <br>
 redis optim
 
 - create base redis client, producer, consumer, and runner class
 - now to run components, from the rootdirectory, we run for example, `python -m backend_servers.real_time_quote_server`
-- 
+
