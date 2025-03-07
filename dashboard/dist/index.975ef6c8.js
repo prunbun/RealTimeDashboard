@@ -18565,84 +18565,11 @@ $parcel$ReactRefreshHelpers$f00f.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "App", ()=>App) // import { useState, useEffect, useRef } from "react";
- // export function App() {
- //     const [stockData, setStockData] = useState(null);
- //     const [subscribed, setSubscribed] = useState(false);
- //     const socketRef = useRef(null);
- //     useEffect(() => {
- //         const socket = new WebSocket("ws://localhost:8000/ws");
- //         socketRef.current = socket;
- //         socket.onmessage = (event) => {
- //             const data = JSON.parse(event.data);
- //             console.log("Received data:", data);
- //             // Only update if it's AAPL data
- //             if (data.ticker === "AAPL") {
- //                 setStockData({ ...data, timestamp: new Date().toLocaleTimeString() });
- //             }
- //         };
- //         socket.onclose = () => console.log("WebSocket closed");
- //         socket.onerror = (error) => console.error("WebSocket Error:", error);
- //         return () => socket.close();
- //     }, []);
- //     const handleSubscribe = () => {
- //         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
- //             socketRef.current.send(JSON.stringify({ action: "subscribe", ticker: "AAPL" }));
- //             setSubscribed(true);
- //         }
- //     };
- //     const handleUnsubscribe = () => {
- //         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
- //             socketRef.current.send(JSON.stringify({ action: "unsubscribe", ticker: "AAPL" }));
- //             setSubscribed(false);
- //             setStockData(null); // Clear data when unsubscribing
- //         }
- //     };
- //     return (
- //         <div style={{ fontFamily: "Arial, sans-serif", textAlign: "center", marginTop: "50px" }}>
- //             <h1>Real-Time Stock Data</h1>
- //             <button onClick={handleSubscribe} disabled={subscribed} style={{ marginRight: "10px" }}>
- //                 Subscribe to AAPL
- //             </button>
- //             <button onClick={handleUnsubscribe} disabled={!subscribed}>
- //                 Unsubscribe
- //             </button>
- //             {stockData ? (
- //                 <p>
- //                     <strong>Ticker:</strong> {stockData.ticker} |  
- //                     <strong> Bid:</strong> ${stockData.bid_price} |  
- //                     <strong> Ask:</strong> ${stockData.ask_price} |  
- //                     <strong> Timestamp:</strong> {stockData.timestamp}
- //                 </p>
- //             ) : (
- //                 <p>{subscribed ? "Waiting for AAPL updates..." : "Not subscribed"}</p>
- //             )}
- //         </div>
- //     );
- // }
-;
+parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _reactDefault = parcelHelpers.interopDefault(_react);
-var _s = $RefreshSig$();
+var _watchList = require("./WatchList");
 function App() {
-    _s();
-    const [stockData, setStockData] = (0, _react.useState)(null);
-    (0, _react.useEffect)(()=>{
-        const socket = new WebSocket("ws://localhost:8000/ws");
-        socket.onmessage = (event)=>{
-            const data = JSON.parse(event.data);
-            console.log("Received data:", data); // Debugging log
-            setStockData({
-                ...data
-            }); // Ensure a new object is set
-        };
-        socket.onclose = ()=>{
-            socket.close();
-        };
-        socket.onerror = (error)=>console.error("WebSocket Error:", error);
-        return ()=>socket.close();
-    }, []);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: {
             fontFamily: "Arial, sans-serif",
@@ -18654,60 +18581,21 @@ function App() {
                 children: "Real-Time Stock Data"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 25,
+                lineNumber: 8,
                 columnNumber: 13
             }, this),
-            stockData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Ticker:"
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 28,
-                        columnNumber: 21
-                    }, this),
-                    " ",
-                    stockData.ticker,
-                    " |",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: " Bid:"
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 29,
-                        columnNumber: 21
-                    }, this),
-                    " $",
-                    stockData.bid_price,
-                    " |",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: " Ask:"
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 30,
-                        columnNumber: 21
-                    }, this),
-                    " $",
-                    stockData.ask_price
-                ]
-            }, void 0, true, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 27,
-                columnNumber: 17
-            }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: "Loading stock data..."
-            }, void 0, false, {
-                fileName: "src/App.js",
-                lineNumber: 33,
-                columnNumber: 17
+                lineNumber: 9,
+                columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 24,
+        lineNumber: 7,
         columnNumber: 9
     }, this);
 }
-_s(App, "cZpNEwUGa1CiLUQNop4F6FWcIRU=");
 _c = App;
 var _c;
 $RefreshReg$(_c, "App");
@@ -18717,7 +18605,7 @@ $RefreshReg$(_c, "App");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"gkKU3":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./WatchList":"9Fqj5"}],"gkKU3":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -18892,6 +18780,222 @@ function registerExportsForReactRefresh(module1) {
 },{"7422ead32dcc1e6b":"786KC","630b62916b1ae0e7":"4SQxb"}],"4SQxb":[function(require,module,exports,__globalThis) {
 module.exports = JSON.parse("{\"name\":\"react-refresh\",\"description\":\"React is a JavaScript library for building user interfaces.\",\"keywords\":[\"react\"],\"version\":\"0.14.2\",\"homepage\":\"https://reactjs.org/\",\"bugs\":\"https://github.com/facebook/react/issues\",\"license\":\"MIT\",\"files\":[\"LICENSE\",\"README.md\",\"babel.js\",\"runtime.js\",\"cjs/\",\"umd/\"],\"main\":\"runtime.js\",\"exports\":{\".\":\"./runtime.js\",\"./runtime\":\"./runtime.js\",\"./babel\":\"./babel.js\",\"./package.json\":\"./package.json\"},\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/facebook/react.git\",\"directory\":\"packages/react\"},\"engines\":{\"node\":\">=0.10.0\"},\"devDependencies\":{\"react-16-8\":\"npm:react@16.8.0\",\"react-dom-16-8\":\"npm:react-dom@16.8.0\",\"scheduler-0-13\":\"npm:scheduler@0.13.0\"}}");
 
-},{}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
+},{}],"9Fqj5":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$37cc = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$37cc.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WatchList", ()=>WatchList);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _watchListItem = require("./WatchListItem");
+var _s = $RefreshSig$();
+function WatchList() {
+    _s();
+    const [socket, setSocket] = (0, _react.useState)(null);
+    (0, _react.useEffect)(()=>{
+        const socket = new WebSocket("ws://localhost:8000/quotes_ticker_stream");
+        setSocket(socket);
+        return ()=>{
+            socket.close();
+        };
+    }, []);
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: {
+            fontFamily: "Arial, sans-serif",
+            textAlign: "center",
+            marginTop: "50px"
+        },
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "WatchList"
+            }, void 0, false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 20,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "AAPL",
+                watchlist_socket: socket
+            }, "AAPL", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 21,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "MSFT",
+                watchlist_socket: socket
+            }, "MSFT", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 22,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "GOOG",
+                watchlist_socket: socket
+            }, "GOOG", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 23,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "AMD",
+                watchlist_socket: socket
+            }, "AMD", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 24,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "NVDA",
+                watchlist_socket: socket
+            }, "NVDA", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 25,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                watchlist_ticker: "AMZN",
+                watchlist_socket: socket
+            }, "AMZN", false, {
+                fileName: "src/WatchList.js",
+                lineNumber: 26,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/WatchList.js",
+        lineNumber: 19,
+        columnNumber: 9
+    }, this);
+}
+_s(WatchList, "NvwYO9vJOwIMt5STdlMKfWhuxZw=");
+_c = WatchList;
+var _c;
+$RefreshReg$(_c, "WatchList");
+
+  $parcel$ReactRefreshHelpers$37cc.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq","./WatchListItem":"aP8j9"}],"aP8j9":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$7cc3 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$7cc3.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// NOTE, we are getting params as an object, which we must unpack using the object positional args
+parcelHelpers.export(exports, "WatchListItem", ()=>WatchListItem);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+function WatchListItem({ watchlist_ticker, watchlist_socket }) {
+    _s();
+    const [stockData, setStockData] = (0, _react.useState)(null);
+    (0, _react.useEffect)(()=>{
+        if (!watchlist_socket) return;
+        const onOpen = ()=>{
+            watchlist_socket.send(JSON.stringify({
+                action: "subscribe",
+                ticker: watchlist_ticker
+            }));
+        };
+        const handleMessage = (message)=>{
+            const data = JSON.parse(message.data); // we get a message object, from which we need message.data
+            if (data.ticker == watchlist_ticker) setStockData({
+                ...data,
+                timestamp: new Date().toISOString()
+            });
+        };
+        const onclose = ()=>{
+            watchlist_socket.send(JSON.stringify({
+                action: "unsubscribe",
+                ticker: watchlist_ticker
+            }));
+        };
+        watchlist_socket.addEventListener("open", onOpen);
+        watchlist_socket.addEventListener("message", handleMessage);
+        watchlist_socket.addEventListener("close", onclose);
+        return ()=>{
+            // when we disconnect, we tell the server and socket, that this component isn't listening
+            watchlist_socket.removeEventListener("message", handleMessage);
+        };
+    }, [
+        watchlist_ticker,
+        watchlist_socket
+    ]);
+    return stockData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: "Ticker:"
+            }, void 0, false, {
+                fileName: "src/WatchListItem.js",
+                lineNumber: 44,
+                columnNumber: 17
+            }, this),
+            " ",
+            stockData.ticker,
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Bid:"
+            }, void 0, false, {
+                fileName: "src/WatchListItem.js",
+                lineNumber: 45,
+                columnNumber: 17
+            }, this),
+            " $",
+            stockData.bid_price.toFixed(2),
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Ask:"
+            }, void 0, false, {
+                fileName: "src/WatchListItem.js",
+                lineNumber: 46,
+                columnNumber: 17
+            }, this),
+            " $",
+            stockData.ask_price.toFixed(2),
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Timestamp:"
+            }, void 0, false, {
+                fileName: "src/WatchListItem.js",
+                lineNumber: 47,
+                columnNumber: 17
+            }, this),
+            " ",
+            stockData.timestamp
+        ]
+    }, void 0, true, {
+        fileName: "src/WatchListItem.js",
+        lineNumber: 43,
+        columnNumber: 13
+    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: '"Waiting for updates..."'
+    }, void 0, false, {
+        fileName: "src/WatchListItem.js",
+        lineNumber: 50,
+        columnNumber: 13
+    }, this);
+}
+_s(WatchListItem, "cZpNEwUGa1CiLUQNop4F6FWcIRU=");
+_c = WatchListItem;
+var _c;
+$RefreshReg$(_c, "WatchListItem");
+
+  $parcel$ReactRefreshHelpers$7cc3.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
 
 //# sourceMappingURL=index.975ef6c8.js.map

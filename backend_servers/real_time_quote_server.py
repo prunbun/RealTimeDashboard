@@ -31,9 +31,12 @@ class QuotesWebsocketServer(ConsumerRedisClient):
         message = json.loads(message)
         print('server pubsub received:', message)
         ticker = message["ticker"]
-
-        await self.__sendToTickerSubscribers(message=message, ticker=ticker)
-        await self.__sendToGeneralSubscribers(message)
+        
+        try:
+            await self.__sendToTickerSubscribers(message=message, ticker=ticker)
+            await self.__sendToGeneralSubscribers(message)
+        except Exception as e:
+            print('_broadcast_message try-catch', e)
         
     async def __sendToTickerSubscribers(self, message, ticker):
         await asyncio.gather(*(client.send_text(json.dumps(message)) for client in self.ticker_subscribers[ticker]))

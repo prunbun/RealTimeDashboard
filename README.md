@@ -51,3 +51,8 @@ redis optim
 - create base redis client, producer, consumer, and runner class
 - now to run components, from the rootdirectory, we run for example, `python -m backend_servers.real_time_quote_server`
 
+<br>
+
+- react passes in props as an object
+- for json, we need to get data using message.data
+- NOTE: IT IS POSSIBLE FOR PRICE TO BE 0 IF THAT SIDE OF THE ORDER BOOK IS EMPTY
