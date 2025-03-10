@@ -18796,14 +18796,91 @@ var _watchListItem = require("./WatchListItem");
 var _s = $RefreshSig$();
 function WatchList() {
     _s();
-    const [socket, setSocket] = (0, _react.useState)(null);
+    const AVAILABLE_TICKERS = new Set([
+        'AAPL',
+        'AMZN',
+        'MSFT',
+        'NFLX',
+        'GOOG',
+        'DDOG',
+        'NVDA',
+        'AMD'
+    ]);
+    const socket = (0, _react.useRef)(null);
+    const [tickers, setTickers] = (0, _react.useState)([]);
+    const [stockData, setStockData] = (0, _react.useState)({});
     (0, _react.useEffect)(()=>{
-        const socket = new WebSocket("ws://localhost:8000/quotes_ticker_stream");
-        setSocket(socket);
+        // establish the connection
+        socket.current = new WebSocket("ws://localhost:8000/quotes_ticker_stream");
+        const socket_obj = socket.current;
+        // message handling
+        const handle_message = (message)=>{
+            const data = JSON.parse(message.data); // we get a message object, from which we need message.data
+            setStockData((prevData)=>{
+                const updated_data = {
+                    ...prevData,
+                    [data.ticker]: {
+                        ...data,
+                        timestamp: new Date(data.timestamp).toISOString()
+                    }
+                };
+                localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
+                return updated_data;
+            });
+        };
+        socket_obj.addEventListener("message", handle_message);
+        socket_obj.addEventListener("open", ()=>{
+            // restablish stored state (if any)
+            try {
+                const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
+                setTickers(stored_tickers);
+                const stored_stock_data = JSON.parse(localStorage.getItem('watchlist_stock_data')) || {};
+                setStockData(stored_stock_data);
+                if (stored_tickers.length > 0) stored_tickers.forEach((ticker_name)=>{
+                    if (socket.current.readyState === WebSocket.OPEN) {
+                        console.log(ticker_name);
+                        socket.current.send(JSON.stringify({
+                            action: "subscribe",
+                            ticker: ticker_name
+                        }));
+                    }
+                });
+            } catch (error) {
+                console.error("Error parsing data from localStorage:", error);
+            }
+        });
         return ()=>{
-            socket.close();
+            socket_obj.removeEventListener("message", handle_message);
+            socket_obj.close();
         };
     }, []);
+    // func that adds a ticker
+    const add_ticker = ()=>{
+        // get a ticker from the user
+        const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
+        // append that to the list
+        if (new_ticker && AVAILABLE_TICKERS.has(new_ticker) && !tickers.includes(new_ticker)) {
+            if (socket.current.readyState === WebSocket.OPEN) socket.current.send(JSON.stringify({
+                action: "subscribe",
+                ticker: new_ticker
+            }));
+            updated_tickers = [
+                ...tickers,
+                new_ticker
+            ];
+            localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers));
+            setTickers(updated_tickers);
+        }
+    };
+    const remove_ticker = (ticker_to_del)=>{
+        if (socket.current.readyState == WebSocket.OPEN) socket.current.send(JSON.stringify({
+            action: "unsubscribe",
+            ticker: ticker_to_del
+        }));
+        const updated_tickers1 = tickers.filter((t)=>t !== ticker_to_del);
+        localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers1));
+        setTickers(updated_tickers1);
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: {
             fontFamily: "Arial, sans-serif",
@@ -18815,65 +18892,61 @@ function WatchList() {
                 children: "WatchList"
             }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 20,
-                columnNumber: 9
+                lineNumber: 87,
+                columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "AAPL",
-                watchlist_socket: socket
-            }, "AAPL", false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: add_ticker,
+                children: " Add Ticker "
+            }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 21,
-                columnNumber: 9
+                lineNumber: 88,
+                columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "MSFT",
-                watchlist_socket: socket
-            }, "MSFT", false, {
+            tickers.length == 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "Add tickers to see live data!"
+            }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 22,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "GOOG",
-                watchlist_socket: socket
-            }, "GOOG", false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 23,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "AMD",
-                watchlist_socket: socket
-            }, "AMD", false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 24,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "NVDA",
-                watchlist_socket: socket
-            }, "NVDA", false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 25,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                watchlist_ticker: "AMZN",
-                watchlist_socket: socket
-            }, "AMZN", false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 26,
-                columnNumber: 9
-            }, this)
+                lineNumber: 91,
+                columnNumber: 18
+            }, this) : tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    style: {
+                        display: 'flex',
+                        gap: '10px',
+                        justifyContent: 'center'
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                            ticker_data: stockData[ticker_name] || null
+                        }, void 0, false, {
+                            fileName: "src/WatchList.js",
+                            lineNumber: 95,
+                            columnNumber: 29
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            onClick: ()=>{
+                                remove_ticker(ticker_name);
+                            },
+                            children: "x"
+                        }, void 0, false, {
+                            fileName: "src/WatchList.js",
+                            lineNumber: 96,
+                            columnNumber: 29
+                        }, this)
+                    ]
+                }, ticker_name, true, {
+                    fileName: "src/WatchList.js",
+                    lineNumber: 94,
+                    columnNumber: 25
+                }, this))
         ]
     }, void 0, true, {
         fileName: "src/WatchList.js",
-        lineNumber: 19,
+        lineNumber: 86,
         columnNumber: 9
     }, this);
 }
-_s(WatchList, "NvwYO9vJOwIMt5STdlMKfWhuxZw=");
+_s(WatchList, "H46re17OnC2x2IsoieMH4Z6Vjq4=");
 _c = WatchList;
 var _c;
 $RefreshReg$(_c, "WatchList");
@@ -18896,97 +18969,61 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "WatchListItem", ()=>WatchListItem);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _s = $RefreshSig$();
-function WatchListItem({ watchlist_ticker, watchlist_socket }) {
-    _s();
-    const [stockData, setStockData] = (0, _react.useState)(null);
-    (0, _react.useEffect)(()=>{
-        if (!watchlist_socket) return;
-        const onOpen = ()=>{
-            watchlist_socket.send(JSON.stringify({
-                action: "subscribe",
-                ticker: watchlist_ticker
-            }));
-        };
-        const handleMessage = (message)=>{
-            const data = JSON.parse(message.data); // we get a message object, from which we need message.data
-            if (data.ticker == watchlist_ticker) setStockData({
-                ...data,
-                timestamp: new Date().toISOString()
-            });
-        };
-        const onclose = ()=>{
-            watchlist_socket.send(JSON.stringify({
-                action: "unsubscribe",
-                ticker: watchlist_ticker
-            }));
-        };
-        watchlist_socket.addEventListener("open", onOpen);
-        watchlist_socket.addEventListener("message", handleMessage);
-        watchlist_socket.addEventListener("close", onclose);
-        return ()=>{
-            // when we disconnect, we tell the server and socket, that this component isn't listening
-            watchlist_socket.removeEventListener("message", handleMessage);
-        };
-    }, [
-        watchlist_ticker,
-        watchlist_socket
-    ]);
-    return stockData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+function WatchListItem({ ticker_data }) {
+    return ticker_data ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
                 children: "Ticker:"
             }, void 0, false, {
                 fileName: "src/WatchListItem.js",
-                lineNumber: 44,
+                lineNumber: 9,
                 columnNumber: 17
             }, this),
             " ",
-            stockData.ticker,
+            ticker_data.ticker,
             " |",
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
                 children: " Bid:"
             }, void 0, false, {
                 fileName: "src/WatchListItem.js",
-                lineNumber: 45,
+                lineNumber: 10,
                 columnNumber: 17
             }, this),
             " $",
-            stockData.bid_price.toFixed(2),
+            ticker_data.bid_price.toFixed(2),
             " |",
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
                 children: " Ask:"
             }, void 0, false, {
                 fileName: "src/WatchListItem.js",
-                lineNumber: 46,
+                lineNumber: 11,
                 columnNumber: 17
             }, this),
             " $",
-            stockData.ask_price.toFixed(2),
+            ticker_data.ask_price.toFixed(2),
             " |",
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
                 children: " Timestamp:"
             }, void 0, false, {
                 fileName: "src/WatchListItem.js",
-                lineNumber: 47,
+                lineNumber: 12,
                 columnNumber: 17
             }, this),
             " ",
-            stockData.timestamp
+            ticker_data.timestamp
         ]
     }, void 0, true, {
         fileName: "src/WatchListItem.js",
-        lineNumber: 43,
+        lineNumber: 8,
         columnNumber: 13
     }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: '"Waiting for updates..."'
     }, void 0, false, {
         fileName: "src/WatchListItem.js",
-        lineNumber: 50,
+        lineNumber: 15,
         columnNumber: 13
     }, this);
 }
-_s(WatchListItem, "cZpNEwUGa1CiLUQNop4F6FWcIRU=");
 _c = WatchListItem;
 var _c;
 $RefreshReg$(_c, "WatchListItem");

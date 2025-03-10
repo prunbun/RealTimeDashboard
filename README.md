@@ -56,3 +56,10 @@ redis optim
 - react passes in props as an object
 - for json, we need to get data using message.data
 - NOTE: IT IS POSSIBLE FOR PRICE TO BE 0 IF THAT SIDE OF THE ORDER BOOK IS EMPTY
+- ? means optional param
+- having () in onclick means it executes when rendered, need ref, so without () for it to work properly
+- const is not mutable in js
+- react re-renders each component every time the list of tickers changes, meaning that it comes back to null or 'waiting for updates' until it resends the subscribe message
+  - to fix this, we actually handle the subs, unsubs in the watchlist itself and only pass data to the watchlist component, that way, the data isn't touched for the rest of the tickers
+- use localStorage with JSON.stringify and JSON.parse to restore watchlist data from the previous session, reconnect to all tickers and restore old data
+  - and do this in onOpen so that we can send 'subscribe' messages only when the socket is actually open, ALSO, note that react state is not updated immediately so do the reconnections from the localstorage directly
