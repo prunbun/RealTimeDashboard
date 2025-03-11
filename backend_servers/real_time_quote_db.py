@@ -13,29 +13,28 @@ INSERT INTO quotes_time_series (ticker, bid_price, bid_qty, ask_price, ask_qty, 
 VALUES (%s, %s, %s, %s, %s, %s);
 """
 
-DELETE_STALE_FIXED_QTY_SQL = """
-WITH keep AS (
-    SELECT ts from quotes_time_series
-    ORDER BY ts DESC
-    LIMIT %s
-)
-DELETE FROM quotes_time_series
-WHERE ts NOT IN (select ts FROM keep);
-"""
+# NOTE: TimescaleDB now does auto-retention policy based on its time indices!
+# DELETE_STALE_FIXED_QTY_SQL = """
+# WITH keep AS (
+#     SELECT ts from quotes_time_series
+#     ORDER BY ts DESC
+#     LIMIT %s
+# )
+# DELETE FROM quotes_time_series
+# WHERE ts NOT IN (select ts FROM keep);
+# """
 
-DELETE_STALE_TIME_INTERVAL_SQL = """
-DELETE FROM quotes_time_series
-WHERE ts < NOW() - INTERVAL %s;
-"""
+# DELETE_STALE_TIME_INTERVAL_SQL = """
+# DELETE FROM quotes_time_series
+# WHERE ts < NOW() - INTERVAL %s;
+# """
 
 class PostgresServer:
 
-    def __init__(self, write_batch_size = 50, data_retention_row_count = 500, data_retention_time_str = '1 day'):
+    def __init__(self, write_batch_size = 50):
         # state
         self.batched_data = []
         self.BATCH_SIZE = write_batch_size
-        self.RETENTION_QTY = data_retention_row_count
-        self.RETENTION_TIME = data_retention_time_str
 
         # postgres config
         self.db_config = load_config()
@@ -68,13 +67,6 @@ class PostgresServer:
                         conn.commit()
                         print("Batch insert successful!")
                 self.batched_data = []
-
-                # remove stale data
-                with psycopg2.connect(**self.db_config) as conn:
-                    with conn.cursor() as cur:
-                        cur.execute(DELETE_STALE_TIME_INTERVAL_SQL, (self.RETENTION_TIME,))
-                        conn.commit()
-                        print("Stale data removed!")
 
         except Exception as e:
             print(f"Error processing data: {e}")

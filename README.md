@@ -44,6 +44,7 @@ read more about parcel, redis, fastapi
 - maybe create a single database and have multiple tables so we can join based on ticker
 - add sql to insert
 - add sql to remove stale data from the ticker that we get last in the query for that batch, write batched updates
+- want to prioritize fast inserts because we aren't going to necessarily be modifying or deleting rows
 
 <br>
 redis optim
@@ -63,3 +64,13 @@ redis optim
   - to fix this, we actually handle the subs, unsubs in the watchlist itself and only pass data to the watchlist component, that way, the data isn't touched for the rest of the tickers
 - use localStorage with JSON.stringify and JSON.parse to restore watchlist data from the previous session, reconnect to all tickers and restore old data
   - and do this in onOpen so that we can send 'subscribe' messages only when the socket is actually open, ALSO, note that react state is not updated immediately so do the reconnections from the localstorage directly
+
+<br>
+
+- brew tap timescale/tap
+- brew install timescaledb libpq
+- psql -U postgres -d market_data -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"
+- alter table quotes_time_series drop constraint quotes_time_series_pkey;
+- alter table quotes_time_series add primary key (quote_id, ts)
+- SELECT create_hypertable('quotes_time_series', 'ts', migrate_data => true);
+- SELECT add_retention_policy('quotes_time_series', INTERVAL '90 days');
