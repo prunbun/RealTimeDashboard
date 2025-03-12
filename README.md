@@ -74,3 +74,21 @@ redis optim
 - alter table quotes_time_series add primary key (quote_id, ts)
 - SELECT create_hypertable('quotes_time_series', 'ts', migrate_data => true);
 - SELECT add_retention_policy('quotes_time_series', INTERVAL '90 days');
+- db size: SELECT pg_size_pretty(pg_database_size('market_data')); 
+- SELECT pg_size_pretty(pg_total_relation_size('quotes_time_series'));
+- look into continuous aggregates
+- market_data=# CREATE MATERIALIZED VIEW quotes_minute_buckets
+market_data-# WITH (timescaledb.continuous) AS
+market_data-# SELECT ticker, time_bucket('1 minute', ts) AS bucket, ( first(bid_price, ts) + first(ask_price, ts) ) / 2 AS first_price
+market_data-# FROM quotes_time_series
+market_data-# WHERE bid_price > 0 AND ask_price > 0
+market_data-# GROUP BY ticker, bucket;
+<br>
+
+- market_data=# SELECT add_continuous_aggregate_policy('quotes_minute_buckets',
+market_data(# start_offset => INTERVAL '14 days',
+market_data(# end_offset => INTERVAL '1 minute',
+market_data(# schedule_interval => INTERVAL '2 minutes');
+<br>
+
+- 
