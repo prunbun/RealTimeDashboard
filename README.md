@@ -91,4 +91,11 @@ market_data(# end_offset => INTERVAL '1 minute',
 market_data(# schedule_interval => INTERVAL '2 minutes');
 <br>
 
-- 
+<br>
+user and trading account tables
+
+- salt the passwords and store hashes
+- have a foreign key for the user id and make sure that it is ON DELETE CASCADE
+- NUMERIC(15, 4) means 15 digits of precision with 4 coming after the decimal place
+- CONSTRAINT unique_user_ticker_combo UNIQUE(user_id, ticker)
+- function + trigger comments written in db.sql
