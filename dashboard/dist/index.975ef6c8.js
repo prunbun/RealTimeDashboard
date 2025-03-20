@@ -18569,6 +18569,7 @@ parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _watchList = require("./WatchList");
+var _portfolio = require("./Portfolio");
 function App() {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: {
@@ -18581,18 +18582,30 @@ function App() {
                 children: "Real-Time Stock Data"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 8,
+                lineNumber: 9,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 9,
+                lineNumber: 10,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Trading Simulator"
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 11,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {}, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 12,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 7,
+        lineNumber: 8,
         columnNumber: 9
     }, this);
 }
@@ -18605,7 +18618,7 @@ $RefreshReg$(_c, "App");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./WatchList":"9Fqj5"}],"gkKU3":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./WatchList":"9Fqj5","./Portfolio":"jGwKc"}],"gkKU3":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -19029,6 +19042,129 @@ var _c;
 $RefreshReg$(_c, "WatchListItem");
 
   $parcel$ReactRefreshHelpers$7cc3.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"jGwKc":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$7702 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$7702.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Portfolio", ()=>Portfolio);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+function Portfolio() {
+    _s();
+    const [accountData, setAccountData] = (0, _react.useState)(null);
+    (0, _react.useEffect)(()=>{
+        const USERNAME = "honeykiwi";
+        fetch(`http://localhost:8001/account/${USERNAME}`).then((res)=>res.json()).then((res)=>{
+            console.log(res);
+            setAccountData(res);
+        }).catch((res)=>console.log(res));
+    }, []);
+    return accountData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Account ID: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 25,
+                        columnNumber: 17
+                    }, this),
+                    accountData.account_id,
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 25,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Net Liquidity: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 26,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.net_liquidity.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 26,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Available Cash: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 27,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.available_cash.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 27,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Net Profit: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 28,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.net_profit.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 28,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/Portfolio.js",
+        lineNumber: 24,
+        columnNumber: 13
+    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: "Loading account details..."
+    }, void 0, false, {
+        fileName: "src/Portfolio.js",
+        lineNumber: 31,
+        columnNumber: 13
+    }, this);
+}
+_s(Portfolio, "LPVb+i8OTf6yHJd84QAP/N4JwkI=");
+_c = Portfolio;
+var _c;
+$RefreshReg$(_c, "Portfolio");
+
+  $parcel$ReactRefreshHelpers$7702.postlude(module);
 } finally {
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;

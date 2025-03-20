@@ -37,9 +37,16 @@ read more about parcel, redis, fastapi
 - psql -U postgres
 - "-#" means we are in a multiline statement, so we can use \q to get out of the psql console and restart
 - change database.ini for postgres user details
+- 
 - CREATE ROLE newuser WITH LOGIN PASSWORD 'password';
 - GRANT ALL PRIVILEGES ON DATABASE your_database TO newuser;
 - ALTER DATABASE quotes_time_series OWNER TO dashboard_admin;
+- SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name = 'trading_account_info';
+- SELECT tablename, tableowner FROM pg_tables WHERE tablename = 'trading_account_info';
+- GRANT ALL PRIVILEGES ON TABLE user_positions TO dashboard_admin;
+
+
+
 - \dt is tables, \l is databases \du is users \d [table name] gives schema access, \dt+ shows tables and sizes
 - maybe create a single database and have multiple tables so we can join based on ticker
 - add sql to insert
@@ -99,3 +106,9 @@ user and trading account tables
 - NUMERIC(15, 4) means 15 digits of precision with 4 coming after the decimal place
 - CONSTRAINT unique_user_ticker_combo UNIQUE(user_id, ticker)
 - function + trigger comments written in db.sql
+
+<br>
+
+- ran into a CORS error, but can use FastAPI to get HTTPCORSMiddleware
+  - allow certain origins, methods, and headers
+- 

@@ -29,7 +29,7 @@ VALUES (%s, %s, %s, %s, %s, %s);
 # WHERE ts < NOW() - INTERVAL %s;
 # """
 
-class PostgresServer:
+class QuoteDBConsumer:
 
     def __init__(self, write_batch_size = 50):
         # state
@@ -72,7 +72,7 @@ class PostgresServer:
             print(f"Error processing data: {e}")
 
 async def main():
-    server = PostgresServer()
+    server = QuoteDBConsumer()
     while True:
         await asyncio.sleep(100)
 
