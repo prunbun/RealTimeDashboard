@@ -63,111 +63,38 @@ class AccountManager:
                 # get headers and zip them with the data we fetched (tuple)
                 column_names = [desc[0] for desc in cur.description]
                 return dict(zip(column_names, result))
-            
-
-    def __calc_buy_position(self, current_position, account_details, request: TradeRequest, ask_price):
         
-        # new_qty = current_position['qty'] + request.qty
-        # new_total_value = current_position['total_value'] + Decimal(requested_funds)
-        new_qty = None
-        new_total_value = None
-        new_profit = None
-
-        if current_position['qty'] == 0:
-            new_qty = request.qty
-            new_total_value = request.qty * ask_price
-            new_profit = account_details['net_profit']
-            
-        elif current_position['qty'] < 0:
-            old_cost_basis = current_position['total_value'] / Decimal(abs(current_position['qty']))
-            new_qty = current_position['qty'] + request.qty
-            new_total_value = current_position['total_value'] - Decimal(old_cost_basis * request.qty) if new_qty <= 0 else new_qty * ask_price
-            profit_delta = (old_cost_basis - Decimal(ask_price)) * min(abs(current_position['qty']), request.qty)
-            new_profit = account_details['net_profit'] + Decimal(profit_delta)
-
-        else:
-            new_qty = current_position['qty'] + request.qty
-            new_total_value = current_position['total_value'] + Decimal(request.qty * ask_price)
-            new_profit = account_details['net_profit']
-
-        return (new_qty, new_total_value, new_profit)
-        
-            
-    def __place_buy(self, request: TradeRequest, ask_price: float):
-        '''
-        if BUY:
-            update/open the position for the user
-            update trading account
-        '''
-
-        requested_funds = request.qty * ask_price
-        account_details = self.get_trading_account_details(request.username)
-
-        try:
-
-            with psycopg2.connect(**self.db_config) as conn:
-                with conn.cursor() as cur:
-
-                    # update the user position        
-                    cur.execute(POS_DETAILS_SQL, (account_details['user_id'], request.ticker))
-                    result = cur.fetchone()
-
-                    new_profit = account_details['net_profit']
-            
-                    if not result:
-                        new_qty = request.qty
-                        new_total_value = requested_funds
-                        cur.execute(INSERT_POS_SQL, (account_details['user_id'], request.ticker, new_qty, new_total_value))
-
-                    else:
-                        column_names = [desc[0] for desc in cur.description]
-                        current_position = dict(zip(column_names, result))
-
-                        new_qty, new_total_value, new_profit = self.__calc_buy_position(current_position, account_details, request, ask_price)
-
-                    # update the account
-                    new_available_cash = account_details['available_cash'] - Decimal(requested_funds)
-
-                    # write the changes back to the account
-                    cur.execute(UPDATE_POS_SQL, (new_qty, new_total_value, account_details['user_id'], request.ticker))
-                    cur.execute(UPDATE_ACCT_SQL, (new_available_cash, new_profit, account_details['user_id']))
-
-                    conn.commit()
-                    return {'message': f"BUY trade [ {request.ticker}: {request.qty} @ ${ask_price} ] placed successfully!"}
-        
-        except Exception as e:
-            print(e)
-            traceback.print_exc(file=sys.stdout)
-            return {'message': f"Error placing BUY trade!"}
-        
-
-    def __calc_sell_position(self, current_position, account_details, request: TradeRequest, bid_price):
+    def __calc_position(self, current_position, account_details, request: TradeRequest, new_price):
 
         new_qty = None
         new_total_value = None
         new_profit = None
 
         if current_position['qty'] == 0:
-            new_qty = -1 * request.qty
-            new_total_value = request.qty * bid_price
+            new_qty = (-1 if request.op == 'SELL' else 1) * request.qty
+            new_total_value = request.qty * new_price
             new_profit = account_details['net_profit']
             
-        elif current_position['qty'] > 0:
+        elif current_position['qty'] > 0 and request.op == 'SELL' or current_position['qty'] < 0 and request.op == 'BUY':
             old_cost_basis = current_position['total_value'] / Decimal(abs(current_position['qty']))
-            new_qty = current_position['qty'] - request.qty
-            new_total_value = current_position['total_value'] - Decimal(old_cost_basis * request.qty) if new_qty >= 0 else abs(new_qty) * bid_price
-            profit_delta = (Decimal(bid_price) - old_cost_basis) * min(abs(current_position['qty']), request.qty)
+            new_qty = current_position['qty'] + (-1 if request.op == 'SELL' else 1) * request.qty
+            if request.op == 'SELL':
+                new_total_value = current_position['total_value'] - Decimal(old_cost_basis * request.qty) if new_qty >= 0 else abs(new_qty) * new_price
+                profit_delta = (Decimal(new_price) - old_cost_basis) * min(abs(current_position['qty']), request.qty)
+            else:
+                new_total_value = current_position['total_value'] - Decimal(old_cost_basis * request.qty) if new_qty <= 0 else new_qty * new_price
+                profit_delta = (old_cost_basis - Decimal(new_price)) * min(abs(current_position['qty']), request.qty)
+            
             new_profit = account_details['net_profit'] + Decimal(profit_delta)
 
         else:
-            new_qty = current_position['qty'] - request.qty
-            new_total_value = current_position['total_value'] + Decimal(request.qty * bid_price)
+            new_qty = current_position['qty'] + (-1 if request.op == 'SELL' else 1) * request.qty
+            new_total_value = current_position['total_value'] + Decimal(request.qty * new_price)
             new_profit = account_details['net_profit']
 
         return (new_qty, new_total_value, new_profit)
-    
-    
-    def __place_sell(self, request: TradeRequest, bid_price: float):
+        
+    def __place_order(self, request: TradeRequest, new_price: float):
         '''
         if SELL:
             update position for the user
@@ -175,7 +102,7 @@ class AccountManager:
         '''
 
         account_details = self.get_trading_account_details(request.username)
-        added_funds = request.qty * bid_price
+        raw_value = request.qty * new_price
 
         try:
             with psycopg2.connect(**self.db_config) as conn:
@@ -188,25 +115,25 @@ class AccountManager:
                     new_profit = account_details['net_profit']
             
                     if not result:
-                        new_qty = -1 * request.qty
-                        new_total_value = added_funds
+                        new_qty = (-1 if request.op == 'SELL' else 1) * request.qty
+                        new_total_value = raw_value
                         cur.execute(INSERT_POS_SQL, (account_details['user_id'], request.ticker, new_qty, new_total_value))
 
                     else:
                         column_names = [desc[0] for desc in cur.description]
                         current_position = dict(zip(column_names, result))
 
-                        new_qty, new_total_value, new_profit = self.__calc_sell_position(current_position, account_details, request, bid_price)
+                        new_qty, new_total_value, new_profit = self.__calc_position(current_position, account_details, request, new_price)
 
                     # changes to the account
-                    new_available_cash = account_details['available_cash'] + Decimal(added_funds)
+                    new_available_cash = account_details['available_cash'] + (-1 if request.op == 'BUY' else 1) * Decimal(raw_value)
 
                     # write the changes back to the account
                     cur.execute(UPDATE_POS_SQL, (new_qty, new_total_value, account_details['user_id'], request.ticker))
                     cur.execute(UPDATE_ACCT_SQL, (new_available_cash, new_profit, account_details['user_id']))
 
                     conn.commit()
-                    return {'message': f"SELL trade [ {request.ticker}: {request.qty} @ ${bid_price} ] placed successfully!"}
+                    return {'message': f"{request.op.upper()} trade [ {request.ticker}: {request.qty} @ ${new_price} ] placed successfully!"}
                 
         except Exception as e:
             print(e)
@@ -231,12 +158,11 @@ class AccountManager:
         if bid_price <= 0 or ask_price <= 0:
             return {'message': f"Error placing trade. Instrument is unavailable at the moment!"}
 
-        if request.op == 'BUY':
-            return self.__place_buy(request, ask_price=ask_price)
-        elif request.op == 'SELL':
-            return self.__place_sell(request, bid_price=bid_price)
-        else:
+        request.op = request.op.upper()
+        if request.op != 'BUY' and request.op != 'SELL':
             return {'message': f"Error placing trade. Operation {request.op} is unrecognized"}
+        
+        return self.__place_order(request, ask_price if request.op == 'BUY' else bid_price)
         
     def reset_account(self, username: str):
         RESET_ACCOUNT_SQL = """

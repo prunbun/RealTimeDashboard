@@ -18637,7 +18637,9 @@ function App() {
                 lineNumber: 52,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {}, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {
+                stockData: stockData
+            }, void 0, false, {
                 fileName: "src/App.js",
                 lineNumber: 53,
                 columnNumber: 13
@@ -19147,7 +19149,7 @@ function AccountOverview({ accountData }) {
     }, this);
 }
 _c = AccountOverview;
-function Portfolio() {
+function Portfolio({ stockData }) {
     _s();
     const USERNAME = "honeykiwi";
     const [accountData, setAccountData] = (0, _react.useState)(null);

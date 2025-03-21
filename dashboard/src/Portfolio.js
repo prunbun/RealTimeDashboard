@@ -17,7 +17,7 @@ export function AccountOverview({accountData}) {
     )
 }
 
-export function Portfolio() {
+export function Portfolio({stockData}) {
     const USERNAME = "honeykiwi"
 
     const [accountData, setAccountData] = useState(null);

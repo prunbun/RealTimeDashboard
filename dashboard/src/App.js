@@ -50,7 +50,7 @@ export function App() {
             <h1>Real-Time Stock Data</h1>
             <WatchList stockData={stockData} />
             <h1>Trading Simulator</h1> 
-            <Portfolio />
+            <Portfolio stockData={stockData} />
         </div>
     );
 }
