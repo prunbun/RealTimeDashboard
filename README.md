@@ -44,6 +44,7 @@ read more about parcel, redis, fastapi
 - SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name = 'trading_account_info';
 - SELECT tablename, tableowner FROM pg_tables WHERE tablename = 'trading_account_info';
 - GRANT ALL PRIVILEGES ON TABLE user_positions TO dashboard_admin;
+- GRANT USAGE, SELECT, UPDATE ON SEQUENCE user_positions_position_id_seq to dashboard_admin;
 
 
 
@@ -111,4 +112,5 @@ user and trading account tables
 
 - ran into a CORS error, but can use FastAPI to get HTTPCORSMiddleware
   - allow certain origins, methods, and headers
-- 
+- make post request using a dict with JSON.stringify, then do fetch with the method name, header, and body fields
+- use pydantic to specify request type

@@ -1,6 +1,7 @@
 import redis
 import asyncio
 import json
+from fastapi import HTTPException
 
 from enum import Enum
 
@@ -10,6 +11,19 @@ class RedisChannel(Enum):
 class RedisClient:
     def __init__(self, port=6379, db_idx=0, decode_responses=True):
         self.redis_client = redis.Redis(host='localhost', port=port, db=db_idx, decode_responses=decode_responses)
+
+    def getFromCache(self, key, keyspace = 'ticker'):
+        cache_data = self.redis_client.get(f"{keyspace}:{key}")
+        if not cache_data:
+            raise HTTPException(404, f"No data found for {key}")
+        
+        try:
+            return json.loads(cache_data)
+        
+        except Exception as e:
+            print('Redis error', e)
+            return None
+
 
 class ProducerRedisClient(RedisClient):
 

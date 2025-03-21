@@ -19055,20 +19055,13 @@ $parcel$ReactRefreshHelpers$7702.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AccountOverview", ()=>AccountOverview);
 parcelHelpers.export(exports, "Portfolio", ()=>Portfolio);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
+var _tradePopup = require("./TradePopup");
 var _s = $RefreshSig$();
-function Portfolio() {
-    _s();
-    const [accountData, setAccountData] = (0, _react.useState)(null);
-    (0, _react.useEffect)(()=>{
-        const USERNAME = "honeykiwi";
-        fetch(`http://localhost:8001/account/${USERNAME}`).then((res)=>res.json()).then((res)=>{
-            console.log(res);
-            setAccountData(res);
-        }).catch((res)=>console.log(res));
-    }, []);
+function AccountOverview({ accountData }) {
     return accountData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -19078,7 +19071,7 @@ function Portfolio() {
                         children: "Account ID: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
-                        lineNumber: 25,
+                        lineNumber: 9,
                         columnNumber: 17
                     }, this),
                     accountData.account_id,
@@ -19086,7 +19079,7 @@ function Portfolio() {
                 ]
             }, void 0, true, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 25,
+                lineNumber: 9,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -19096,7 +19089,7 @@ function Portfolio() {
                         children: "Net Liquidity: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
-                        lineNumber: 26,
+                        lineNumber: 10,
                         columnNumber: 17
                     }, this),
                     "$",
@@ -19105,7 +19098,7 @@ function Portfolio() {
                 ]
             }, void 0, true, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 26,
+                lineNumber: 10,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -19115,7 +19108,7 @@ function Portfolio() {
                         children: "Available Cash: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
-                        lineNumber: 27,
+                        lineNumber: 11,
                         columnNumber: 17
                     }, this),
                     "$",
@@ -19124,7 +19117,7 @@ function Portfolio() {
                 ]
             }, void 0, true, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 27,
+                lineNumber: 11,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -19134,7 +19127,7 @@ function Portfolio() {
                         children: "Net Profit: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
-                        lineNumber: 28,
+                        lineNumber: 12,
                         columnNumber: 17
                     }, this),
                     "$",
@@ -19143,32 +19136,170 @@ function Portfolio() {
                 ]
             }, void 0, true, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 28,
+                lineNumber: 12,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/Portfolio.js",
-        lineNumber: 24,
+        lineNumber: 8,
         columnNumber: 13
     }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: "Loading account details..."
     }, void 0, false, {
         fileName: "src/Portfolio.js",
-        lineNumber: 31,
+        lineNumber: 15,
         columnNumber: 13
     }, this);
 }
-_s(Portfolio, "LPVb+i8OTf6yHJd84QAP/N4JwkI=");
-_c = Portfolio;
-var _c;
-$RefreshReg$(_c, "Portfolio");
+_c = AccountOverview;
+function Portfolio() {
+    _s();
+    const USERNAME = "honeykiwi";
+    const [accountData, setAccountData] = (0, _react.useState)(null);
+    const [tradePopupOpen, setTradePopupOpen] = (0, _react.useState)(false);
+    const fetchAccountData = ()=>{
+        fetch(`http://localhost:8001/account/${USERNAME}`).then((res)=>res.json()).then((res)=>{
+            console.log(res);
+            setAccountData(res);
+        }).catch((res)=>console.log(res));
+    };
+    (0, _react.useEffect)(()=>{
+        fetchAccountData();
+    }, []);
+    const resetAccount = ()=>{
+        fetch(`http://localhost:8001/reset/${USERNAME}`).then((response)=>response.json()).then((response)=>console.log(response)).then(()=>fetchAccountData()).catch((error)=>console.log(error));
+    };
+    const placeTrade = (ticker, qty, operation)=>{
+        const orderDetails = {
+            username: USERNAME,
+            ticker: ticker,
+            qty: qty,
+            op: operation
+        };
+        fetch('http://localhost:8001/trade', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/JSON"
+            },
+            body: JSON.stringify(orderDetails)
+        }).then((response)=>{
+            if (!response.ok) throw new Error(`Error while making the request: ${response.status}`);
+            return response.json();
+        }).then((response)=>console.log("Trade response:", response)).then(()=>fetchAccountData()).catch((error)=>console.error("Trade error:", error));
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(AccountOverview, {
+                accountData: accountData
+            }, void 0, false, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 78,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>resetAccount(),
+                children: "RESET ACCOUNT"
+            }, void 0, false, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 79,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setTradePopupOpen(true),
+                children: "TRADE"
+            }, void 0, false, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 80,
+                columnNumber: 13
+            }, this),
+            tradePopupOpen && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _tradePopup.TradePopup), {
+                onSubmit: placeTrade,
+                onClose: ()=>setTradePopupOpen(false)
+            }, void 0, false, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 81,
+                columnNumber: 33
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/Portfolio.js",
+        lineNumber: 77,
+        columnNumber: 9
+    }, this);
+}
+_s(Portfolio, "ar0ineOUmR1O/NsVjeECmbxa8go=");
+_c1 = Portfolio;
+var _c, _c1;
+$RefreshReg$(_c, "AccountOverview");
+$RefreshReg$(_c1, "Portfolio");
 
   $parcel$ReactRefreshHelpers$7702.postlude(module);
 } finally {
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./TradePopup":"7eR4o"}],"7eR4o":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$cd62 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$cd62.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TradePopup", ()=>TradePopup);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+function TradePopup({ onSubmit, onClose }) {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Trade Portal"
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 6,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>onSubmit("MSFT", 10, "BUY"),
+                children: "Buy 10 of MSFT"
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 7,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>onSubmit("GOOG", 10, "SELL"),
+                children: "Sell 10 of MSFT"
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 8,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: onClose,
+                children: "Close"
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 9,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/TradePopup.js",
+        lineNumber: 5,
+        columnNumber: 9
+    }, this);
+}
+_c = TradePopup;
+var _c;
+$RefreshReg$(_c, "TradePopup");
+
+  $parcel$ReactRefreshHelpers$cd62.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
 
 //# sourceMappingURL=index.975ef6c8.js.map
