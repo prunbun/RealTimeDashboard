@@ -18570,7 +18570,45 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _watchList = require("./WatchList");
 var _portfolio = require("./Portfolio");
+var _s = $RefreshSig$();
 function App() {
+    _s();
+    const socket = (0, _react.useRef)(null);
+    const [stockData, setStockData] = (0, _react.useState)({});
+    (0, _react.useEffect)(()=>{
+        // establish the connection
+        socket.current = new WebSocket("ws://localhost:8000/ws");
+        const socket_obj = socket.current;
+        // message handling
+        const handle_message = (message)=>{
+            const data = JSON.parse(message.data); // we get a message object, from which we need message.data
+            setStockData((prevData)=>{
+                const updated_data = {
+                    ...prevData,
+                    [data.ticker]: {
+                        ...data,
+                        timestamp: new Date(data.timestamp).toISOString()
+                    }
+                };
+                localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
+                return updated_data;
+            });
+        };
+        socket_obj.addEventListener("message", handle_message);
+        socket_obj.addEventListener("open", ()=>{
+            // restablish stored state (if any)
+            try {
+                const stored_stock_data = JSON.parse(localStorage.getItem('watchlist_stock_data')) || {};
+                setStockData(stored_stock_data);
+            } catch (error) {
+                console.error("Error parsing data from localStorage:", error);
+            }
+        });
+        return ()=>{
+            socket_obj.removeEventListener("message", handle_message);
+            socket_obj.close();
+        };
+    }, []);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: {
             fontFamily: "Arial, sans-serif",
@@ -18582,33 +18620,36 @@ function App() {
                 children: "Real-Time Stock Data"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 9,
+                lineNumber: 50,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {}, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {
+                stockData: stockData
+            }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 10,
+                lineNumber: 51,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
                 children: "Trading Simulator"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 11,
+                lineNumber: 52,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 12,
+                lineNumber: 53,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 8,
+        lineNumber: 49,
         columnNumber: 9
     }, this);
 }
+_s(App, "e1jIvWtnR/iPT0w2bh6uGzUSzG4=");
 _c = App;
 var _c;
 $RefreshReg$(_c, "App");
@@ -18807,7 +18848,7 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _watchListItem = require("./WatchListItem");
 var _s = $RefreshSig$();
-function WatchList() {
+function WatchList({ stockData }) {
     _s();
     const AVAILABLE_TICKERS = new Set([
         'AAPL',
@@ -18819,53 +18860,14 @@ function WatchList() {
         'NVDA',
         'AMD'
     ]);
-    const socket = (0, _react.useRef)(null);
     const [tickers, setTickers] = (0, _react.useState)([]);
-    const [stockData, setStockData] = (0, _react.useState)({});
     (0, _react.useEffect)(()=>{
-        // establish the connection
-        socket.current = new WebSocket("ws://localhost:8000/quotes_ticker_stream");
-        const socket_obj = socket.current;
-        // message handling
-        const handle_message = (message)=>{
-            const data = JSON.parse(message.data); // we get a message object, from which we need message.data
-            setStockData((prevData)=>{
-                const updated_data = {
-                    ...prevData,
-                    [data.ticker]: {
-                        ...data,
-                        timestamp: new Date(data.timestamp).toISOString()
-                    }
-                };
-                localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
-                return updated_data;
-            });
-        };
-        socket_obj.addEventListener("message", handle_message);
-        socket_obj.addEventListener("open", ()=>{
-            // restablish stored state (if any)
-            try {
-                const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
-                setTickers(stored_tickers);
-                const stored_stock_data = JSON.parse(localStorage.getItem('watchlist_stock_data')) || {};
-                setStockData(stored_stock_data);
-                if (stored_tickers.length > 0) stored_tickers.forEach((ticker_name)=>{
-                    if (socket.current.readyState === WebSocket.OPEN) {
-                        console.log(ticker_name);
-                        socket.current.send(JSON.stringify({
-                            action: "subscribe",
-                            ticker: ticker_name
-                        }));
-                    }
-                });
-            } catch (error) {
-                console.error("Error parsing data from localStorage:", error);
-            }
-        });
-        return ()=>{
-            socket_obj.removeEventListener("message", handle_message);
-            socket_obj.close();
-        };
+        try {
+            const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
+            setTickers(stored_tickers);
+        } catch (error) {
+            console.error("Error parsing data from localStorage:", error);
+        }
     }, []);
     // func that adds a ticker
     const add_ticker = ()=>{
@@ -18873,10 +18875,6 @@ function WatchList() {
         const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
         // append that to the list
         if (new_ticker && AVAILABLE_TICKERS.has(new_ticker) && !tickers.includes(new_ticker)) {
-            if (socket.current.readyState === WebSocket.OPEN) socket.current.send(JSON.stringify({
-                action: "subscribe",
-                ticker: new_ticker
-            }));
             updated_tickers = [
                 ...tickers,
                 new_ticker
@@ -18886,10 +18884,6 @@ function WatchList() {
         }
     };
     const remove_ticker = (ticker_to_del)=>{
-        if (socket.current.readyState == WebSocket.OPEN) socket.current.send(JSON.stringify({
-            action: "unsubscribe",
-            ticker: ticker_to_del
-        }));
         const updated_tickers1 = tickers.filter((t)=>t !== ticker_to_del);
         localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers1));
         setTickers(updated_tickers1);
@@ -18905,7 +18899,7 @@ function WatchList() {
                 children: "WatchList"
             }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 87,
+                lineNumber: 39,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -18913,14 +18907,14 @@ function WatchList() {
                 children: " Add Ticker "
             }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 88,
+                lineNumber: 40,
                 columnNumber: 13
             }, this),
             tickers.length == 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                 children: "Add tickers to see live data!"
             }, void 0, false, {
                 fileName: "src/WatchList.js",
-                lineNumber: 91,
+                lineNumber: 43,
                 columnNumber: 18
             }, this) : tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                     style: {
@@ -18933,7 +18927,7 @@ function WatchList() {
                             ticker_data: stockData[ticker_name] || null
                         }, void 0, false, {
                             fileName: "src/WatchList.js",
-                            lineNumber: 95,
+                            lineNumber: 47,
                             columnNumber: 29
                         }, this),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -18943,23 +18937,23 @@ function WatchList() {
                             children: "x"
                         }, void 0, false, {
                             fileName: "src/WatchList.js",
-                            lineNumber: 96,
+                            lineNumber: 48,
                             columnNumber: 29
                         }, this)
                     ]
                 }, ticker_name, true, {
                     fileName: "src/WatchList.js",
-                    lineNumber: 94,
+                    lineNumber: 46,
                     columnNumber: 25
                 }, this))
         ]
     }, void 0, true, {
         fileName: "src/WatchList.js",
-        lineNumber: 86,
+        lineNumber: 38,
         columnNumber: 9
     }, this);
 }
-_s(WatchList, "H46re17OnC2x2IsoieMH4Z6Vjq4=");
+_s(WatchList, "T/Pjbb3z+ejES8QYcD9CNAjQA4A=");
 _c = WatchList;
 var _c;
 $RefreshReg$(_c, "WatchList");
@@ -19269,7 +19263,7 @@ function TradePopup({ onSubmit, onClose }) {
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>onSubmit("GOOG", 10, "SELL"),
+                onClick: ()=>onSubmit("MSFT", 10, "SELL"),
                 children: "Sell 10 of MSFT"
             }, void 0, false, {
                 fileName: "src/TradePopup.js",

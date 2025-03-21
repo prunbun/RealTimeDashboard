@@ -39,10 +39,16 @@ class QuotesWebsocketServer(ConsumerRedisClient):
             print('_broadcast_message try-catch', e)
         
     async def __sendToTickerSubscribers(self, message, ticker):
-        await asyncio.gather(*(client.send_text(json.dumps(message)) for client in self.ticker_subscribers[ticker]))
+        await asyncio.gather(*(self.__attempt_send(client, message) for client in self.ticker_subscribers[ticker]))
 
     async def __sendToGeneralSubscribers(self, message):
-        await asyncio.gather(*(client.send_text(json.dumps(message)) for client in self.all_quotes_subscribers))
+        await asyncio.gather(*(self.__attempt_send(client, message) for client in self.all_quotes_subscribers))
+
+    async def __attempt_send(self, client, message):
+        try:
+            await client.send_text(json.dumps(message))
+        except Exception:
+            self.disconnect(client)
 
     def subscribe_ticker(self, websocket, ticker):
         self.ticker_subscribers[ticker].add(websocket)
