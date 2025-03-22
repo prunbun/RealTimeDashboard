@@ -114,3 +114,8 @@ user and trading account tables
   - allow certain origins, methods, and headers
 - make post request using a dict with JSON.stringify, then do fetch with the method name, header, and body fields
 - use pydantic to specify request type
+
+<br>
+
+- have account overview recompute each time accountData, positions, or stockData changes
+- need to add additional verification on frontend and server that data structure / format is being checked for nullvalues etc. (esp on server-side for security)

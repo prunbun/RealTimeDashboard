@@ -8,14 +8,16 @@ export function AccountOverview({accountData, positions, stockData}) {
     useEffect(() => {
         let liquidity = 0;
 
-        if (accountData !== null && positions !== null) {
+        if (accountData && positions && stockData) {
 
             for (const ticker in positions) {
-                const {qty, data} = positions[ticker] || {};
-                const price_data = stockData?.[ticker] ?? data;
+                const {qty, data} = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
+                if (qty === undefined || !data) continue;
 
-                if (qty > 0) {
-                    // we have to sell here, so we use bid price
+                const price_data = stockData[ticker] ?? data;
+                if (!stockInfo) continue;
+
+                if (qty > 0) { // we have to sell here, so we use bid price
                     liquidity += qty * (price_data.bid_price)
                 } else {
                     liquidity += qty * (price_data.ask_price)
