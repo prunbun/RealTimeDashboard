@@ -17,6 +17,11 @@ SELECT * FROM user_positions
 WHERE user_id = %s AND ticker = %s
 """
 
+ALL_POS_SQL = """
+SELECT * FROM user_positions
+WHERE user_id = (SELECT id FROM user_info WHERE username = %s)
+"""
+
 INSERT_POS_SQL = """
 INSERT INTO user_positions (user_id, ticker, qty, total_value)
 VALUES (%s, %s, %s, %s)
@@ -188,6 +193,24 @@ class AccountManager:
         except Exception as e:
             print(e)
             return {'message': "Error resetting account"}
+        
+    def get_positions(self, username: str):
+        '''
+        get the rows with positions available
+        format them into ticker:qty dict
+        return the dict
+        '''
+
+        with psycopg2.connect(**self.db_config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(ALL_POS_SQL, (username,))
+                result = cur.fetchall()
+
+                positions = {}
+                for record in result:
+                    positions[record[2]] = {'qty': int(record[3]), 'data': self.redis_client.getFromCache(record[2])}
+
+                return positions
                 
 
 '''
@@ -216,8 +239,12 @@ def get_account_details(username: str):
     del account_details['user_id']
     return account_details
 
+@app.get("/positions/{username}")
+def get_user_positions(username: str):
+    return manager.get_positions(username)
+
 @app.post("/trade")
-def placeTrade(request: TradeRequest):
+def place_trade(request: TradeRequest):
     print(request)
     return manager.place_trade(request=request)
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { WatchList } from "./WatchList";
 import { Portfolio } from "./Portfolio";
+import chipmunk from "./images/chipmunk.jpg";
 
 export function App() {
 
@@ -47,6 +48,7 @@ export function App() {
 
     return (
         <div style={{ fontFamily: "Arial, sans-serif", textAlign: "center", marginTop: "50px" }}>
+            <img src={chipmunk} alt="company logo" style={{ width: '400px', height: 'auto' }} />
             <h1>Real-Time Stock Data</h1>
             <WatchList stockData={stockData} />
             <h1>Trading Simulator</h1> 
