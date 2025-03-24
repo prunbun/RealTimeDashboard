@@ -159,7 +159,7 @@ class AccountManager:
 
         ticker_data = self.redis_client.getFromCache(ticker)
         bid_price, ask_price = float(ticker_data['bid_price']), float(ticker_data['ask_price'])
-        print(ticker, bid_price, ask_price)
+
         if bid_price <= 0 or ask_price <= 0:
             return {'message': f"Error placing trade. Instrument is unavailable at the moment!"}
 

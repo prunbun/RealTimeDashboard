@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { WatchListItem } from "./WatchListItem";
+import { AVAILABLE_TICKERS } from "./App";
 
 export function WatchList({stockData}) {
-    const AVAILABLE_TICKERS = new Set(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']);
     const [tickers, setTickers] = useState([]);
     
     useEffect(() => {

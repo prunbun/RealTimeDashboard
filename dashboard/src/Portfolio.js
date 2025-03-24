@@ -15,9 +15,9 @@ export function AccountOverview({accountData, positions, stockData}) {
                 if (qty === undefined || !data) continue;
 
                 const price_data = stockData[ticker] ?? data;
-                if (!stockInfo) continue;
+                if (!price_data) continue;
 
-                if (qty > 0) { // we have to sell here, so we use bid price
+                if (qty > 0) {  // we have to sell here, so we use bid price
                     liquidity += qty * (price_data.bid_price)
                 } else {
                     liquidity += qty * (price_data.ask_price)

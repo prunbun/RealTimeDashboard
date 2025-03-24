@@ -3,6 +3,8 @@ import { WatchList } from "./WatchList";
 import { Portfolio } from "./Portfolio";
 import chipmunk from "./images/chipmunk.jpg";
 
+export const AVAILABLE_TICKERS = new Set(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']);
+
 export function App() {
 
     const socket = useRef(null)

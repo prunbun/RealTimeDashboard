@@ -18565,6 +18565,7 @@ $parcel$ReactRefreshHelpers$f00f.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AVAILABLE_TICKERS", ()=>AVAILABLE_TICKERS);
 parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
@@ -18573,6 +18574,16 @@ var _portfolio = require("./Portfolio");
 var _chipmunkJpg = require("./images/chipmunk.jpg");
 var _chipmunkJpgDefault = parcelHelpers.interopDefault(_chipmunkJpg);
 var _s = $RefreshSig$();
+const AVAILABLE_TICKERS = new Set([
+    'AAPL',
+    'AMZN',
+    'MSFT',
+    'NFLX',
+    'GOOG',
+    'DDOG',
+    'NVDA',
+    'AMD'
+]);
 function App() {
     _s();
     const socket = (0, _react.useRef)(null);
@@ -18627,41 +18638,41 @@ function App() {
                 }
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 51,
+                lineNumber: 53,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
                 children: "Real-Time Stock Data"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 52,
+                lineNumber: 54,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {
                 stockData: stockData
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 53,
+                lineNumber: 55,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
                 children: "Trading Simulator"
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 54,
+                lineNumber: 56,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {
                 stockData: stockData
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 55,
+                lineNumber: 57,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 50,
+        lineNumber: 52,
         columnNumber: 9
     }, this);
 }
@@ -18863,19 +18874,10 @@ parcelHelpers.export(exports, "WatchList", ()=>WatchList);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _watchListItem = require("./WatchListItem");
+var _app = require("./App");
 var _s = $RefreshSig$();
 function WatchList({ stockData }) {
     _s();
-    const AVAILABLE_TICKERS = new Set([
-        'AAPL',
-        'AMZN',
-        'MSFT',
-        'NFLX',
-        'GOOG',
-        'DDOG',
-        'NVDA',
-        'AMD'
-    ]);
     const [tickers, setTickers] = (0, _react.useState)([]);
     (0, _react.useEffect)(()=>{
         try {
@@ -18890,7 +18892,7 @@ function WatchList({ stockData }) {
         // get a ticker from the user
         const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
         // append that to the list
-        if (new_ticker && AVAILABLE_TICKERS.has(new_ticker) && !tickers.includes(new_ticker)) {
+        if (new_ticker && (0, _app.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
             updated_tickers = [
                 ...tickers,
                 new_ticker
@@ -18979,7 +18981,7 @@ $RefreshReg$(_c, "WatchList");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq","./WatchListItem":"aP8j9"}],"aP8j9":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq","./WatchListItem":"aP8j9","./App":"2kQhy"}],"aP8j9":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$7cc3 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -19076,11 +19078,12 @@ function AccountOverview({ accountData, positions, stockData }) {
     const [netLiquidity, setNetLiquidity] = (0, _react.useState)(0);
     (0, _react.useEffect)(()=>{
         let liquidity = 0;
-        if (accountData !== null && positions !== null) for(const ticker in positions){
-            const { qty, data } = positions[ticker] || {};
-            const price_data = stockData?.[ticker] ?? data;
-            if (qty > 0) // we have to sell here, so we use bid price
-            liquidity += qty * price_data.bid_price;
+        if (accountData && positions && stockData) for(const ticker in positions){
+            const { qty, data } = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
+            if (qty === undefined || !data) continue;
+            const price_data = stockData[ticker] ?? data;
+            if (!price_data) continue;
+            if (qty > 0) liquidity += qty * price_data.bid_price;
             else liquidity += qty * price_data.ask_price;
         }
         setNetLiquidity((liquidity + accountData?.available_cash) ?? 0);
@@ -19098,48 +19101,10 @@ function AccountOverview({ accountData, positions, stockData }) {
                         children: "Account ID: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
-                        lineNumber: 33,
-                        columnNumber: 17
-                    }, this),
-                    accountData.account_id,
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 33,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Net Liquidity: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
-                        lineNumber: 34,
-                        columnNumber: 17
-                    }, this),
-                    "$",
-                    netLiquidity.toFixed(2),
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 34,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Available Cash: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
                         lineNumber: 35,
                         columnNumber: 17
                     }, this),
-                    "$",
-                    accountData.available_cash.toFixed(2),
+                    accountData.account_id,
                     " "
                 ]
             }, void 0, true, {
@@ -19151,10 +19116,48 @@ function AccountOverview({ accountData, positions, stockData }) {
                 children: [
                     " ",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Net Profit: "
+                        children: "Net Liquidity: "
                     }, void 0, false, {
                         fileName: "src/Portfolio.js",
                         lineNumber: 36,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    netLiquidity.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 36,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Available Cash: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 37,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.available_cash.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/Portfolio.js",
+                lineNumber: 37,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Net Profit: "
+                    }, void 0, false, {
+                        fileName: "src/Portfolio.js",
+                        lineNumber: 38,
                         columnNumber: 17
                     }, this),
                     "$",
@@ -19163,19 +19166,19 @@ function AccountOverview({ accountData, positions, stockData }) {
                 ]
             }, void 0, true, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 36,
+                lineNumber: 38,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/Portfolio.js",
-        lineNumber: 32,
+        lineNumber: 34,
         columnNumber: 13
     }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: "Loading account details..."
     }, void 0, false, {
         fileName: "src/Portfolio.js",
-        lineNumber: 39,
+        lineNumber: 41,
         columnNumber: 13
     }, this);
 }
@@ -19238,7 +19241,7 @@ function Portfolio({ stockData }) {
                 stockData: stockData
             }, void 0, false, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 120,
+                lineNumber: 122,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -19246,7 +19249,7 @@ function Portfolio({ stockData }) {
                 children: "RESET ACCOUNT"
             }, void 0, false, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 121,
+                lineNumber: 123,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -19254,7 +19257,7 @@ function Portfolio({ stockData }) {
                 children: "TRADE"
             }, void 0, false, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 122,
+                lineNumber: 124,
                 columnNumber: 13
             }, this),
             tradePopupOpen && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _tradePopup.TradePopup), {
@@ -19262,13 +19265,13 @@ function Portfolio({ stockData }) {
                 onClose: ()=>setTradePopupOpen(false)
             }, void 0, false, {
                 fileName: "src/Portfolio.js",
-                lineNumber: 123,
+                lineNumber: 125,
                 columnNumber: 33
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/Portfolio.js",
-        lineNumber: 119,
+        lineNumber: 121,
         columnNumber: 9
     }, this);
 }
@@ -19294,30 +19297,79 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TradePopup", ()=>TradePopup);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _app = require("./App");
+var _s = $RefreshSig$();
 function TradePopup({ onSubmit, onClose }) {
+    _s();
+    const [ticker, setTicker] = (0, _react.useState)("");
+    const [qty, setQty] = (0, _react.useState)(0);
+    const [side, setSide] = (0, _react.useState)("");
+    const submitForm = ()=>{
+        // validate the ticker
+        // try to cast the qty into a number
+        // place the trade
+        const ticker_input = ticker.toUpperCase().trim();
+        if (!ticker_input || !(0, _app.AVAILABLE_TICKERS).has(ticker_input)) return;
+        if (qty === 0) return;
+        if (side !== "BUY" && side !== "SELL") return;
+        onSubmit(ticker, qty, side);
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
                 children: "Trade Portal"
             }, void 0, false, {
                 fileName: "src/TradePopup.js",
-                lineNumber: 6,
+                lineNumber: 34,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>onSubmit("MSFT", 10, "BUY"),
-                children: "Buy 10 of MSFT"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "ticker_input",
+                onChange: (event)=>setTicker(event.target.value)
             }, void 0, false, {
                 fileName: "src/TradePopup.js",
-                lineNumber: 7,
+                lineNumber: 35,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>onSubmit("MSFT", 10, "SELL"),
-                children: "Sell 10 of MSFT"
+            "Ticker: ",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "qty_input",
+                type: "number",
+                onChange: (e)=>setQty(Number(e.target.value))
             }, void 0, false, {
                 fileName: "src/TradePopup.js",
-                lineNumber: 8,
+                lineNumber: 36,
+                columnNumber: 21
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "side_input",
+                type: "radio",
+                value: "BUY",
+                onChange: ()=>setSide("BUY")
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 37,
+                columnNumber: 13
+            }, this),
+            " BUY",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "side_input",
+                type: "radio",
+                value: "SELL",
+                onChange: ()=>setSide("SELL")
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 38,
+                columnNumber: 13
+            }, this),
+            " SELL",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>submitForm(),
+                children: "Place Trade"
+            }, void 0, false, {
+                fileName: "src/TradePopup.js",
+                lineNumber: 41,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -19325,16 +19377,17 @@ function TradePopup({ onSubmit, onClose }) {
                 children: "Close"
             }, void 0, false, {
                 fileName: "src/TradePopup.js",
-                lineNumber: 9,
+                lineNumber: 42,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/TradePopup.js",
-        lineNumber: 5,
+        lineNumber: 33,
         columnNumber: 9
     }, this);
 }
+_s(TradePopup, "vesGCAycnNGx4QrjyghlZ0qFnYs=");
 _c = TradePopup;
 var _c;
 $RefreshReg$(_c, "TradePopup");
@@ -19344,7 +19397,7 @@ $RefreshReg$(_c, "TradePopup");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"hR4aU":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./App":"2kQhy","react":"21dqq"}],"hR4aU":[function(require,module,exports,__globalThis) {
 module.exports = require("479c8e8258dd1cc7").getBundleURL('bLxZJ') + "chipmunk.7b849015.jpg" + "?" + Date.now();
 
 },{"479c8e8258dd1cc7":"lgJ39"}],"lgJ39":[function(require,module,exports,__globalThis) {
