@@ -1,0 +1,35 @@
+/* C5005F hot pink color */
+
+.app {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main1 {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    background-image: linear-gradient(to bottom right, #c5005f71 25%, rgba(255, 166, 0, 0.841));
+    height: 600px;
+    padding-top: 50px;
+}
+
+.watchlist {
+    width: 50%;
+    margin-inline: 20px;
+    border-radius: 10;
+    padding: 30px;
+    height: 80%;
+    background-color: white;
+    box-shadow: 0px /*l-r*/ 0px /*up-down*/ 10px /*blur*/ 2px/*spread*/ rgba(0, 0, 0, 0.2 /*opacity*/);
+}
+
+.account_overview {
+    width: 50%;
+    margin-inline: 20px;
+    border-radius: 10;
+    padding: 30px;
+    height: 80%;
+    background-color: white;
+    box-shadow: 0px /*l-r*/ 0px /*up-down*/ 10px /*blur*/ 2px/*spread*/ rgba(0, 0, 0, 0.2 /*opacity*/);
+}

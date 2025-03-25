@@ -119,3 +119,17 @@ user and trading account tables
 
 - have account overview recompute each time accountData, positions, or stockData changes
 - need to add additional verification on frontend and server that data structure / format is being checked for nullvalues etc. (esp on server-side for security)
+
+<br>
+css styling
+
+- using css modules
+- montserrat font, coming up with designs and features I want to build
+- feature for limit orders and outstanding orders
+- candlestick charting + moving avg + volume
+- current positions
+- some risk metrics, idk what any of these are: VaR, volatility, Sharpe ratio
+- system metrics: db / pipeline latency…?
+- emails / notifications when orders are executed or current portfolio losses are > threshold
+- some form of basic anomaly detection for prices
+- authentication

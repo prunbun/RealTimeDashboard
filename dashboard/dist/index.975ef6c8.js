@@ -18566,13 +18566,17 @@ try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AVAILABLE_TICKERS", ()=>AVAILABLE_TICKERS);
+parcelHelpers.export(exports, "USERNAME", ()=>USERNAME);
 parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _watchList = require("./WatchList");
-var _portfolio = require("./Portfolio");
+var _watchList = require("./components/WatchList");
+var _portfolio = require("./components/portfolio/Portfolio");
+var _navBar = require("./components/NavBar");
 var _chipmunkJpg = require("./images/chipmunk.jpg");
 var _chipmunkJpgDefault = parcelHelpers.interopDefault(_chipmunkJpg);
+var _appModuleCss = require("./style_modules/App.module.css");
+var _appModuleCssDefault = parcelHelpers.interopDefault(_appModuleCss);
 var _s = $RefreshSig$();
 const AVAILABLE_TICKERS = new Set([
     'AAPL',
@@ -18584,6 +18588,7 @@ const AVAILABLE_TICKERS = new Set([
     'NVDA',
     'AMD'
 ]);
+const USERNAME = "honeykiwi";
 function App() {
     _s();
     const socket = (0, _react.useRef)(null);
@@ -18623,48 +18628,46 @@ function App() {
         };
     }, []);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: {
-            fontFamily: "Arial, sans-serif",
-            textAlign: "center",
-            marginTop: "50px"
-        },
+        className: (0, _appModuleCssDefault.default).app,
         children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                src: (0, _chipmunkJpgDefault.default),
-                alt: "company logo",
-                style: {
-                    width: '400px',
-                    height: 'auto'
-                }
-            }, void 0, false, {
-                fileName: "src/App.js",
-                lineNumber: 53,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Real-Time Stock Data"
-            }, void 0, false, {
-                fileName: "src/App.js",
-                lineNumber: 54,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {
-                stockData: stockData
-            }, void 0, false, {
-                fileName: "src/App.js",
-                lineNumber: 55,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Trading Simulator"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _navBar.NavBar), {}, void 0, false, {
                 fileName: "src/App.js",
                 lineNumber: 56,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {
-                stockData: stockData
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: (0, _appModuleCssDefault.default).main1,
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: (0, _appModuleCssDefault.default).watchlist,
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchList.WatchList), {
+                            stockData: stockData
+                        }, void 0, false, {
+                            fileName: "src/App.js",
+                            lineNumber: 59,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "src/App.js",
+                        lineNumber: 58,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: (0, _appModuleCssDefault.default).account_overview,
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolio.Portfolio), {
+                            stockData: stockData
+                        }, void 0, false, {
+                            fileName: "src/App.js",
+                            lineNumber: 62,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "src/App.js",
+                        lineNumber: 61,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "src/App.js",
                 lineNumber: 57,
                 columnNumber: 13
@@ -18672,7 +18675,7 @@ function App() {
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 52,
+        lineNumber: 55,
         columnNumber: 9
     }, this);
 }
@@ -18686,7 +18689,199 @@ $RefreshReg$(_c, "App");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./WatchList":"9Fqj5","./Portfolio":"jGwKc","./images/chipmunk.jpg":"hR4aU"}],"gkKU3":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./components/WatchList":"4Ycxi","./images/chipmunk.jpg":"hR4aU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./components/NavBar":"k61en","./style_modules/App.module.css":"7BVxe","./components/portfolio/Portfolio":"l09fR"}],"4Ycxi":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$805c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$805c.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WatchList", ()=>WatchList);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _watchListItem = require("./WatchListItem");
+var _app = require("../App");
+var _s = $RefreshSig$();
+function WatchList({ stockData }) {
+    _s();
+    const [tickers, setTickers] = (0, _react.useState)([]);
+    (0, _react.useEffect)(()=>{
+        try {
+            const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
+            setTickers(stored_tickers);
+        } catch (error) {
+            console.error("Error parsing data from localStorage:", error);
+        }
+    }, []);
+    // func that adds a ticker
+    const add_ticker = ()=>{
+        // get a ticker from the user
+        const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
+        // append that to the list
+        if (new_ticker && (0, _app.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
+            updated_tickers = [
+                ...tickers,
+                new_ticker
+            ];
+            localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers));
+            setTickers(updated_tickers);
+        }
+    };
+    const remove_ticker = (ticker_to_del)=>{
+        const updated_tickers1 = tickers.filter((t)=>t !== ticker_to_del);
+        localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers1));
+        setTickers(updated_tickers1);
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "WatchList"
+            }, void 0, false, {
+                fileName: "src/components/WatchList.js",
+                lineNumber: 39,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: add_ticker,
+                children: " Add Ticker "
+            }, void 0, false, {
+                fileName: "src/components/WatchList.js",
+                lineNumber: 40,
+                columnNumber: 13
+            }, this),
+            tickers.length == 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "Add tickers to see live data!"
+            }, void 0, false, {
+                fileName: "src/components/WatchList.js",
+                lineNumber: 43,
+                columnNumber: 18
+            }, this) : tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    style: {
+                        display: 'flex',
+                        gap: '10px',
+                        justifyContent: 'center'
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                            ticker_data: stockData[ticker_name] || null
+                        }, void 0, false, {
+                            fileName: "src/components/WatchList.js",
+                            lineNumber: 47,
+                            columnNumber: 29
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            onClick: ()=>{
+                                remove_ticker(ticker_name);
+                            },
+                            children: "x"
+                        }, void 0, false, {
+                            fileName: "src/components/WatchList.js",
+                            lineNumber: 48,
+                            columnNumber: 29
+                        }, this)
+                    ]
+                }, ticker_name, true, {
+                    fileName: "src/components/WatchList.js",
+                    lineNumber: 46,
+                    columnNumber: 25
+                }, this))
+        ]
+    }, void 0, true, {
+        fileName: "src/components/WatchList.js",
+        lineNumber: 38,
+        columnNumber: 9
+    }, this);
+}
+_s(WatchList, "T/Pjbb3z+ejES8QYcD9CNAjQA4A=");
+_c = WatchList;
+var _c;
+$RefreshReg$(_c, "WatchList");
+
+  $parcel$ReactRefreshHelpers$805c.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./WatchListItem":"ih5Rj","../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"ih5Rj":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$6f3d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$6f3d.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// NOTE, we are getting params as an object, which we must unpack using the object positional args
+parcelHelpers.export(exports, "WatchListItem", ()=>WatchListItem);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+function WatchListItem({ ticker_data }) {
+    return ticker_data ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: "Ticker:"
+            }, void 0, false, {
+                fileName: "src/components/WatchListItem.js",
+                lineNumber: 9,
+                columnNumber: 17
+            }, this),
+            " ",
+            ticker_data.ticker,
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Bid:"
+            }, void 0, false, {
+                fileName: "src/components/WatchListItem.js",
+                lineNumber: 10,
+                columnNumber: 17
+            }, this),
+            " $",
+            ticker_data.bid_price.toFixed(2),
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Ask:"
+            }, void 0, false, {
+                fileName: "src/components/WatchListItem.js",
+                lineNumber: 11,
+                columnNumber: 17
+            }, this),
+            " $",
+            ticker_data.ask_price.toFixed(2),
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Timestamp:"
+            }, void 0, false, {
+                fileName: "src/components/WatchListItem.js",
+                lineNumber: 12,
+                columnNumber: 17
+            }, this),
+            " ",
+            ticker_data.timestamp
+        ]
+    }, void 0, true, {
+        fileName: "src/components/WatchListItem.js",
+        lineNumber: 8,
+        columnNumber: 13
+    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: '"Waiting for updates..."'
+    }, void 0, false, {
+        fileName: "src/components/WatchListItem.js",
+        lineNumber: 15,
+        columnNumber: 13
+    }, this);
+}
+_c = WatchListItem;
+var _c;
+$RefreshReg$(_c, "WatchListItem");
+
+  $parcel$ReactRefreshHelpers$6f3d.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"gkKU3":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -18861,543 +19056,7 @@ function registerExportsForReactRefresh(module1) {
 },{"7422ead32dcc1e6b":"786KC","630b62916b1ae0e7":"4SQxb"}],"4SQxb":[function(require,module,exports,__globalThis) {
 module.exports = JSON.parse("{\"name\":\"react-refresh\",\"description\":\"React is a JavaScript library for building user interfaces.\",\"keywords\":[\"react\"],\"version\":\"0.14.2\",\"homepage\":\"https://reactjs.org/\",\"bugs\":\"https://github.com/facebook/react/issues\",\"license\":\"MIT\",\"files\":[\"LICENSE\",\"README.md\",\"babel.js\",\"runtime.js\",\"cjs/\",\"umd/\"],\"main\":\"runtime.js\",\"exports\":{\".\":\"./runtime.js\",\"./runtime\":\"./runtime.js\",\"./babel\":\"./babel.js\",\"./package.json\":\"./package.json\"},\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/facebook/react.git\",\"directory\":\"packages/react\"},\"engines\":{\"node\":\">=0.10.0\"},\"devDependencies\":{\"react-16-8\":\"npm:react@16.8.0\",\"react-dom-16-8\":\"npm:react-dom@16.8.0\",\"scheduler-0-13\":\"npm:scheduler@0.13.0\"}}");
 
-},{}],"9Fqj5":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$37cc = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$37cc.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "WatchList", ()=>WatchList);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _watchListItem = require("./WatchListItem");
-var _app = require("./App");
-var _s = $RefreshSig$();
-function WatchList({ stockData }) {
-    _s();
-    const [tickers, setTickers] = (0, _react.useState)([]);
-    (0, _react.useEffect)(()=>{
-        try {
-            const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
-            setTickers(stored_tickers);
-        } catch (error) {
-            console.error("Error parsing data from localStorage:", error);
-        }
-    }, []);
-    // func that adds a ticker
-    const add_ticker = ()=>{
-        // get a ticker from the user
-        const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
-        // append that to the list
-        if (new_ticker && (0, _app.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
-            updated_tickers = [
-                ...tickers,
-                new_ticker
-            ];
-            localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers));
-            setTickers(updated_tickers);
-        }
-    };
-    const remove_ticker = (ticker_to_del)=>{
-        const updated_tickers1 = tickers.filter((t)=>t !== ticker_to_del);
-        localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers1));
-        setTickers(updated_tickers1);
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: {
-            fontFamily: "Arial, sans-serif",
-            textAlign: "center",
-            marginTop: "50px"
-        },
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "WatchList"
-            }, void 0, false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 39,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: add_ticker,
-                children: " Add Ticker "
-            }, void 0, false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 40,
-                columnNumber: 13
-            }, this),
-            tickers.length == 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: "Add tickers to see live data!"
-            }, void 0, false, {
-                fileName: "src/WatchList.js",
-                lineNumber: 43,
-                columnNumber: 18
-            }, this) : tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                    style: {
-                        display: 'flex',
-                        gap: '10px',
-                        justifyContent: 'center'
-                    },
-                    children: [
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                            ticker_data: stockData[ticker_name] || null
-                        }, void 0, false, {
-                            fileName: "src/WatchList.js",
-                            lineNumber: 47,
-                            columnNumber: 29
-                        }, this),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                            onClick: ()=>{
-                                remove_ticker(ticker_name);
-                            },
-                            children: "x"
-                        }, void 0, false, {
-                            fileName: "src/WatchList.js",
-                            lineNumber: 48,
-                            columnNumber: 29
-                        }, this)
-                    ]
-                }, ticker_name, true, {
-                    fileName: "src/WatchList.js",
-                    lineNumber: 46,
-                    columnNumber: 25
-                }, this))
-        ]
-    }, void 0, true, {
-        fileName: "src/WatchList.js",
-        lineNumber: 38,
-        columnNumber: 9
-    }, this);
-}
-_s(WatchList, "T/Pjbb3z+ejES8QYcD9CNAjQA4A=");
-_c = WatchList;
-var _c;
-$RefreshReg$(_c, "WatchList");
-
-  $parcel$ReactRefreshHelpers$37cc.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq","./WatchListItem":"aP8j9","./App":"2kQhy"}],"aP8j9":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$7cc3 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$7cc3.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-// NOTE, we are getting params as an object, which we must unpack using the object positional args
-parcelHelpers.export(exports, "WatchListItem", ()=>WatchListItem);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-function WatchListItem({ ticker_data }) {
-    return ticker_data ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: "Ticker:"
-            }, void 0, false, {
-                fileName: "src/WatchListItem.js",
-                lineNumber: 9,
-                columnNumber: 17
-            }, this),
-            " ",
-            ticker_data.ticker,
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Bid:"
-            }, void 0, false, {
-                fileName: "src/WatchListItem.js",
-                lineNumber: 10,
-                columnNumber: 17
-            }, this),
-            " $",
-            ticker_data.bid_price.toFixed(2),
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Ask:"
-            }, void 0, false, {
-                fileName: "src/WatchListItem.js",
-                lineNumber: 11,
-                columnNumber: 17
-            }, this),
-            " $",
-            ticker_data.ask_price.toFixed(2),
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Timestamp:"
-            }, void 0, false, {
-                fileName: "src/WatchListItem.js",
-                lineNumber: 12,
-                columnNumber: 17
-            }, this),
-            " ",
-            ticker_data.timestamp
-        ]
-    }, void 0, true, {
-        fileName: "src/WatchListItem.js",
-        lineNumber: 8,
-        columnNumber: 13
-    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-        children: '"Waiting for updates..."'
-    }, void 0, false, {
-        fileName: "src/WatchListItem.js",
-        lineNumber: 15,
-        columnNumber: 13
-    }, this);
-}
-_c = WatchListItem;
-var _c;
-$RefreshReg$(_c, "WatchListItem");
-
-  $parcel$ReactRefreshHelpers$7cc3.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"jGwKc":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$7702 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$7702.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AccountOverview", ()=>AccountOverview);
-parcelHelpers.export(exports, "Portfolio", ()=>Portfolio);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _tradePopup = require("./TradePopup");
-var _s = $RefreshSig$(), _s1 = $RefreshSig$();
-function AccountOverview({ accountData, positions, stockData }) {
-    _s();
-    const [netLiquidity, setNetLiquidity] = (0, _react.useState)(0);
-    (0, _react.useEffect)(()=>{
-        let liquidity = 0;
-        if (accountData && positions && stockData) for(const ticker in positions){
-            const { qty, data } = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
-            if (qty === undefined || !data) continue;
-            const price_data = stockData[ticker] ?? data;
-            if (!price_data) continue;
-            if (qty > 0) liquidity += qty * price_data.bid_price;
-            else liquidity += qty * price_data.ask_price;
-        }
-        setNetLiquidity((liquidity + accountData?.available_cash) ?? 0);
-    }, [
-        accountData,
-        positions,
-        stockData
-    ]);
-    return accountData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Account ID: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
-                        lineNumber: 35,
-                        columnNumber: 17
-                    }, this),
-                    accountData.account_id,
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 35,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Net Liquidity: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
-                        lineNumber: 36,
-                        columnNumber: 17
-                    }, this),
-                    "$",
-                    netLiquidity.toFixed(2),
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 36,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Available Cash: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
-                        lineNumber: 37,
-                        columnNumber: 17
-                    }, this),
-                    "$",
-                    accountData.available_cash.toFixed(2),
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 37,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    " ",
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Net Profit: "
-                    }, void 0, false, {
-                        fileName: "src/Portfolio.js",
-                        lineNumber: 38,
-                        columnNumber: 17
-                    }, this),
-                    "$",
-                    accountData.net_profit.toFixed(2),
-                    " "
-                ]
-            }, void 0, true, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 38,
-                columnNumber: 13
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/Portfolio.js",
-        lineNumber: 34,
-        columnNumber: 13
-    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-        children: "Loading account details..."
-    }, void 0, false, {
-        fileName: "src/Portfolio.js",
-        lineNumber: 41,
-        columnNumber: 13
-    }, this);
-}
-_s(AccountOverview, "n4fnoSOox7b7vzUtQ1rFbzdJoho=");
-_c = AccountOverview;
-function Portfolio({ stockData }) {
-    _s1();
-    const USERNAME = "honeykiwi";
-    const [accountData, setAccountData] = (0, _react.useState)(null);
-    const [tradePopupOpen, setTradePopupOpen] = (0, _react.useState)(false);
-    const [positions, setPositions] = (0, _react.useState)({});
-    const fetchAccountData = ()=>{
-        fetch(`http://localhost:8001/account/${USERNAME}`).then((res)=>res.json()).then((res)=>{
-            console.log(res);
-            setAccountData(res);
-        }).catch((res)=>console.log(res));
-    };
-    const fetchPositions = ()=>{
-        fetch(`http://localhost:8001/positions/${USERNAME}`).then((res)=>res.json()).then((res)=>{
-            console.log("fetched positions", res);
-            setPositions(res);
-        }).catch((res)=>console.log(res));
-    };
-    (0, _react.useEffect)(()=>{
-        fetchAccountData();
-        fetchPositions();
-    }, []);
-    const resetAccount = ()=>{
-        fetch(`http://localhost:8001/reset/${USERNAME}`).then((response)=>response.json()).then((response)=>console.log(response)).then(()=>{
-            fetchAccountData();
-            fetchPositions();
-        }).catch((error)=>console.log(error));
-    };
-    const placeTrade = (ticker, qty, operation)=>{
-        const orderDetails = {
-            username: USERNAME,
-            ticker: ticker,
-            qty: qty,
-            op: operation
-        };
-        fetch('http://localhost:8001/trade', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/JSON"
-            },
-            body: JSON.stringify(orderDetails)
-        }).then((response)=>{
-            if (!response.ok) throw new Error(`Error while making the request: ${response.status}`);
-            return response.json();
-        }).then((response)=>console.log("Trade response:", response)).then(()=>{
-            fetchAccountData();
-            fetchPositions();
-        }).catch((error)=>console.error("Trade error:", error));
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(AccountOverview, {
-                accountData: accountData,
-                positions: positions,
-                stockData: stockData
-            }, void 0, false, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 122,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>resetAccount(),
-                children: "RESET ACCOUNT"
-            }, void 0, false, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 123,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>setTradePopupOpen(true),
-                children: "TRADE"
-            }, void 0, false, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 124,
-                columnNumber: 13
-            }, this),
-            tradePopupOpen && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _tradePopup.TradePopup), {
-                onSubmit: placeTrade,
-                onClose: ()=>setTradePopupOpen(false)
-            }, void 0, false, {
-                fileName: "src/Portfolio.js",
-                lineNumber: 125,
-                columnNumber: 33
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/Portfolio.js",
-        lineNumber: 121,
-        columnNumber: 9
-    }, this);
-}
-_s1(Portfolio, "aFz3pvMj9fvP19ZD58GwX3CP7kw=");
-_c1 = Portfolio;
-var _c, _c1;
-$RefreshReg$(_c, "AccountOverview");
-$RefreshReg$(_c1, "Portfolio");
-
-  $parcel$ReactRefreshHelpers$7702.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./TradePopup":"7eR4o"}],"7eR4o":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$cd62 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$cd62.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "TradePopup", ()=>TradePopup);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _app = require("./App");
-var _s = $RefreshSig$();
-function TradePopup({ onSubmit, onClose }) {
-    _s();
-    const [ticker, setTicker] = (0, _react.useState)("");
-    const [qty, setQty] = (0, _react.useState)(0);
-    const [side, setSide] = (0, _react.useState)("");
-    const submitForm = ()=>{
-        // validate the ticker
-        // try to cast the qty into a number
-        // place the trade
-        const ticker_input = ticker.toUpperCase().trim();
-        if (!ticker_input || !(0, _app.AVAILABLE_TICKERS).has(ticker_input)) return;
-        if (qty === 0) return;
-        if (side !== "BUY" && side !== "SELL") return;
-        onSubmit(ticker, qty, side);
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Trade Portal"
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 34,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "ticker_input",
-                onChange: (event)=>setTicker(event.target.value)
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 35,
-                columnNumber: 13
-            }, this),
-            "Ticker: ",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "qty_input",
-                type: "number",
-                onChange: (e)=>setQty(Number(e.target.value))
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 36,
-                columnNumber: 21
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "side_input",
-                type: "radio",
-                value: "BUY",
-                onChange: ()=>setSide("BUY")
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 37,
-                columnNumber: 13
-            }, this),
-            " BUY",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "side_input",
-                type: "radio",
-                value: "SELL",
-                onChange: ()=>setSide("SELL")
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 38,
-                columnNumber: 13
-            }, this),
-            " SELL",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: ()=>submitForm(),
-                children: "Place Trade"
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 41,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: onClose,
-                children: "Close"
-            }, void 0, false, {
-                fileName: "src/TradePopup.js",
-                lineNumber: 42,
-                columnNumber: 13
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/TradePopup.js",
-        lineNumber: 33,
-        columnNumber: 9
-    }, this);
-}
-_s(TradePopup, "vesGCAycnNGx4QrjyghlZ0qFnYs=");
-_c = TradePopup;
-var _c;
-$RefreshReg$(_c, "TradePopup");
-
-  $parcel$ReactRefreshHelpers$cd62.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./App":"2kQhy","react":"21dqq"}],"hR4aU":[function(require,module,exports,__globalThis) {
+},{}],"hR4aU":[function(require,module,exports,__globalThis) {
 module.exports = require("479c8e8258dd1cc7").getBundleURL('bLxZJ') + "chipmunk.7b849015.jpg" + "?" + Date.now();
 
 },{"479c8e8258dd1cc7":"lgJ39"}],"lgJ39":[function(require,module,exports,__globalThis) {
@@ -19435,6 +19094,644 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
+},{}],"k61en":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$b257 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$b257.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "NavBar", ()=>NavBar);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _navBarModuleCss = require("../style_modules/NavBar.module.css");
+var _navBarModuleCssDefault = parcelHelpers.interopDefault(_navBarModuleCss);
+var _chipmunkCompressedNoBgHotpinkSvg = require("../images/chipmunk_compressed_no_bg_hotpink.svg");
+var _chipmunkCompressedNoBgHotpinkSvgDefault = parcelHelpers.interopDefault(_chipmunkCompressedNoBgHotpinkSvg);
+var _app = require("../App");
+function NavBar() {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: (0, _navBarModuleCssDefault.default).navbar,
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                src: (0, _chipmunkCompressedNoBgHotpinkSvgDefault.default),
+                alt: "company logo",
+                className: (0, _navBarModuleCssDefault.default).logo
+            }, void 0, false, {
+                fileName: "src/components/NavBar.js",
+                lineNumber: 9,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                className: (0, _navBarModuleCssDefault.default).title,
+                children: "Real Time Trading Dashboard"
+            }, void 0, false, {
+                fileName: "src/components/NavBar.js",
+                lineNumber: 10,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                className: (0, _navBarModuleCssDefault.default).account_login,
+                children: [
+                    "Hello, ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        className: (0, _navBarModuleCssDefault.default).username,
+                        children: (0, _app.USERNAME)
+                    }, void 0, false, {
+                        fileName: "src/components/NavBar.js",
+                        lineNumber: 11,
+                        columnNumber: 59
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/NavBar.js",
+                lineNumber: 11,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/NavBar.js",
+        lineNumber: 8,
+        columnNumber: 9
+    }, this);
+}
+_c = NavBar;
+var _c;
+$RefreshReg$(_c, "NavBar");
+
+  $parcel$ReactRefreshHelpers$b257.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../style_modules/NavBar.module.css":"h9lu8","../App":"2kQhy","../images/chipmunk_compressed_no_bg_hotpink.svg":"71wOB"}],"h9lu8":[function(require,module,exports,__globalThis) {
+module.exports["account_login"] = `X_vxzq_account_login`;
+module.exports["logo"] = `X_vxzq_logo`;
+module.exports["navbar"] = `X_vxzq_navbar`;
+module.exports["title"] = `X_vxzq_title`;
+module.exports["username"] = `X_vxzq_username`;
+
+},{}],"71wOB":[function(require,module,exports,__globalThis) {
+module.exports = require("a6bf3cedeec68110").getBundleURL('bLxZJ') + "chipmunk_compressed_no_bg_hotpink.76a9b1a4.svg" + "?" + Date.now();
+
+},{"a6bf3cedeec68110":"lgJ39"}],"7BVxe":[function(require,module,exports,__globalThis) {
+module.exports["account_overview"] = `IGrRxq_account_overview`;
+module.exports["app"] = `IGrRxq_app`;
+module.exports["main1"] = `IGrRxq_main1`;
+module.exports["watchlist"] = `IGrRxq_watchlist`;
+
+},{}],"l09fR":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$e416 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$e416.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Portfolio", ()=>Portfolio);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _tradePopup = require("./TradePopup");
+var _app = require("../../App");
+var _accountOverview = require("./AccountOverview");
+var _currentPositions = require("./CurrentPositions");
+var _s = $RefreshSig$();
+function Portfolio({ stockData }) {
+    _s();
+    const [accountData, setAccountData] = (0, _react.useState)(null);
+    const [tradePopupOpen, setTradePopupOpen] = (0, _react.useState)(false);
+    const [positions, setPositions] = (0, _react.useState)({});
+    const fetchAccountData = ()=>{
+        fetch(`http://localhost:8001/account/${(0, _app.USERNAME)}`).then((res)=>res.json()).then((res)=>{
+            console.log(res);
+            setAccountData(res);
+        }).catch((res)=>console.log(res));
+    };
+    const fetchPositions = ()=>{
+        fetch(`http://localhost:8001/positions/${(0, _app.USERNAME)}`).then((res)=>res.json()).then((res)=>{
+            console.log("fetched positions", res);
+            setPositions(res);
+        }).catch((res)=>console.log(res));
+    };
+    (0, _react.useEffect)(()=>{
+        fetchAccountData();
+        fetchPositions();
+    }, []);
+    const resetAccount = ()=>{
+        fetch(`http://localhost:8001/reset/${(0, _app.USERNAME)}`).then((response)=>response.json()).then((response)=>console.log(response)).then(()=>{
+            fetchAccountData();
+            fetchPositions();
+        }).catch((error)=>console.log(error));
+    };
+    const placeTrade = (ticker, qty, operation)=>{
+        const orderDetails = {
+            username: (0, _app.USERNAME),
+            ticker: ticker,
+            qty: qty,
+            op: operation
+        };
+        fetch('http://localhost:8001/trade', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/JSON"
+            },
+            body: JSON.stringify(orderDetails)
+        }).then((response)=>{
+            if (!response.ok) throw new Error(`Error while making the request: ${response.status}`);
+            return response.json();
+        }).then((response)=>console.log("Trade response:", response)).then(()=>{
+            fetchAccountData();
+            fetchPositions();
+        }).catch((error)=>console.error("Trade error:", error));
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _accountOverview.AccountOverview), {
+                accountData: accountData,
+                positions: positions,
+                stockData: stockData
+            }, void 0, false, {
+                fileName: "src/components/portfolio/Portfolio.js",
+                lineNumber: 82,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _currentPositions.CurrentPositions), {
+                accountData: accountData,
+                positions: positions,
+                stockData: stockData
+            }, void 0, false, {
+                fileName: "src/components/portfolio/Portfolio.js",
+                lineNumber: 83,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>resetAccount(),
+                children: "RESET ACCOUNT"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/Portfolio.js",
+                lineNumber: 84,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setTradePopupOpen(true),
+                children: "TRADE"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/Portfolio.js",
+                lineNumber: 85,
+                columnNumber: 13
+            }, this),
+            tradePopupOpen && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _tradePopup.TradePopup), {
+                onSubmit: placeTrade,
+                onClose: ()=>setTradePopupOpen(false)
+            }, void 0, false, {
+                fileName: "src/components/portfolio/Portfolio.js",
+                lineNumber: 86,
+                columnNumber: 33
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/portfolio/Portfolio.js",
+        lineNumber: 81,
+        columnNumber: 9
+    }, this);
+}
+_s(Portfolio, "aFz3pvMj9fvP19ZD58GwX3CP7kw=");
+_c = Portfolio;
+var _c;
+$RefreshReg$(_c, "Portfolio");
+
+  $parcel$ReactRefreshHelpers$e416.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./TradePopup":"g0enf","./AccountOverview":"3LWvJ","./CurrentPositions":"cAqMW"}],"g0enf":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$fe47 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$fe47.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TradePopup", ()=>TradePopup);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _app = require("../../App");
+var _s = $RefreshSig$();
+function TradePopup({ onSubmit, onClose }) {
+    _s();
+    const [ticker, setTicker] = (0, _react.useState)("");
+    const [qty, setQty] = (0, _react.useState)(0);
+    const [side, setSide] = (0, _react.useState)("");
+    const submitForm = ()=>{
+        // validate the ticker
+        // try to cast the qty into a number
+        // place the trade
+        const ticker_input = ticker.toUpperCase().trim();
+        if (!ticker_input || !(0, _app.AVAILABLE_TICKERS).has(ticker_input)) return;
+        if (qty <= 0) return;
+        if (side !== "BUY" && side !== "SELL") return;
+        onSubmit(ticker, qty, side);
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Trade Portal"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 34,
+                columnNumber: 13
+            }, this),
+            "Ticker: ",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "ticker_input",
+                onChange: (event)=>setTicker(event.target.value)
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 35,
+                columnNumber: 21
+            }, this),
+            "Qty: ",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "qty_input",
+                type: "number",
+                onChange: (e)=>setQty(Number(e.target.value))
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 36,
+                columnNumber: 18
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "side_input",
+                type: "radio",
+                value: "BUY",
+                onChange: ()=>setSide("BUY")
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 37,
+                columnNumber: 13
+            }, this),
+            " BUY",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                name: "side_input",
+                type: "radio",
+                value: "SELL",
+                onChange: ()=>setSide("SELL")
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 38,
+                columnNumber: 13
+            }, this),
+            " SELL",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>submitForm(),
+                children: "Place Trade"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 39,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: onClose,
+                children: "Close"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/TradePopup.js",
+                lineNumber: 40,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/portfolio/TradePopup.js",
+        lineNumber: 33,
+        columnNumber: 9
+    }, this);
+}
+_s(TradePopup, "vesGCAycnNGx4QrjyghlZ0qFnYs=");
+_c = TradePopup;
+var _c;
+$RefreshReg$(_c, "TradePopup");
+
+  $parcel$ReactRefreshHelpers$fe47.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"3LWvJ":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$3ed6 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$3ed6.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AccountOverview", ()=>AccountOverview);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+function AccountOverview({ accountData, positions, stockData }) {
+    _s();
+    const [netLiquidity, setNetLiquidity] = (0, _react.useState)(0);
+    (0, _react.useEffect)(()=>{
+        let liquidity = 0;
+        if (accountData && positions && stockData) for(const ticker in positions){
+            const { qty, total_value, cached_price_data } = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
+            if (!qty || !cached_price_data) continue;
+            const price_data = stockData[ticker] ?? cached_price_data;
+            if (!price_data) continue;
+            if (qty > 0) liquidity += qty * price_data.bid_price;
+            else liquidity += qty * price_data.ask_price;
+        }
+        setNetLiquidity((liquidity + accountData?.available_cash) ?? 0);
+    }, [
+        accountData,
+        positions,
+        stockData
+    ]);
+    return accountData ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Account Overview"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/AccountOverview.js",
+                lineNumber: 33,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Account ID: "
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/AccountOverview.js",
+                        lineNumber: 34,
+                        columnNumber: 17
+                    }, this),
+                    accountData.account_id,
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/components/portfolio/AccountOverview.js",
+                lineNumber: 34,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Net Liquidity: "
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/AccountOverview.js",
+                        lineNumber: 35,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    netLiquidity.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/components/portfolio/AccountOverview.js",
+                lineNumber: 35,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Available Cash: "
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/AccountOverview.js",
+                        lineNumber: 36,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.available_cash.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/components/portfolio/AccountOverview.js",
+                lineNumber: 36,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    " ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Net Profit: "
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/AccountOverview.js",
+                        lineNumber: 37,
+                        columnNumber: 17
+                    }, this),
+                    "$",
+                    accountData.net_profit.toFixed(2),
+                    " "
+                ]
+            }, void 0, true, {
+                fileName: "src/components/portfolio/AccountOverview.js",
+                lineNumber: 37,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/portfolio/AccountOverview.js",
+        lineNumber: 32,
+        columnNumber: 13
+    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: "Loading account details..."
+    }, void 0, false, {
+        fileName: "src/components/portfolio/AccountOverview.js",
+        lineNumber: 40,
+        columnNumber: 13
+    }, this);
+}
+_s(AccountOverview, "n4fnoSOox7b7vzUtQ1rFbzdJoho=");
+_c = AccountOverview;
+var _c;
+$RefreshReg$(_c, "AccountOverview");
+
+  $parcel$ReactRefreshHelpers$3ed6.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq"}],"cAqMW":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$445f = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$445f.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CurrentPositions", ()=>CurrentPositions);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _portfolioItem = require("./PortfolioItem");
+var _s = $RefreshSig$();
+function CurrentPositions({ accountData, positions, stockData }) {
+    _s();
+    const [positionInfo, setPositionInfo] = (0, _react.useState)({});
+    const [tickerKeys, setTickerKeys] = (0, _react.useState)([]);
+    (0, _react.useEffect)(()=>{
+        if (accountData && positions && stockData) {
+            let newPositionInfo = {};
+            for(const ticker in positions){
+                const { qty, total_value, cached_price_data } = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
+                if (!qty || !total_value || !cached_price_data) continue;
+                const price_data = stockData[ticker] ?? cached_price_data;
+                if (!price_data) continue;
+                let current_price = price_data.bid_price;
+                if (qty < 0) current_price = price_data.ask_price;
+                const TICKER = ticker;
+                const QTY = qty;
+                const COST_BASIS = total_value / Math.abs(qty);
+                const PERCENT_CHANGE = (current_price - COST_BASIS) / COST_BASIS * 100;
+                const UNREALIZED_PNL = qty * (current_price - COST_BASIS // the negative qty will flip the difference
+                );
+                newPositionInfo[TICKER] = {
+                    'ticker': TICKER,
+                    'qty': QTY,
+                    'cost_basis': COST_BASIS,
+                    'percent_change': PERCENT_CHANGE,
+                    'unreal_pnl': UNREALIZED_PNL
+                };
+            }
+            setPositionInfo(newPositionInfo);
+            setTickerKeys(Object.keys(positionInfo).sort());
+        }
+    }, [
+        accountData,
+        positions,
+        stockData
+    ]);
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Current Positions"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/CurrentPositions.js",
+                lineNumber: 51,
+                columnNumber: 13
+            }, this),
+            tickerKeys.length > 0 ? tickerKeys.map((key)=>{
+                return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _portfolioItem.PortfolioItem), {
+                    userPositionInfo: positionInfo[key]
+                }, key, false, {
+                    fileName: "src/components/portfolio/CurrentPositions.js",
+                    lineNumber: 55,
+                    columnNumber: 32
+                }, this);
+            }) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "No user positons!"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/CurrentPositions.js",
+                lineNumber: 60,
+                columnNumber: 21
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/portfolio/CurrentPositions.js",
+        lineNumber: 50,
+        columnNumber: 9
+    }, this);
+}
+_s(CurrentPositions, "3gi5gXdw5bVZCIjkKJiMost75ik=");
+_c = CurrentPositions;
+var _c;
+$RefreshReg$(_c, "CurrentPositions");
+
+  $parcel$ReactRefreshHelpers$445f.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react":"21dqq","./PortfolioItem":"jEpGL"}],"jEpGL":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$4086 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$4086.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "PortfolioItem", ()=>PortfolioItem);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+function PortfolioItem({ userPositionInfo }) {
+    return userPositionInfo ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: "Ticker:"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/PortfolioItem.js",
+                lineNumber: 5,
+                columnNumber: 17
+            }, this),
+            " ",
+            userPositionInfo.ticker,
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Qty:"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/PortfolioItem.js",
+                lineNumber: 6,
+                columnNumber: 17
+            }, this),
+            " ",
+            userPositionInfo.qty,
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Cost Basis:"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/PortfolioItem.js",
+                lineNumber: 7,
+                columnNumber: 17
+            }, this),
+            " $",
+            userPositionInfo.cost_basis.toFixed(2),
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " % Change:"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/PortfolioItem.js",
+                lineNumber: 8,
+                columnNumber: 17
+            }, this),
+            userPositionInfo.percent_change < 0 ? ` (${Math.abs(userPositionInfo.percent_change.toFixed(2))})` : ` ${Math.abs(userPositionInfo.percent_change.toFixed(2))}`,
+            " |",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                children: " Unrealized P/L:"
+            }, void 0, false, {
+                fileName: "src/components/portfolio/PortfolioItem.js",
+                lineNumber: 13,
+                columnNumber: 17
+            }, this),
+            userPositionInfo.unreal_pnl < 0 ? ` ($${Math.abs(userPositionInfo.unreal_pnl).toFixed(2)})` : ` $${userPositionInfo.unreal_pnl.toFixed(2)}`
+        ]
+    }, void 0, true, {
+        fileName: "src/components/portfolio/PortfolioItem.js",
+        lineNumber: 4,
+        columnNumber: 13
+    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: '"Waiting for positional info..."'
+    }, void 0, false, {
+        fileName: "src/components/portfolio/PortfolioItem.js",
+        lineNumber: 20,
+        columnNumber: 13
+    }, this);
+}
+_c = PortfolioItem;
+var _c;
+$RefreshReg$(_c, "PortfolioItem");
+
+  $parcel$ReactRefreshHelpers$4086.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
 
 //# sourceMappingURL=index.975ef6c8.js.map

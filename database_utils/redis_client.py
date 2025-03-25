@@ -13,6 +13,14 @@ class RedisClient:
         self.redis_client = redis.Redis(host='localhost', port=port, db=db_idx, decode_responses=decode_responses)
 
     def getFromCache(self, key, keyspace = 'ticker'):
+        '''
+        for example, quote data will be stored as
+        'keyspace:key' :  'quote_dict = {'ticker': data['S'], 'bid_price': data['bp'], 
+                                                'bid_qty': data['bs'], 'ask_price': data['ap'], 
+                                                'ask_qty': data['as'], 'timestamp': str(data['t'].to_datetime())
+                                }'
+        '''
+
         cache_data = self.redis_client.get(f"{keyspace}:{key}")
         if not cache_data:
             raise HTTPException(404, f"No data found for {key}")

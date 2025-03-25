@@ -1,0 +1,53 @@
+.X_vxzq_navbar {
+  justify-content: space-between;
+  align-items: center;
+  height: 150px;
+  padding-inline: 7em;
+  display: flex;
+  position: relative;
+}
+
+.X_vxzq_logo {
+  height: 75px;
+  width: "auto";
+}
+
+.X_vxzq_title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.X_vxzq_account_login {
+  font-weight: bold;
+}
+
+.X_vxzq_username {
+  color: #c5005f;
+  font-weight: bold;
+}
+
+.IGrRxq_app {
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+}
+
+.IGrRxq_main1 {
+  background-image: linear-gradient(to bottom right, #c5005f71 25%, #ffa600d6);
+  justify-content: center;
+  width: 100vw;
+  height: 600px;
+  padding-top: 50px;
+  display: flex;
+}
+
+.IGrRxq_watchlist, .IGrRxq_account_overview {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 50%;
+  height: 80%;
+  margin-inline: 20px;
+  padding: 30px;
+  box-shadow: 0 0 10px 2px #0003;
+}
+/*# sourceMappingURL=index.2212206d.css.map */

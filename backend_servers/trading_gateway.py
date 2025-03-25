@@ -208,7 +208,10 @@ class AccountManager:
 
                 positions = {}
                 for record in result:
-                    positions[record[2]] = {'qty': int(record[3]), 'data': self.redis_client.getFromCache(record[2])}
+                    if int(record[3]) == 0:
+                        continue
+
+                    positions[record[2]] = {'qty': int(record[3]), 'total_value': float(record[4]), 'cached_price_data': self.redis_client.getFromCache(record[2])}
 
                 return positions
                 

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { AVAILABLE_TICKERS } from "./App"
+import { AVAILABLE_TICKERS } from "../../App"
 
 export function TradePopup({onSubmit, onClose}) {
 
@@ -17,7 +17,7 @@ export function TradePopup({onSubmit, onClose}) {
             return;
         }
 
-        if (qty === 0) {
+        if (qty <= 0) {
             return;
         }
 
@@ -32,12 +32,10 @@ export function TradePopup({onSubmit, onClose}) {
     return (
         <div>
             <h1>Trade Portal</h1>
-            <input name="ticker_input" onChange={(event) => setTicker(event.target.value)}/>
-            Ticker: <input name="qty_input" type="number" onChange={(e) => setQty(Number(e.target.value))}/>
+            Ticker: <input name="ticker_input" onChange={(event) => setTicker(event.target.value)}/>
+            Qty: <input name="qty_input" type="number" onChange={(e) => setQty(Number(e.target.value))}/>
             <input name='side_input' type="radio" value="BUY" onChange={() => setSide("BUY")}/> BUY
             <input name='side_input' type="radio" value="SELL" onChange={() => setSide("SELL")}/> SELL
-            {/* <button onClick={() => onSubmit("MSFT", 10, "BUY")}>Buy 10 of MSFT</button>
-            <button onClick={() => onSubmit("MSFT", 10, "SELL")}>Sell 10 of MSFT</button> */}
             <button onClick={() => submitForm()}>Place Trade</button>
             <button onClick={onClose}>Close</button>
         </div>

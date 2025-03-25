@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { WatchList } from "./WatchList";
-import { Portfolio } from "./Portfolio";
+import { WatchList } from "./components/WatchList";
+import { Portfolio } from "./components/portfolio/Portfolio";
+import { NavBar } from "./components/NavBar";
 import chipmunk from "./images/chipmunk.jpg";
+import styles from "./style_modules/App.module.css"
 
 export const AVAILABLE_TICKERS = new Set(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']);
+export const USERNAME = "honeykiwi"
 
 export function App() {
 
@@ -49,12 +52,16 @@ export function App() {
 
 
     return (
-        <div style={{ fontFamily: "Arial, sans-serif", textAlign: "center", marginTop: "50px" }}>
-            <img src={chipmunk} alt="company logo" style={{ width: '400px', height: 'auto' }} />
-            <h1>Real-Time Stock Data</h1>
-            <WatchList stockData={stockData} />
-            <h1>Trading Simulator</h1> 
-            <Portfolio stockData={stockData} />
+        <div className={styles.app}>
+            <NavBar />
+            <div className={styles.main1}>
+                <div className={styles.watchlist}>
+                    <WatchList stockData={stockData} />
+                </div>
+                <div className={styles.account_overview}>
+                    <Portfolio stockData={stockData} />
+                </div>
+            </div>
         </div>
     );
 }

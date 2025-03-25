@@ -1,0 +1,29 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 150px;
+    padding-inline: 7em;
+    position: relative;
+
+}
+
+.logo {
+    height: 75px;
+    width: 'auto';
+}
+
+.title {
+    position: absolute;
+    left: 50%; /* starts after halfway */
+    transform: translateX(-50%); /* moves half of its distance left */
+}
+
+.account_login {
+    font-weight: bold;
+}
+
+.username {
+    font-weight: bold;
+    color: #C5005F;
+}

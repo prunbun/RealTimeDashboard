@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WatchListItem } from "./WatchListItem";
-import { AVAILABLE_TICKERS } from "./App";
+import { AVAILABLE_TICKERS } from "../App";
 
 export function WatchList({stockData}) {
     const [tickers, setTickers] = useState([]);
@@ -35,7 +35,7 @@ export function WatchList({stockData}) {
     }
 
     return (
-        <div style={{ fontFamily: "Arial, sans-serif", textAlign: "center", marginTop: "50px" }}>
+        <div>
             <h1>WatchList</h1>
             <button onClick={add_ticker}> Add Ticker </button> 
             {
