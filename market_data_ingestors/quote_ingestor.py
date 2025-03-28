@@ -132,7 +132,7 @@ def run_simulator():
                 print('simulated', quote_dict)
                 await redis_client.store_and_publish(key=ticker, data_dict=quote_dict, channels=[RedisChannel.QUOTE_UPDATES])
 
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(1)
 
     loop = asyncio.get_event_loop()
     loop.create_task(simulate_quotes())

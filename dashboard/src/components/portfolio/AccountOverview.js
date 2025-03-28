@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import styles from "../../style_modules/AccountOverview.module.css"
+
 export function AccountOverview({accountData, positions, stockData}) {
 
     const [netLiquidity, setNetLiquidity] = useState(0);
@@ -30,11 +32,11 @@ export function AccountOverview({accountData, positions, stockData}) {
     return (
         accountData ? (
             <div>
-            <h1>Account Overview</h1>
-            <p> <strong>Account ID: </strong>{accountData.account_id} </p>
-            <p> <strong>Net Liquidity: </strong>${netLiquidity.toFixed(2)} </p>
-            <p> <strong>Available Cash: </strong>${accountData.available_cash.toFixed(2)} </p>
-            <p> <strong>Net Profit: </strong>${accountData.net_profit.toFixed(2)} </p>
+                <div className={styles.header}>Account Overview</div>
+                <div> <span className={styles.value_name}>Account ID</span>| {accountData.account_id} </div>
+                <div> <span className={styles.value_name}>Net Liquidity</span>| ${netLiquidity.toFixed(2)} </div>
+                <div> <span className={styles.value_name}>Available Cash</span>| ${accountData.available_cash.toFixed(2)} </div>
+                <div> <span className={styles.value_name}>Net Profit</span>| ${accountData.net_profit.toFixed(2)} </div>
             </div>
         ) : (
             <p>Loading account details...</p>

@@ -7,13 +7,14 @@ export function CurrentPositions({accountData, positions, stockData}) {
     const [tickerKeys, setTickerKeys] = useState([]);
 
     useEffect(() => {
-
-        if (accountData && positions && stockData) {
+        console.log(accountData, positions, stockData)
+        if (accountData && positions) {
 
             let newPositionInfo = {}
 
             for (const ticker in positions) {
                 const {qty, total_value, cached_price_data} = positions[ticker] || {}; // safely allows access of values in case positions[ticker] is 'falsy' (like undef, null, etc.)
+                
                 if (!qty || !total_value || !cached_price_data) continue;
 
                 const price_data = stockData[ticker] ?? cached_price_data;
@@ -23,6 +24,7 @@ export function CurrentPositions({accountData, positions, stockData}) {
                 if (qty < 0) {
                     current_price = price_data.ask_price;
                 }
+                
 
                 const TICKER = ticker;
                 const QTY = qty;
@@ -38,9 +40,14 @@ export function CurrentPositions({accountData, positions, stockData}) {
                 }
             }
 
+            
+
             setPositionInfo(newPositionInfo);
-            setTickerKeys(Object.keys(positionInfo).sort());
+            setTickerKeys(Object.keys(newPositionInfo).sort()); // notice that this is async, so we need to use newPositionInfo here, NOT positionInfo since it is not guaranteed to be set
+            console.log('new position info', newPositionInfo, tickerKeys)
         }
+
+        console.log('ticker keys', tickerKeys)
 
     }, [accountData, positions, stockData]);
 

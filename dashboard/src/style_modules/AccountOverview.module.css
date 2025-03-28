@@ -1,0 +1,11 @@
+.header {
+    font-size: 36;
+    margin-bottom: 10px;
+}
+
+.value_name {
+    display: inline-block;
+    min-width: 130px;
+    font-weight: bold;
+    
+}

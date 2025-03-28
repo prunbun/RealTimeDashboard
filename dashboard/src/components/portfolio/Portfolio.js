@@ -3,12 +3,15 @@ import { TradePopup } from "./TradePopup";
 import { USERNAME } from "../../App";
 import { AccountOverview } from "./AccountOverview";
 import { CurrentPositions } from "./CurrentPositions";
+import styles from "../../style_modules/Portfolio.module.css"
+import { AllocationPie } from "./AllocationPie";
 
 export function Portfolio({stockData}) {
 
     const [accountData, setAccountData] = useState(null);
     const [tradePopupOpen, setTradePopupOpen] = useState(false);
     const [positions, setPositions] = useState({})
+    const memoizedPositions = useMemo(() => positions, [positions]);
 
     const fetchAccountData = () => {
         fetch(`http://localhost:8001/account/${USERNAME}`)
@@ -81,9 +84,10 @@ export function Portfolio({stockData}) {
         <div>
             <AccountOverview accountData={accountData} positions={positions} stockData={stockData} />
             <CurrentPositions accountData={accountData} positions={positions} stockData={stockData} />
-            <button onClick={() => resetAccount()}>RESET ACCOUNT</button>
-            <button onClick={() => setTradePopupOpen(true)}>TRADE</button>
+            <button className={styles.reset_button} onClick={() => resetAccount()}>Reset Account</button>
+            <button className={styles.trade_button} onClick={() => setTradePopupOpen(true)}>Trade Portal</button>
             {tradePopupOpen && (<TradePopup onSubmit={placeTrade} onClose={() => setTradePopupOpen(false)}/>)}
+            <AllocationPie positions={memoizedPositions}/>
             
         </div>
     )

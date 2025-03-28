@@ -205,7 +205,7 @@ class AccountManager:
             with conn.cursor() as cur:
                 cur.execute(ALL_POS_SQL, (username,))
                 result = cur.fetchall()
-
+                result.sort(key = lambda x: x[2])
                 positions = {}
                 for record in result:
                     if int(record[3]) == 0:

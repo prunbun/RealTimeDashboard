@@ -1,3 +1,7 @@
+._2sB-Ta_header {
+  font-size: 36px;
+}
+
 .X_vxzq_navbar {
   justify-content: space-between;
   align-items: center;
@@ -49,5 +53,61 @@
   margin-inline: 20px;
   padding: 30px;
   box-shadow: 0 0 10px 2px #0003;
+}
+
+.CwcWMa_header {
+  margin-bottom: 10px;
+  font-size: 36px;
+}
+
+.CwcWMa_value_name {
+  min-width: 130px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+._6vvRFW_trade_button {
+  color: #fff;
+  padding: 10px;
+  background-image: linear-gradient(to bottom right, #c5005f 30%, #ffa600);
+  border: none;
+  border-radius: 10px;
+  width: 150px;
+  padding-inline: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: opacity .15s;
+  box-shadow: 0 0 10px 2px #0003;
+}
+
+._6vvRFW_trade_button:hover {
+  opacity: .8;
+}
+
+._6vvRFW_trade_button:active {
+  opacity: .5;
+}
+
+._6vvRFW_reset_button {
+  color: #fff;
+  background-image: linear-gradient(to bottom right, #00c517, #00bbc5);
+  border: none;
+  border-radius: 10px;
+  width: 150px;
+  margin-right: 10px;
+  padding: 10px;
+  padding-inline: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: opacity .15s;
+  box-shadow: 0 0 10px 2px #0003;
+}
+
+._6vvRFW_reset_button:hover {
+  opacity: .8;
+}
+
+._6vvRFW_reset_button:active {
+  opacity: .5;
 }
 /*# sourceMappingURL=index.2212206d.css.map */

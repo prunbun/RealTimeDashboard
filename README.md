@@ -123,13 +123,7 @@ user and trading account tables
 <br>
 css styling
 
-- using css modules
-- montserrat font, coming up with designs and features I want to build
-- feature for limit orders and outstanding orders
-- candlestick charting + moving avg + volume
-- current positions
-- some risk metrics, idk what any of these are: VaR, volatility, Sharpe ratio
-- system metrics: db / pipeline latency…?
-- emails / notifications when orders are executed or current portfolio losses are > threshold
-- some form of basic anomaly detection for prices
-- authentication
+- npm install recharts
+- I could have used D3, but I chose this for ease of use, getting more progress in, and also realized most companies probably use charting libraries built on top of D3 instead of using it directly anyways
+- ApexCharts and ChartJS are also something I'm looking into, I might try one of the other two for other types of charts
+

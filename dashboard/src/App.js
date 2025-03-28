@@ -7,6 +7,7 @@ import styles from "./style_modules/App.module.css"
 
 export const AVAILABLE_TICKERS = new Set(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']);
 export const USERNAME = "honeykiwi"
+export const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF4567', '#FF8042', '#A28DFF'];
 
 export function App() {
 
