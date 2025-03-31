@@ -22,6 +22,7 @@ class RedisClient:
         '''
 
         cache_data = self.redis_client.get(f"{keyspace}:{key}")
+
         if not cache_data:
             raise HTTPException(404, f"No data found for {key}")
         

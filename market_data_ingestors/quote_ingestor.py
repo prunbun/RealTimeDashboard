@@ -139,7 +139,7 @@ def run_simulator():
     loop.run_forever()
 
 if __name__ == "__main__":
-    simulate_trades = False
+    simulate_trades = True
     if simulate_trades:
         print('SIMULATION, NOT LIVE DATA')
         run_simulator()

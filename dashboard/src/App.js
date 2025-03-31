@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { WatchList } from "./components/WatchList";
+import { WatchList } from "./components/watchlist/WatchList";
 import { Portfolio } from "./components/portfolio/Portfolio";
 import { NavBar } from "./components/NavBar";
+import { HistoricalPricesChart } from "./components/historical/HistoricalPricesChart";
+
+
 import chipmunk from "./images/chipmunk.jpg";
 import styles from "./style_modules/App.module.css"
+import { Line } from "recharts";
 
 export const AVAILABLE_TICKERS = new Set(['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']);
 export const USERNAME = "honeykiwi"
@@ -63,6 +67,8 @@ export function App() {
                     <Portfolio stockData={stockData} />
                 </div>
             </div>
+
+            <HistoricalPricesChart />
         </div>
     );
 }

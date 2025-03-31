@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { WatchListItem } from "./WatchListItem";
-import { AVAILABLE_TICKERS } from "../App";
-import styles from "../style_modules/Watchlist.module.css"
+import { AVAILABLE_TICKERS } from "../../App";
+import styles from "../../style_modules/Watchlist.module.css"
 
 export function WatchList({stockData}) {
     const [tickers, setTickers] = useState([]);

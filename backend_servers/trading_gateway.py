@@ -158,10 +158,13 @@ class AccountManager:
             return {'message': f"Invalid ticker symbol: {request.ticker}"}
 
         ticker_data = self.redis_client.getFromCache(ticker)
+
         bid_price, ask_price = float(ticker_data['bid_price']), float(ticker_data['ask_price'])
 
         if bid_price <= 0 or ask_price <= 0:
             return {'message': f"Error placing trade. Instrument is unavailable at the moment!"}
+        
+        
 
         request.op = request.op.upper()
         if request.op != 'BUY' and request.op != 'SELL':

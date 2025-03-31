@@ -7,7 +7,6 @@ export function CurrentPositions({accountData, positions, stockData}) {
     const [tickerKeys, setTickerKeys] = useState([]);
 
     useEffect(() => {
-        console.log(accountData, positions, stockData)
         if (accountData && positions) {
 
             let newPositionInfo = {}
@@ -44,10 +43,7 @@ export function CurrentPositions({accountData, positions, stockData}) {
 
             setPositionInfo(newPositionInfo);
             setTickerKeys(Object.keys(newPositionInfo).sort()); // notice that this is async, so we need to use newPositionInfo here, NOT positionInfo since it is not guaranteed to be set
-            console.log('new position info', newPositionInfo, tickerKeys)
         }
-
-        console.log('ticker keys', tickerKeys)
 
     }, [accountData, positions, stockData]);
 

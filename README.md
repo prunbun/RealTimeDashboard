@@ -127,3 +127,12 @@ css styling
 - I could have used D3, but I chose this for ease of use, getting more progress in, and also realized most companies probably use charting libraries built on top of D3 instead of using it directly anyways
 - ApexCharts and ChartJS are also something I'm looking into, I might try one of the other two for other types of charts
 
+<br>
+
+- http stuff: so apparently a get request can't have a body, so we have to use post for complex get queries (not sure if using post is the solution)
+- also, if we are missing (res) => res.json() we actually get the response object and NOT the actual data
+
+<br>
+candlestick charting
+
+- npm install react-apexcharts apexcharts
