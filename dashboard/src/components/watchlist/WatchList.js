@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WatchListItem } from "./WatchListItem";
-import { AVAILABLE_TICKERS } from "../../App";
+import { AVAILABLE_TICKERS } from "../../constants";
 import styles from "../../style_modules/Watchlist.module.css"
 
 export function WatchList({stockData}) {

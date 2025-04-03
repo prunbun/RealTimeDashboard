@@ -13,6 +13,7 @@ import pandas as pd
 import os
 import sys
 import traceback
+import pytz
 
 ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
 ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
@@ -20,8 +21,8 @@ CLIENT = StockHistoricalDataClient(api_key=ALPACA_API_KEY, secret_key=ALPACA_SEC
 
 class CandlestickRequests(BaseModel):
     ticker: str
-    bucket_interval: str
     timeframe: str
+    bucket_interval: str
 
 app = FastAPI()
 app.add_middleware(
@@ -48,6 +49,10 @@ def _parse_request(request: CandlestickRequests):
             bucket_interval = TimeFrame.Hour
         case 'DAY':
             bucket_interval = TimeFrame.Day
+        case 'WEEK':
+            bucket_interval = TimeFrame.Week
+        case 'MONTH':
+            bucket_interval = TimeFrame.Month
         case _:
             raise HTTPException(404, f"{request.bucket_interval} is not valid!")
         
@@ -55,8 +60,11 @@ def _parse_request(request: CandlestickRequests):
 
     # parse timeframe
     start = None
-    now = datetime.now()
+    local_timezone = pytz.timezone('US/Eastern')
+    now = datetime.now(local_timezone)
     match request.timeframe.upper():
+        case '1HOUR':
+            start = now - timedelta(hours=1)
         case '1DAY':
             start = now - timedelta(days = 1)
         case '5DAYS':
@@ -65,8 +73,10 @@ def _parse_request(request: CandlestickRequests):
             start = now - relativedelta(months=1)
         case '6MONTHS':
             start = now - relativedelta(months=6)
-        case 'YTD':
-            start = datetime(now.year, 1, 1)
+        case '1YEAR':
+            start = now - relativedelta(years=1)
+        case '5YEARS':
+            start = now - relativedelta(years=5)
         case _:
             raise HTTPException(404, f"{request.timeframe} is not valid!")
     

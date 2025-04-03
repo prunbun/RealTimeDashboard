@@ -133,6 +133,7 @@ css styling
 - also, if we are missing (res) => res.json() we actually get the response object and NOT the actual data
 
 <br>
-candlestick charting
+line charting
 
-- npm install react-apexcharts apexcharts
+- whenever you wrap something in a <label> tag, you are basically saying that any elements wrapped by the tag that are clicked by the user will focus the input button/search bar etc.
+- use ENUMS for time intervals

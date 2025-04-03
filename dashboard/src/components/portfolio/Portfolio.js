@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { TradePopup } from "./TradePopup";
-import { USERNAME } from "../../App";
+import { USERNAME } from "../../constants";
 import { AccountOverview } from "./AccountOverview";
 import { CurrentPositions } from "./CurrentPositions";
 import styles from "../../style_modules/Portfolio.module.css"

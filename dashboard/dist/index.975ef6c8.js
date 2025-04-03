@@ -18565,9 +18565,6 @@ $parcel$ReactRefreshHelpers$f00f.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AVAILABLE_TICKERS", ()=>AVAILABLE_TICKERS);
-parcelHelpers.export(exports, "USERNAME", ()=>USERNAME);
-parcelHelpers.export(exports, "COLORS", ()=>COLORS);
 parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
@@ -18581,25 +18578,6 @@ var _appModuleCss = require("./style_modules/App.module.css");
 var _appModuleCssDefault = parcelHelpers.interopDefault(_appModuleCss);
 var _recharts = require("recharts");
 var _s = $RefreshSig$();
-const AVAILABLE_TICKERS = new Set([
-    'AAPL',
-    'AMZN',
-    'MSFT',
-    'NFLX',
-    'GOOG',
-    'DDOG',
-    'NVDA',
-    'AMD'
-]);
-const USERNAME = "honeykiwi";
-const COLORS = [
-    '#0088FE',
-    '#00C49F',
-    '#FFBB28',
-    '#FF4567',
-    '#FF8042',
-    '#A28DFF'
-];
 function App() {
     _s();
     const socket = (0, _react.useRef)(null);
@@ -18643,7 +18621,7 @@ function App() {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _navBar.NavBar), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 61,
+                lineNumber: 59,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -18655,12 +18633,12 @@ function App() {
                             stockData: stockData
                         }, void 0, false, {
                             fileName: "src/App.js",
-                            lineNumber: 64,
+                            lineNumber: 62,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 63,
+                        lineNumber: 61,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -18669,29 +18647,29 @@ function App() {
                             stockData: stockData
                         }, void 0, false, {
                             fileName: "src/App.js",
-                            lineNumber: 67,
+                            lineNumber: 65,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 66,
+                        lineNumber: 64,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/App.js",
-                lineNumber: 62,
+                lineNumber: 60,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _historicalPricesChart.HistoricalPricesChart), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 71,
+                lineNumber: 69,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 60,
+        lineNumber: 58,
         columnNumber: 9
     }, this);
 }
@@ -18933,7 +18911,7 @@ var _navBarModuleCss = require("../style_modules/NavBar.module.css");
 var _navBarModuleCssDefault = parcelHelpers.interopDefault(_navBarModuleCss);
 var _chipmunkCompressedNoBgHotpinkSvg = require("../images/chipmunk_compressed_no_bg_hotpink.svg");
 var _chipmunkCompressedNoBgHotpinkSvgDefault = parcelHelpers.interopDefault(_chipmunkCompressedNoBgHotpinkSvg);
-var _app = require("../App");
+var _constants = require("../constants");
 function NavBar() {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: (0, _navBarModuleCssDefault.default).navbar,
@@ -18961,7 +18939,7 @@ function NavBar() {
                     "Hello, ",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
                         className: (0, _navBarModuleCssDefault.default).username,
-                        children: (0, _app.USERNAME)
+                        children: (0, _constants.USERNAME)
                     }, void 0, false, {
                         fileName: "src/components/NavBar.js",
                         lineNumber: 11,
@@ -18989,7 +18967,7 @@ $RefreshReg$(_c, "NavBar");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../style_modules/NavBar.module.css":"h9lu8","../App":"2kQhy","../images/chipmunk_compressed_no_bg_hotpink.svg":"71wOB"}],"h9lu8":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../style_modules/NavBar.module.css":"h9lu8","../images/chipmunk_compressed_no_bg_hotpink.svg":"71wOB","../constants":"3huJa"}],"h9lu8":[function(require,module,exports,__globalThis) {
 module.exports["account_login"] = `X_vxzq_account_login`;
 module.exports["logo"] = `X_vxzq_logo`;
 module.exports["navbar"] = `X_vxzq_navbar`;
@@ -18999,7 +18977,83 @@ module.exports["username"] = `X_vxzq_username`;
 },{}],"71wOB":[function(require,module,exports,__globalThis) {
 module.exports = require("a6bf3cedeec68110").getBundleURL('bLxZJ') + "chipmunk_compressed_no_bg_hotpink.76a9b1a4.svg" + "?" + Date.now();
 
-},{"a6bf3cedeec68110":"lgJ39"}],"7BVxe":[function(require,module,exports,__globalThis) {
+},{"a6bf3cedeec68110":"lgJ39"}],"3huJa":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AVAILABLE_TICKERS", ()=>AVAILABLE_TICKERS);
+parcelHelpers.export(exports, "USERNAME", ()=>USERNAME);
+parcelHelpers.export(exports, "COLORS", ()=>COLORS);
+parcelHelpers.export(exports, "TimeInterval", ()=>TimeInterval);
+parcelHelpers.export(exports, "BucketInterval", ()=>BucketInterval);
+parcelHelpers.export(exports, "BUCKET_OPTIONS", ()=>BUCKET_OPTIONS);
+const AVAILABLE_TICKERS = new Set([
+    'AAPL',
+    'AMZN',
+    'MSFT',
+    'NFLX',
+    'GOOG',
+    'DDOG',
+    'NVDA',
+    'AMD'
+]);
+const USERNAME = "honeykiwi";
+const COLORS = [
+    '#0088FE',
+    '#00C49F',
+    '#FFBB28',
+    '#FF4567',
+    '#FF8042',
+    '#A28DFF'
+];
+const TimeInterval = Object.freeze({
+    ONE_HOUR: "1HOUR",
+    ONE_DAY: "1DAY",
+    FIVE_DAYS: "5DAYS",
+    ONE_MONTH: "1MONTH",
+    SIX_MONTHS: "6MONTHS",
+    ONE_YEAR: "1YEAR",
+    FIVE_YEARS: "5YEARS"
+});
+const BucketInterval = Object.freeze({
+    MINUTE: "MINUTE",
+    HOUR: "HOUR",
+    DAY: "DAY",
+    WEEK: "WEEK",
+    MONTH: "MONTH"
+});
+const BUCKET_OPTIONS = Object.freeze({
+    [TimeInterval.ONE_HOUR]: [
+        BucketInterval.MINUTE
+    ],
+    [TimeInterval.ONE_DAY]: [
+        BucketInterval.MINUTE,
+        BucketInterval.HOUR
+    ],
+    [TimeInterval.FIVE_DAYS]: [
+        BucketInterval.HOUR,
+        BucketInterval.DAY
+    ],
+    [TimeInterval.ONE_MONTH]: [
+        BucketInterval.DAY,
+        BucketInterval.WEEK
+    ],
+    [TimeInterval.SIX_MONTHS]: [
+        BucketInterval.DAY,
+        BucketInterval.WEEK,
+        BucketInterval.MONTH
+    ],
+    [TimeInterval.ONE_YEAR]: [
+        BucketInterval.DAY,
+        BucketInterval.WEEK,
+        BucketInterval.MONTH
+    ],
+    [TimeInterval.FIVE_YEARS]: [
+        BucketInterval.WEEK,
+        BucketInterval.MONTH
+    ]
+});
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7BVxe":[function(require,module,exports,__globalThis) {
 module.exports["account_overview"] = `IGrRxq_account_overview`;
 module.exports["app"] = `IGrRxq_app`;
 module.exports["main1"] = `IGrRxq_main1`;
@@ -19018,7 +19072,7 @@ parcelHelpers.export(exports, "Portfolio", ()=>Portfolio);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _tradePopup = require("./TradePopup");
-var _app = require("../../App");
+var _constants = require("../../constants");
 var _accountOverview = require("./AccountOverview");
 var _currentPositions = require("./CurrentPositions");
 var _portfolioModuleCss = require("../../style_modules/Portfolio.module.css");
@@ -19034,13 +19088,13 @@ function Portfolio({ stockData }) {
         positions
     ]);
     const fetchAccountData = ()=>{
-        fetch(`http://localhost:8001/account/${(0, _app.USERNAME)}`).then((res)=>res.json()).then((res)=>{
+        fetch(`http://localhost:8001/account/${(0, _constants.USERNAME)}`).then((res)=>res.json()).then((res)=>{
             console.log(res);
             setAccountData(res);
         }).catch((res)=>console.log(res));
     };
     const fetchPositions = ()=>{
-        fetch(`http://localhost:8001/positions/${(0, _app.USERNAME)}`).then((res)=>res.json()).then((res)=>{
+        fetch(`http://localhost:8001/positions/${(0, _constants.USERNAME)}`).then((res)=>res.json()).then((res)=>{
             console.log("fetched positions", res);
             setPositions(res);
         }).catch((res)=>console.log(res));
@@ -19050,14 +19104,14 @@ function Portfolio({ stockData }) {
         fetchPositions();
     }, []);
     const resetAccount = ()=>{
-        fetch(`http://localhost:8001/reset/${(0, _app.USERNAME)}`).then((response)=>response.json()).then((response)=>console.log(response)).then(()=>{
+        fetch(`http://localhost:8001/reset/${(0, _constants.USERNAME)}`).then((response)=>response.json()).then((response)=>console.log(response)).then(()=>{
             fetchAccountData();
             fetchPositions();
         }).catch((error)=>console.log(error));
     };
     const placeTrade = (ticker, qty, operation)=>{
         const orderDetails = {
-            username: (0, _app.USERNAME),
+            username: (0, _constants.USERNAME),
             ticker: ticker,
             qty: qty,
             op: operation
@@ -19146,7 +19200,7 @@ $RefreshReg$(_c, "Portfolio");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./TradePopup":"g0enf","./AccountOverview":"3LWvJ","./CurrentPositions":"cAqMW","../../style_modules/Portfolio.module.css":"b1KMw","./AllocationPie":"8cI0q"}],"g0enf":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./TradePopup":"g0enf","./AccountOverview":"3LWvJ","./CurrentPositions":"cAqMW","../../style_modules/Portfolio.module.css":"b1KMw","./AllocationPie":"8cI0q","../../constants":"3huJa"}],"g0enf":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$fe47 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -19158,7 +19212,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TradePopup", ()=>TradePopup);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _app = require("../../App");
+var _constants = require("../../constants");
 var _s = $RefreshSig$();
 function TradePopup({ onSubmit, onClose }) {
     _s();
@@ -19170,7 +19224,7 @@ function TradePopup({ onSubmit, onClose }) {
         // try to cast the qty into a number
         // place the trade
         const ticker_input = ticker.toUpperCase().trim();
-        if (!ticker_input || !(0, _app.AVAILABLE_TICKERS).has(ticker_input)) return;
+        if (!ticker_input || !(0, _constants.AVAILABLE_TICKERS).has(ticker_input)) return;
         if (qty <= 0) return;
         if (side !== "BUY" && side !== "SELL") return;
         onSubmit(ticker, qty, side);
@@ -19203,34 +19257,50 @@ function TradePopup({ onSubmit, onClose }) {
                 lineNumber: 36,
                 columnNumber: 18
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "side_input",
-                type: "radio",
-                value: "BUY",
-                onChange: ()=>setSide("BUY")
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                        name: "side_input",
+                        type: "radio",
+                        value: "BUY",
+                        onChange: ()=>setSide("BUY")
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/TradePopup.js",
+                        lineNumber: 38,
+                        columnNumber: 17
+                    }, this),
+                    " BUY"
+                ]
+            }, "BUY", true, {
                 fileName: "src/components/portfolio/TradePopup.js",
                 lineNumber: 37,
                 columnNumber: 13
             }, this),
-            " BUY",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                name: "side_input",
-                type: "radio",
-                value: "SELL",
-                onChange: ()=>setSide("SELL")
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                        name: "side_input",
+                        type: "radio",
+                        value: "SELL",
+                        onChange: ()=>setSide("SELL")
+                    }, void 0, false, {
+                        fileName: "src/components/portfolio/TradePopup.js",
+                        lineNumber: 41,
+                        columnNumber: 17
+                    }, this),
+                    " SELL"
+                ]
+            }, "SELL", true, {
                 fileName: "src/components/portfolio/TradePopup.js",
-                lineNumber: 38,
+                lineNumber: 40,
                 columnNumber: 13
             }, this),
-            " SELL",
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                 onClick: ()=>submitForm(),
                 children: "Place Trade"
             }, void 0, false, {
                 fileName: "src/components/portfolio/TradePopup.js",
-                lineNumber: 39,
+                lineNumber: 43,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -19238,7 +19308,7 @@ function TradePopup({ onSubmit, onClose }) {
                 children: "Close"
             }, void 0, false, {
                 fileName: "src/components/portfolio/TradePopup.js",
-                lineNumber: 40,
+                lineNumber: 44,
                 columnNumber: 13
             }, this)
         ]
@@ -19258,7 +19328,7 @@ $RefreshReg$(_c, "TradePopup");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"3LWvJ":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../constants":"3huJa"}],"3LWvJ":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$3ed6 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -19601,7 +19671,7 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _recharts = require("recharts");
-var _app = require("../../App");
+var _constants = require("../../constants");
 function AllocationPie({ positions }) {
     const chartData = Object.keys(positions).map((ticker)=>({
             name: ticker,
@@ -19622,7 +19692,7 @@ function AllocationPie({ positions }) {
                 dataKey: "value",
                 label: ({ name, percent })=>`${name}: ${(percent * 100).toFixed(2)}%`,
                 children: chartData.map((entry, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Cell), {
-                        fill: (0, _app.COLORS)[index % (0, _app.COLORS).length],
+                        fill: (0, _constants.COLORS)[index % (0, _constants.COLORS).length],
                         stroke: "None"
                     }, `cell-${index}`, false, {
                         fileName: "src/components/portfolio/AllocationPie.js",
@@ -19657,7 +19727,7 @@ $RefreshReg$(_c, "AllocationPie");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","recharts":"7DnXL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../App":"2kQhy"}],"7DnXL":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","recharts":"7DnXL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../constants":"3huJa"}],"7DnXL":[function(require,module,exports,__globalThis) {
 // "export type" declarations on separate lines are in use
 // to workaround babel issue(s) 11465 12578
 //
@@ -61344,7 +61414,7 @@ parcelHelpers.export(exports, "WatchList", ()=>WatchList);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _watchListItem = require("./WatchListItem");
-var _app = require("../../App");
+var _constants = require("../../constants");
 var _watchlistModuleCss = require("../../style_modules/Watchlist.module.css");
 var _watchlistModuleCssDefault = parcelHelpers.interopDefault(_watchlistModuleCss);
 var _s = $RefreshSig$();
@@ -61364,7 +61434,7 @@ function WatchList({ stockData }) {
         // get a ticker from the user
         const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
         // append that to the list
-        if (new_ticker && (0, _app.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
+        if (new_ticker && (0, _constants.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
             updated_tickers = [
                 ...tickers,
                 new_ticker
@@ -61449,7 +61519,7 @@ $RefreshReg$(_c, "WatchList");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./WatchListItem":"4WphN","../../App":"2kQhy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../style_modules/Watchlist.module.css":"5VD59"}],"4WphN":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./WatchListItem":"4WphN","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../style_modules/Watchlist.module.css":"5VD59","../../constants":"3huJa"}],"4WphN":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$b9e7 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -61543,7 +61613,11 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _recharts = require("recharts");
+var _constants = require("../../constants");
 var _s = $RefreshSig$();
+const CHART_TICKERS = [
+    ...(0, _constants.AVAILABLE_TICKERS)
+];
 function HistoricalPricesChart() {
     _s();
     const [chartData, setChartData] = (0, _react.useState)([]);
@@ -61551,19 +61625,48 @@ function HistoricalPricesChart() {
         0,
         1000
     ]);
+    const [lineStrokeColor, setLineStrokeColor] = (0, _react.useState)('red');
+    const [ticker, setTicker] = (0, _react.useState)(null);
+    const [timeframe, setTimeFrame] = (0, _react.useState)(null);
+    const [bucket, setBucket] = (0, _react.useState)(null);
+    const formatDate = (timestamp)=>{
+        const date = new Date(timestamp);
+        if (bucket === "MINUTE" || timeframe === (0, _constants.TimeInterval).ONE_DAY) return new Intl.DateTimeFormat("en-US", {
+            hour: "2-digit",
+            minute: "2-digit"
+        }).format(date); // "14:30"
+        switch(timeframe){
+            case (0, _constants.TimeInterval).FIVE_DAYS:
+            case (0, _constants.TimeInterval).ONE_MONTH:
+                return new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "2-digit"
+                }).format(date);
+            case (0, _constants.TimeInterval).SIX_MONTHS:
+            case (0, _constants.TimeInterval).ONE_YEAR:
+                return new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    year: "numeric"
+                }).format(date);
+            case (0, _constants.TimeInterval).FIVE_YEARS:
+                return new Intl.DateTimeFormat("en-US", {
+                    year: "numeric"
+                }).format(date);
+            default:
+                return date.toISOString();
+        }
+    };
+    const calculateTicks = (data, numTicks = 5)=>{
+        if (data.length <= numTicks) return data.map((d)=>d.timestamp); // Use all points if few exist
+        const SKIP_INTERVAL = Math.floor(data.length / (numTicks - 1));
+        return data.filter((_, index)=>index % SKIP_INTERVAL === 0).map((d)=>d.timestamp);
+    };
     (0, _react.useEffect)(()=>{
-        const formatDate = (timestamp)=>{
-            const date = new Date(timestamp);
-            const formatter = new Intl.DateTimeFormat('en-US', {
-                month: 'short',
-                day: '2-digit'
-            });
-            return formatter.format(date);
-        };
+        if (!ticker || !timeframe || !bucket || ticker === "") return;
         const candlestick_data_params = {
-            ticker: 'GOOG',
-            bucket_interval: 'DAY',
-            timeframe: '1MONTH'
+            ticker: ticker,
+            timeframe: timeframe,
+            bucket_interval: bucket
         };
         fetch('http://localhost:8002/historical', {
             method: "POST",
@@ -61573,12 +61676,19 @@ function HistoricalPricesChart() {
             body: JSON.stringify(candlestick_data_params)
         }).then((res)=>res.json()) // if we are missing this, we get a response object, not the actual json of the data
         .then((res)=>{
-            console.log(res);
-            // setChartData(res['candlesticks'])
             if (res.candlesticks) {
-                const formatted_data = res.candlesticks.map((candle)=>{
+                const num_candlesticks = res.candlesticks.length;
+                const formatted_data = res.candlesticks.map((candle, index, array)=>{
                     return {
                         timestamp: formatDate(candle.timestamp),
+                        readable_timestamp: new Intl.DateTimeFormat("en-US", {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true // Use 24-hour time (HH:MM)
+                        }).format(new Date(candle.timestamp)),
                         open: candle.open,
                         high: candle.high,
                         low: candle.low,
@@ -61589,114 +61699,327 @@ function HistoricalPricesChart() {
                 });
                 // Calculate minLow and maxHigh
                 scaling_data = formatted_data.map((d)=>d.close);
-                const minLow = Math.floor(Math.min(...scaling_data));
-                const maxHigh = Math.ceil(Math.max(...scaling_data));
-                // Add a buffer (5%)
+                const minLow = Math.min(...scaling_data);
+                const maxHigh = Math.max(...scaling_data);
+                // Add a buffer
                 const padding = 10;
+                const PADDING_PERCENTAGE = 0.02;
                 const yDomain = [
-                    minLow - padding,
-                    maxHigh + padding
+                    Math.floor(minLow - minLow * PADDING_PERCENTAGE),
+                    Math.ceil(maxHigh + maxHigh * PADDING_PERCENTAGE)
                 ];
+                if (formatted_data[0].close < formatted_data[num_candlesticks - 1].close) setLineStrokeColor('green');
+                else setLineStrokeColor('red');
                 setYDomain(yDomain);
                 setChartData(formatted_data);
             }
         }).catch((res)=>console.error(res));
-    }, []);
+    }, [
+        ticker,
+        timeframe,
+        bucket
+    ]);
     const CustomizedDot = (props)=>{
         const { cx, cy, height, dataKey, stroke, payload, value } = props;
         return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("circle", {
             cx: cx,
             cy: cy,
             r: 2,
-            fill: "red",
-            stroke: "red",
+            fill: lineStrokeColor,
+            stroke: lineStrokeColor,
             strokeWidth: 1
         }, void 0, false, {
             fileName: "src/components/historical/HistoricalPricesChart.js",
-            lineNumber: 74,
+            lineNumber: 118,
             columnNumber: 13
         }, this);
     };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: {
-            height: 300,
-            width: 600
-        },
-        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.ResponsiveContainer), {
-            width: "100%",
-            height: "100%",
-            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.LineChart), {
-                data: chartData,
-                margin: {
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
+    const CustomTooltip = ({ active, payload })=>{
+        if (active && payload && payload.length) {
+            const { ticker, open, high, low, close, volume, readable_timestamp } = payload[0].payload; // Get data from the payload
+            return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "custom-tooltip",
+                style: {
+                    backgroundColor: 'white',
+                    padding: '10px',
+                    borderRadius: '5px'
                 },
-                children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.CartesianGrid), {
-                        strokeDasharray: "3 3"
-                    }, void 0, false, {
-                        fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 93,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.XAxis), {
-                        dataKey: "timestamp"
-                    }, void 0, false, {
-                        fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 94,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.YAxis), {
-                        domain: yDomain
-                    }, void 0, false, {
-                        fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 95,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Tooltip), {}, void 0, false, {
-                        fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 96,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Legend), {}, void 0, false, {
-                        fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 97,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Line), {
-                        type: "linear",
-                        dataKey: "close",
-                        stroke: "red",
-                        dot: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CustomizedDot, {}, void 0, false, {
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    style: {
+                        display: "flex",
+                        flexDirection: "column"
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            style: {
+                                marginBottom: "10px"
+                            },
+                            children: readable_timestamp
+                        }, void 0, false, {
                             fileName: "src/components/historical/HistoricalPricesChart.js",
-                            lineNumber: 98,
-                            columnNumber: 75
-                        }, void 0)
+                            lineNumber: 129,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            children: [
+                                "Open: $",
+                                open.toFixed(2)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 130,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            children: [
+                                "High: $",
+                                high.toFixed(2)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 131,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            children: [
+                                "Low: $",
+                                low.toFixed(2)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 132,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            children: [
+                                "Close: $",
+                                close.toFixed(2)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 133,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                            children: [
+                                "Volume: ",
+                                volume
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 134,
+                            columnNumber: 25
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/historical/HistoricalPricesChart.js",
+                    lineNumber: 128,
+                    columnNumber: 21
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 127,
+                columnNumber: 17
+            }, this);
+        }
+        return null;
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                children: "Ticker: "
+            }, void 0, false, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 145,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("select", {
+                value: ticker,
+                onChange: (ticker_input)=>setTicker(ticker_input.target.value),
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
+                        value: "",
+                        children: "--"
                     }, void 0, false, {
                         fileName: "src/components/historical/HistoricalPricesChart.js",
-                        lineNumber: 98,
-                        columnNumber: 21
-                    }, this)
+                        lineNumber: 147,
+                        columnNumber: 17
+                    }, this),
+                    CHART_TICKERS.map((choice)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
+                            value: choice,
+                            children: choice
+                        }, choice, false, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 148,
+                            columnNumber: 46
+                        }, this))
                 ]
             }, void 0, true, {
                 fileName: "src/components/historical/HistoricalPricesChart.js",
-                lineNumber: 84,
-                columnNumber: 17
+                lineNumber: 146,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                        children: "Time Interval: "
+                    }, void 0, false, {
+                        fileName: "src/components/historical/HistoricalPricesChart.js",
+                        lineNumber: 152,
+                        columnNumber: 17
+                    }, this),
+                    Object.values((0, _constants.TimeInterval)).map((interval)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                            style: {
+                                marginRight: "10px"
+                            },
+                            children: [
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                    type: "radio",
+                                    value: interval,
+                                    checked: timeframe === interval,
+                                    onChange: ()=>{
+                                        setTimeFrame(interval);
+                                        setBucket((0, _constants.BUCKET_OPTIONS)[interval][0]);
+                                    }
+                                }, void 0, false, {
+                                    fileName: "src/components/historical/HistoricalPricesChart.js",
+                                    lineNumber: 156,
+                                    columnNumber: 29
+                                }, this),
+                                interval
+                            ]
+                        }, interval, true, {
+                            fileName: "src/components/historical/HistoricalPricesChart.js",
+                            lineNumber: 155,
+                            columnNumber: 25
+                        }, this))
+                ]
+            }, void 0, true, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 151,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                children: "Bucket Interval: "
+            }, void 0, false, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 171,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("select", {
+                value: bucket,
+                onChange: (bucket_input)=>setBucket(bucket_input.target.value),
+                children: ((0, _constants.BUCKET_OPTIONS)[timeframe] || []).map((bucket_option)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
+                        value: bucket_option,
+                        children: bucket_option
+                    }, bucket_option, false, {
+                        fileName: "src/components/historical/HistoricalPricesChart.js",
+                        lineNumber: 174,
+                        columnNumber: 21
+                    }, this))
+            }, void 0, false, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 172,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: {
+                    height: 300,
+                    width: 800
+                },
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.ResponsiveContainer), {
+                    width: "100%",
+                    height: "100%",
+                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.LineChart), {
+                        data: chartData,
+                        margin: {
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.CartesianGrid), {
+                                strokeDasharray: "3 3"
+                            }, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 190,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.XAxis), {
+                                dataKey: "timestamp",
+                                minTickGap: 10,
+                                ticks: calculateTicks(chartData, 5),
+                                padding: {
+                                    left: 10,
+                                    right: 10
+                                }
+                            }, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 191,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.YAxis), {
+                                domain: yDomain
+                            }, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 192,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Tooltip), {
+                                content: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CustomTooltip, {}, void 0, false, {
+                                    fileName: "src/components/historical/HistoricalPricesChart.js",
+                                    lineNumber: 193,
+                                    columnNumber: 43
+                                }, void 0)
+                            }, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 193,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Legend), {}, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 194,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _recharts.Line), {
+                                type: "linear",
+                                dataKey: "close",
+                                stroke: lineStrokeColor,
+                                dot: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CustomizedDot, {}, void 0, false, {
+                                    fileName: "src/components/historical/HistoricalPricesChart.js",
+                                    lineNumber: 195,
+                                    columnNumber: 91
+                                }, void 0)
+                            }, void 0, false, {
+                                fileName: "src/components/historical/HistoricalPricesChart.js",
+                                lineNumber: 195,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/historical/HistoricalPricesChart.js",
+                        lineNumber: 181,
+                        columnNumber: 21
+                    }, this)
+                }, void 0, false, {
+                    fileName: "src/components/historical/HistoricalPricesChart.js",
+                    lineNumber: 180,
+                    columnNumber: 17
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/historical/HistoricalPricesChart.js",
+                lineNumber: 179,
+                columnNumber: 13
             }, this)
-        }, void 0, false, {
-            fileName: "src/components/historical/HistoricalPricesChart.js",
-            lineNumber: 83,
-            columnNumber: 13
-        }, this)
-    }, void 0, false, {
+        ]
+    }, void 0, true, {
         fileName: "src/components/historical/HistoricalPricesChart.js",
-        lineNumber: 82,
+        lineNumber: 144,
         columnNumber: 9
     }, this);
 }
-_s(HistoricalPricesChart, "Tj0bbtjH/OC8J0mBTfsQQZfytfQ=");
+_s(HistoricalPricesChart, "PIfIqEvcsEkX//8kXHfVSeca7wA=");
 _c = HistoricalPricesChart;
 var _c;
 $RefreshReg$(_c, "HistoricalPricesChart");
@@ -61706,6 +62029,6 @@ $RefreshReg$(_c, "HistoricalPricesChart");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","recharts":"7DnXL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","recharts":"7DnXL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../constants":"3huJa"}]},["aQL8O","9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
 
 //# sourceMappingURL=index.975ef6c8.js.map

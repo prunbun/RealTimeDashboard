@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend} from 'recharts';
-import { COLORS } from "../../App";
+import { COLORS } from "../../constants";
 
 
 export function AllocationPie({positions}) {

@@ -1,6 +1,6 @@
 import styles from "../style_modules/NavBar.module.css"
 import chipmunk_no_bg from "../images/chipmunk_compressed_no_bg_hotpink.svg";
-import { USERNAME } from "../App";
+import { USERNAME } from "../constants";
 
 export function NavBar() {
 
