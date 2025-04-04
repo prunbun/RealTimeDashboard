@@ -7,6 +7,7 @@ from enum import Enum
 
 class RedisChannel(Enum):
     QUOTE_UPDATES = 'quote_updates'
+    BAR_UPDATES = 'bar_updates'
 
 class RedisClient:
     def __init__(self, port=6379, db_idx=0, decode_responses=True):
@@ -38,9 +39,8 @@ class ProducerRedisClient(RedisClient):
 
     def __init__(self, port=6379, db_idx=0, decode_responses=True):
         super().__init__(port=port, db_idx=db_idx, decode_responses=decode_responses)
-        self.redis_client.flushdb()
 
-    async def store_and_publish(self, key: str, data_dict, channels: list[RedisChannel] = [], keyspace:str = 'ticker'):
+    async def store_and_publish(self, key: str, data_dict, channels: list[RedisChannel], keyspace:str = 'ticker'):
         self.redis_client.set(f"{keyspace}:{key}", json.dumps(data_dict))
         
         for channel in channels:

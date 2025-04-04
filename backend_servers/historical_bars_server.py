@@ -15,8 +15,8 @@ import sys
 import traceback
 import pytz
 
-ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
-ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
+from market_data_ingestors.constants import ALPACA_API_KEY, ALPACA_SECRET_KEY
+
 CLIENT = StockHistoricalDataClient(api_key=ALPACA_API_KEY, secret_key=ALPACA_SECRET_KEY)
 
 class CandlestickRequests(BaseModel):

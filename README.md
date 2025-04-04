@@ -144,3 +144,6 @@ line charting
 2. at init, queries latest 60 minute-bars, calculates returns/differentials using pandas and also stores the latest price, calculates worst 5% return and sends snapshot of all percentages to the client in the web socket stream
 3. Subscribe to minute-bars from the exchange and every time a new price comes in for something in our portfolio, recalculate, so T * nlogn op for n = 60 ; T = num_unique_tickers_in_portfolio, if len(queue) > 60, popleft the queue before calculating so we have the latest window, update latest price
 4. Each time the user places a trade in the trading gateway, refresh the position, if it has disappeared, free the queue, if we are trading a new one, do step 2 for the newest ticker, else, do nothing (since client calculates the final VaR value)
+
+- tradeoff might be having a global risk engine vs. an individual one per client, tradeoff is doing repeated work and refetching each time a client connects, extra logic
+- upside of customized risk engine is faster updates bc less tickers, more granular control over hyperparameters like window, bucket size, percentiles, and method of calculations

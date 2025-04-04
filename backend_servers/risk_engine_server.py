@@ -7,45 +7,49 @@ from datetime import datetime, timedelta
 import os
 import pytz
 import pandas as pd
+from collections import deque
 
-from market_data_ingestors.quote_ingestor import TICKERS
+from market_data_ingestors.constants import ALPACA_API_KEY, ALPACA_SECRET_KEY, TICKERS
 
 class RiskEngine:
 
     def __init__(self) -> None:
-        # subscribe to minute bars and initialize data structures
-        # at client websocket init, we want the handler to call the new position open 
+        self.client = StockHistoricalDataClient(api_key=ALPACA_API_KEY, secret_key=ALPACA_SECRET_KEY)
+        self.returns = {} # ticker : deque of returns
+        self.latest_prices = {} # ticker : float
+        self.AVAILABLE_TICKERS = set(TICKERS)
+        self.subscribed_tickers = set()
 
-        # when a new position is opened
-            # for each ticker, maintain a queue of latest returns and latest single price
-            # calculate percentages for each one and store them
+    def __add_new_ticker(self, ticker, bucket_interval = TimeFrame.Minute, hours_offset = 1):
+        if ticker not in self.AVAILABLE_TICKERS or ticker in self.subscribed_tickers:
+            return
 
-        # any time a position is closed out, we also have a function that is called, which frees the data structures here
+        # fetch data
+        local_timezone = pytz.timezone('US/Eastern')
+        now = datetime.now(local_timezone)
+        start = (now - timedelta(hours=hours_offset))
 
-        # every time we get a new minute bar or initialize a new open positition, we use pubsub to send to the websocket, which then streams the data of the new VaR for that
-        # ticker to the client
-        pass
-    pass
+        request_params = StockBarsRequest(
+                            symbol_or_symbols=[ticker],
+                            timeframe=bucket_interval,
+                            start=start
+                        )
+        bars = self.client.get_stock_bars(request_params=request_params)[ticker]
+
+        # transform
+        bars = [dict(bar) for bar in bars]
+        bars = pd.DataFrame(bars)
+        bars['timestamp'] = pd.to_datetime(bars['timestamp']).dt.tz_convert('US/Eastern')
+        bars['returns'] = bars['vwap'].pct_change()
+
+        # update state
+        self.returns[ticker] = deque((bars['returns'].to_list())[1:]) # first pct_change() will be NaN
+        self.latest_prices[ticker] = bars['vwap'][-1]
+        self.subscribed_tickers.add(ticker)
 
 
-# fetch last 1 hour's minute bars
-# print(TICKERS)
-ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
-ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
-CLIENT = StockHistoricalDataClient(api_key=ALPACA_API_KEY, secret_key=ALPACA_SECRET_KEY)
-
-local_timezone = pytz.timezone('US/Eastern')
-now = datetime.now(local_timezone)
-start = now - timedelta(hours=1)
-
-request_params = StockBarsRequest(
-                    symbol_or_symbols=['GOOG'],
-                    timeframe=TimeFrame.Minute,
-                    start=start
-                )
 
 
-bars = CLIENT.get_stock_bars(request_params=request_params)['GOOG']
-bars = [dict(bar) for bar in bars]
-bars = pd.DataFrame(bars)
-print(bars)
+RiskEngine()
+
+

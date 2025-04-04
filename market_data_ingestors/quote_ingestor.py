@@ -12,8 +12,9 @@ import asyncio
 import time
 from collections import defaultdict, deque
 from database_utils.redis_client import ProducerRedisClient, RedisChannel
+from market_data_ingestors.constants import ALPACA_API_KEY, ALPACA_SECRET_KEY, TICKERS
 
-TICKERS = ['AAPL', 'AMZN', 'MSFT', 'NFLX', 'GOOG', 'DDOG', 'NVDA', 'AMD']
+
 
 class LeakyBucket:
 
@@ -79,21 +80,16 @@ class LeakyBucket:
             
         return
     
-class DataIngestor:
+class QuoteIngestor:
 
     def __init__(self, max_updates_per_second=100):
         # database setup
         self.redis_client = ProducerRedisClient()
 
         # alpaca client setup
-        ALPACA_API_KEY = os.getenv("ALPACA_PAPER_KEY")
-        ALPACA_SECRET_KEY = os.getenv("ALPACA_PAPER_SECRET")
         self.alpaca_client = StockDataStream(ALPACA_API_KEY, ALPACA_SECRET_KEY, raw_data=True)
         self.rate_limiter = AsyncLimiter(max_updates_per_second,1) # rate limiter with leaky bucket algorithm, num requests / time_stamp
         self.leaky_buckets = defaultdict(lambda: LeakyBucket(self.redis_client))
-
-        # managed state initialization
-        self.subscribed_quote_tickers = set()
 
     async def quote_data_handler(self, data):
         async with self.rate_limiter:
@@ -145,7 +141,7 @@ if __name__ == "__main__":
         run_simulator()
     else:
         print('LIVE DATA')
-        ingestor = DataIngestor()
+        ingestor = QuoteIngestor()
         ingestor.subscribe_quotes(TICKERS)
         ingestor.start()
 
