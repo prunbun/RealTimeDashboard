@@ -9,7 +9,21 @@ import chipmunk from "./images/chipmunk.jpg";
 import styles from "./style_modules/App.module.css"
 import { Line } from "recharts";
 
-
+const formatTime = (timestamp) => {
+    if (!timestamp) {
+        return 'N/A';
+    }
+    try {
+        const date = new Date(timestamp);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    } catch (error) {
+        console.error("Error formatting timestamp:", error);
+        return 'Invalid Time';
+    }
+};
 
 export function App() {
 
@@ -27,7 +41,7 @@ export function App() {
             const data = JSON.parse(message.data); // we get a message object, from which we need message.data
 
             setStockData( (prevData) => {
-                const updated_data = {...prevData, [data.ticker]: {...data, timestamp: new Date(data.timestamp).toISOString()}};
+                const updated_data = {...prevData, [data.ticker]: {...data, timestamp: formatTime(data.timestamp)}};
                 localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
                 return updated_data;
             });

@@ -18578,6 +18578,19 @@ var _appModuleCss = require("./style_modules/App.module.css");
 var _appModuleCssDefault = parcelHelpers.interopDefault(_appModuleCss);
 var _recharts = require("recharts");
 var _s = $RefreshSig$();
+const formatTime = (timestamp)=>{
+    if (!timestamp) return 'N/A';
+    try {
+        const date = new Date(timestamp);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    } catch (error) {
+        console.error("Error formatting timestamp:", error);
+        return 'Invalid Time';
+    }
+};
 function App() {
     _s();
     const socket = (0, _react.useRef)(null);
@@ -18594,7 +18607,7 @@ function App() {
                     ...prevData,
                     [data.ticker]: {
                         ...data,
-                        timestamp: new Date(data.timestamp).toISOString()
+                        timestamp: formatTime(data.timestamp)
                     }
                 };
                 localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
@@ -18621,7 +18634,7 @@ function App() {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _navBar.NavBar), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 59,
+                lineNumber: 73,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -18633,12 +18646,12 @@ function App() {
                             stockData: stockData
                         }, void 0, false, {
                             fileName: "src/App.js",
-                            lineNumber: 62,
+                            lineNumber: 76,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 61,
+                        lineNumber: 75,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -18647,29 +18660,29 @@ function App() {
                             stockData: stockData
                         }, void 0, false, {
                             fileName: "src/App.js",
-                            lineNumber: 65,
+                            lineNumber: 79,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 64,
+                        lineNumber: 78,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/App.js",
-                lineNumber: 60,
+                lineNumber: 74,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _historicalPricesChart.HistoricalPricesChart), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 69,
+                lineNumber: 83,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 58,
+        lineNumber: 72,
         columnNumber: 9
     }, this);
 }
@@ -61421,6 +61434,7 @@ var _s = $RefreshSig$();
 function WatchList({ stockData }) {
     _s();
     const [tickers, setTickers] = (0, _react.useState)([]);
+    const [newTickerInput, setNewTickerInput] = (0, _react.useState)("");
     (0, _react.useEffect)(()=>{
         try {
             const stored_tickers = JSON.parse(localStorage.getItem('watchlist_tickers')) || [];
@@ -61431,22 +61445,31 @@ function WatchList({ stockData }) {
     }, []);
     // func that adds a ticker
     const add_ticker = ()=>{
-        // get a ticker from the user
-        const new_ticker = prompt("type ticker name...")?.toUpperCase(); // ? means optional param
+        // get a ticker from the user stored in newTickerInput
         // append that to the list
-        if (new_ticker && (0, _constants.AVAILABLE_TICKERS).has(new_ticker) && !tickers.includes(new_ticker)) {
+        if (newTickerInput && (0, _constants.AVAILABLE_TICKERS).has(newTickerInput) && !tickers.includes(newTickerInput)) {
             updated_tickers = [
                 ...tickers,
-                new_ticker
+                newTickerInput
             ];
             localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers));
             setTickers(updated_tickers);
+            setNewTickerInput('');
         }
     };
     const remove_ticker = (ticker_to_del)=>{
         const updated_tickers1 = tickers.filter((t)=>t !== ticker_to_del);
         localStorage.setItem('watchlist_tickers', JSON.stringify(updated_tickers1));
         setTickers(updated_tickers1);
+    };
+    const handleInputChange = (event)=>{
+        setNewTickerInput(event.target.value.toUpperCase());
+    };
+    const enterKey = (event)=>{
+        if (event.key === 'Enter') {
+            add_ticker();
+            setNewTickerInput("");
+        }
     };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
@@ -61455,61 +61478,200 @@ function WatchList({ stockData }) {
                 children: "Watchlist"
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchList.js",
-                lineNumber: 40,
+                lineNumber: 55,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                onClick: add_ticker,
-                children: " Add Ticker "
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: {
+                    display: 'flex',
+                    gap: '10px',
+                    paddingTop: '10px'
+                },
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                        type: "text",
+                        placeholder: "Enter Ticker",
+                        value: newTickerInput,
+                        onChange: handleInputChange,
+                        onKeyDown: enterKey
+                    }, void 0, false, {
+                        fileName: "src/components/watchlist/WatchList.js",
+                        lineNumber: 57,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                        onClick: add_ticker,
+                        children: " Add Ticker "
+                    }, void 0, false, {
+                        fileName: "src/components/watchlist/WatchList.js",
+                        lineNumber: 64,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, 'watchlist_header', true, {
                 fileName: "src/components/watchlist/WatchList.js",
-                lineNumber: 41,
+                lineNumber: 56,
                 columnNumber: 13
             }, this),
-            tickers.length == 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("text", {
+            tickers.length === 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("text", {
                 children: "Add tickers to see live data!"
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchList.js",
-                lineNumber: 44,
+                lineNumber: 68,
                 columnNumber: 18
-            }, this) : tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                    style: {
-                        display: 'flex',
-                        gap: '10px',
-                        justifyContent: 'center'
-                    },
-                    children: [
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
-                            ticker_data: stockData[ticker_name] || null
-                        }, void 0, false, {
+            }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("table", {
+                style: {
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    tableLayout: 'fixed'
+                },
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("thead", {
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("tr", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '12%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "Ticker"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 73,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '10%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "Bid"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 74,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '10%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "Ask"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 75,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '10%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "- 2\u03C3"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 76,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '13%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "1 Min M.A."
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 77,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '10%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "+ 2\u03C3"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 78,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '10%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "Time"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 79,
+                                    columnNumber: 33
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
+                                    style: {
+                                        width: '15%',
+                                        borderBottom: '1px solid #ccc',
+                                        padding: '8px',
+                                        textAlign: 'left'
+                                    },
+                                    children: "Actions"
+                                }, void 0, false, {
+                                    fileName: "src/components/watchlist/WatchList.js",
+                                    lineNumber: 80,
+                                    columnNumber: 33
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "src/components/watchlist/WatchList.js",
-                            lineNumber: 48,
-                            columnNumber: 29
-                        }, this),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                            onClick: ()=>{
-                                remove_ticker(ticker_name);
-                            },
-                            children: "x"
-                        }, void 0, false, {
-                            fileName: "src/components/watchlist/WatchList.js",
-                            lineNumber: 49,
+                            lineNumber: 72,
                             columnNumber: 29
                         }, this)
-                    ]
-                }, ticker_name, true, {
-                    fileName: "src/components/watchlist/WatchList.js",
-                    lineNumber: 47,
-                    columnNumber: 25
-                }, this))
+                    }, void 0, false, {
+                        fileName: "src/components/watchlist/WatchList.js",
+                        lineNumber: 71,
+                        columnNumber: 25
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("tbody", {
+                        children: tickers.map((ticker_name)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _watchListItem.WatchListItem), {
+                                ticker_data: stockData[ticker_name] || null,
+                                removeTicker: remove_ticker
+                            }, void 0, false, {
+                                fileName: "src/components/watchlist/WatchList.js",
+                                lineNumber: 85,
+                                columnNumber: 33
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "src/components/watchlist/WatchList.js",
+                        lineNumber: 83,
+                        columnNumber: 25
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/watchlist/WatchList.js",
+                lineNumber: 70,
+                columnNumber: 21
+            }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/watchlist/WatchList.js",
-        lineNumber: 39,
+        lineNumber: 54,
         columnNumber: 9
     }, this);
 }
-_s(WatchList, "T/Pjbb3z+ejES8QYcD9CNAjQA4A=");
+_s(WatchList, "ohjmbfSUIXmHXRWgJRb6HLSFELI=");
 _c = WatchList;
 var _c;
 $RefreshReg$(_c, "WatchList");
@@ -61532,59 +61694,107 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "WatchListItem", ()=>WatchListItem);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-function WatchListItem({ ticker_data }) {
-    return ticker_data ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+function WatchListItem({ ticker_data, removeTicker }) {
+    return ticker_data ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("tr", {
         children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: "Ticker:"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data.ticker
+            }, void 0, false, {
+                fileName: "src/components/watchlist/WatchListItem.js",
+                lineNumber: 8,
+                columnNumber: 17
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.bid_price ? `${ticker_data.bid_price.toFixed(2)}` : 'N/A'
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchListItem.js",
                 lineNumber: 9,
                 columnNumber: 17
             }, this),
-            " ",
-            ticker_data.ticker,
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Bid:"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.ask_price ? `${ticker_data.ask_price.toFixed(2)}` : 'N/A'
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchListItem.js",
                 lineNumber: 10,
                 columnNumber: 17
             }, this),
-            " $",
-            ticker_data.bid_price.toFixed(2),
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Ask:"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.window_stats?.lower_band_2_sigma ? ticker_data.window_stats.lower_band_2_sigma.toFixed(2) : 'N/A'
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchListItem.js",
                 lineNumber: 11,
                 columnNumber: 17
             }, this),
-            " $",
-            ticker_data.ask_price.toFixed(2),
-            " |",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                children: " Timestamp:"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.window_stats?.one_min_ma ? ticker_data.window_stats.one_min_ma.toFixed(2) : 'N/A'
             }, void 0, false, {
                 fileName: "src/components/watchlist/WatchListItem.js",
                 lineNumber: 12,
                 columnNumber: 17
             }, this),
-            " ",
-            ticker_data.timestamp
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.window_stats?.higher_band_2_sigma ? ticker_data.window_stats.higher_band_2_sigma.toFixed(2) : 'N/A'
+            }, void 0, false, {
+                fileName: "src/components/watchlist/WatchListItem.js",
+                lineNumber: 13,
+                columnNumber: 17
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: ticker_data?.timestamp || 'N/A'
+            }, void 0, false, {
+                fileName: "src/components/watchlist/WatchListItem.js",
+                lineNumber: 14,
+                columnNumber: 17
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
+                style: {
+                    padding: '8px'
+                },
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                    onClick: ()=>removeTicker(ticker_data.ticker),
+                    children: "remove"
+                }, void 0, false, {
+                    fileName: "src/components/watchlist/WatchListItem.js",
+                    lineNumber: 16,
+                    columnNumber: 21
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/watchlist/WatchListItem.js",
+                lineNumber: 15,
+                columnNumber: 17
+            }, this)
         ]
-    }, void 0, true, {
+    }, ticker_data.ticker, true, {
         fileName: "src/components/watchlist/WatchListItem.js",
-        lineNumber: 8,
+        lineNumber: 7,
         columnNumber: 13
     }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: '"Waiting for updates..."'
     }, void 0, false, {
         fileName: "src/components/watchlist/WatchListItem.js",
-        lineNumber: 15,
-        columnNumber: 13
+        lineNumber: 21,
+        columnNumber: 9
     }, this);
 }
 _c = WatchListItem;
