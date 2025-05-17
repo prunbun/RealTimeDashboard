@@ -36,7 +36,7 @@
   background-image: linear-gradient(to bottom right, #c5005f71 25%, #ffa600d6);
   justify-content: center;
   width: 100vw;
-  height: 600px;
+  height: 800px;
   padding-top: 50px;
   display: flex;
 }
@@ -61,6 +61,108 @@
   box-shadow: 0 0 10px 2px #0003;
 }
 
+.IGrRxq_active_tab {
+  color: #c5005f;
+  background-color: #fff;
+  border-bottom: 3px solid #c5005f;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.IGrRxq_inactive_tab {
+  color: #000;
+  cursor: pointer;
+  background-color: #fff;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.IGrRxq_active_tab:first-child {
+  margin-right: 10px;
+}
+
+._6vvRFW_current_positions_header {
+  color: #c5005f;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+._6vvRFW_trade_button {
+  color: #fff;
+  padding: 10px;
+  background-image: linear-gradient(to bottom right, #c5005f 30%, #ffa600);
+  border: none;
+  border-radius: 5px;
+  padding-inline: 20px;
+  font-weight: bold;
+  transition: opacity .15s;
+  box-shadow: 0 0 10px 2px #0003;
+}
+
+._6vvRFW_trade_button:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+._6vvRFW_trade_button:active {
+  opacity: .5;
+  cursor: pointer;
+}
+
+._6vvRFW_reset_button {
+  color: #fff;
+  background-image: linear-gradient(to bottom right, #00c517, #00bbc5);
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  padding: 10px;
+  padding-inline: 20px;
+  font-weight: bold;
+  transition: opacity .15s;
+  box-shadow: 0 0 10px 2px #0003;
+}
+
+._6vvRFW_reset_button:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+._6vvRFW_reset_button:active {
+  opacity: .5;
+  cursor: pointer;
+}
+
+._6vvRFW_radio_option_text {
+  color: #686868;
+  background-color: #fff;
+  border: none;
+  font-weight: bold;
+}
+
+._6vvRFW_trading_gateway_box {
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  height: 150px;
+  margin-top: 10px;
+  padding-left: 20px;
+  display: flex;
+  box-shadow: 0 0 10px 1px #0003;
+}
+
+._6vvRFW_current_positions_box {
+  background-color: #fff;
+  flex-direction: column;
+  height: 300px;
+  margin-top: 10px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  box-shadow: 0 0 10px 1px #0003;
+}
+
 .CwcWMa_header {
   margin-bottom: 10px;
   font-size: 36px;
@@ -72,52 +174,61 @@
   display: inline-block;
 }
 
-._6vvRFW_trade_button {
-  color: #fff;
-  padding: 10px;
-  background-image: linear-gradient(to bottom right, #c5005f 30%, #ffa600);
-  border: none;
-  border-radius: 10px;
-  width: 150px;
-  padding-inline: 20px;
-  font-size: 15px;
+.CwcWMa_overview_stats_row {
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 20px;
+  display: grid;
+}
+
+.CwcWMa_numeric_stat_box {
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  height: 80px;
+  margin-top: 10px;
+  padding-left: 20px;
+  display: flex;
+  box-shadow: 0 0 10px 1px #0003;
+}
+
+.CwcWMa_stat_box_header {
+  color: #c5005f;
+  font-size: 16px;
   font-weight: bold;
-  transition: opacity .15s;
-  box-shadow: 0 0 10px 2px #0003;
-}
-
-._6vvRFW_trade_button:hover {
-  opacity: .8;
-}
-
-._6vvRFW_trade_button:active {
-  opacity: .5;
-}
-
-._6vvRFW_reset_button {
-  color: #fff;
-  background-image: linear-gradient(to bottom right, #00c517, #00bbc5);
-  border: none;
-  border-radius: 10px;
-  width: 150px;
-  margin-right: 10px;
-  padding: 10px;
-  padding-inline: 20px;
-  font-size: 15px;
-  font-weight: bold;
-  transition: opacity .15s;
-  box-shadow: 0 0 10px 2px #0003;
-}
-
-._6vvRFW_reset_button:hover {
-  opacity: .8;
-}
-
-._6vvRFW_reset_button:active {
-  opacity: .5;
 }
 
 ._2sB-Ta_header {
+  font-size: 36px;
+}
+
+._2sB-Ta_remove_button {
+  color: #c5005f;
+  background-color: #fff;
+  border: none;
+  font-weight: bold;
+}
+
+._2sB-Ta_remove_button:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+._2sB-Ta_remove_button:active {
+  opacity: .5;
+}
+
+._1aH8VG_historical_chart {
+  background-color: #fff;
+  border-radius: 10px;
+  height: 80%;
+  margin-inline: 20px;
+  padding: 30px;
+  box-shadow: 0 0 10px 2px #0003;
+}
+
+._1aH8VG_header {
+  margin-bottom: 10px;
   font-size: 36px;
 }
 /*# sourceMappingURL=index.2212206d.css.map */

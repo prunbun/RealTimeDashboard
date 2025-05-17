@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { PortfolioItem } from "./PortfolioItem";
+import styles from '../../style_modules/Portfolio.module.css'
 
 export function CurrentPositions({accountData, positions, stockData}) {
 
@@ -49,21 +50,29 @@ export function CurrentPositions({accountData, positions, stockData}) {
 
     
 
-    return (
-        <div>
-            <h1>Current Positions</h1>
-            {tickerKeys.length > 0 ? 
-                (
-                    tickerKeys.map((key) => {
-                        return <PortfolioItem key={key} userPositionInfo={positionInfo[key]} />
-                    })
-                )
-                :
-                (
-                    <p>No user positons!</p>
-                )
-
-            }
-        </div>
-    )
+  return (
+    <div style={{width: 500}}>
+      {tickerKeys.length > 0 ? (
+        <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+          <thead>
+            <tr>
+              <th style={{ width: '15%', borderBottom: '1px solid #ccc', padding: '8px', textAlign: 'left' }}> Ticker</th>
+              <th style={{ width: '15%', borderBottom: '1px solid #ccc', padding: '8px', textAlign: 'left' }}> Qty</th>
+              <th style={{ width: '20%', borderBottom: '1px solid #ccc', padding: '8px', textAlign: 'left' }}> Basis</th>
+              <th style={{ width: '20%', borderBottom: '1px solid #ccc', padding: '8px', textAlign: 'left' }}> % Change</th>
+              <th style={{ width: '30%', borderBottom: '1px solid #ccc', padding: '8px', textAlign: 'left' }}> Unrealized P/L</th>
+              {/* Add more headers if needed */}
+            </tr>
+          </thead>
+          <tbody>
+            {tickerKeys.map((key, index) => (
+              <PortfolioItem key={key} positionData={positionInfo[key]} index = {index} />
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No user positions!</p>
+      )}
+    </div>
+  );
 }

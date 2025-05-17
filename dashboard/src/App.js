@@ -29,6 +29,11 @@ export function App() {
 
     const socket = useRef(null)
     const [stockData, setStockData] = useState({});
+    const [activeTab, setActiveTab] = useState('realtime');
+
+    const handleTabClick = (tabName) => {
+        setActiveTab(tabName);
+    };
     
     useEffect(() => {
 
@@ -71,16 +76,34 @@ export function App() {
     return (
         <div className={styles.app}>
             <NavBar />
-            <div className={styles.main1}>
-                <div className={styles.watchlist}>
-                    <WatchList stockData={stockData} />
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div
+                    className={activeTab === 'realtime' ? styles.active_tab : styles.inactive_tab}
+                    onClick={() => handleTabClick('realtime')}
+                >
+                    Real Time
                 </div>
-                <div className={styles.account_overview}>
-                    <Portfolio stockData={stockData} />
+                <div
+                    className={activeTab === 'historical' ? styles.active_tab : styles.inactive_tab}
+                    onClick={() => handleTabClick('historical')}
+                >
+                    Historical
                 </div>
             </div>
+            <div className={styles.main1}>
+                {activeTab === 'realtime' && (
+                    <>
+                        <div className={styles.watchlist}>
+                            <WatchList stockData={stockData} />
+                        </div>
+                        <div className={styles.account_overview}>
+                            <Portfolio stockData={stockData} />
+                        </div>
+                    </>
+                )}
+                {activeTab === 'historical' && (<HistoricalPricesChart />)}
+            </div>
 
-            <HistoricalPricesChart />
         </div>
     );
 }

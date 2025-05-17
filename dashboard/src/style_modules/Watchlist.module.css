@@ -2,3 +2,19 @@
     font-size: 36;
 }
 
+.remove_button {
+    color: #C5005F;
+    font-weight: bold;
+    background-color: white;
+    border: none;
+}
+
+.remove_button:hover {
+    opacity: 0.8;
+    cursor: pointer; 
+}
+
+.remove_button:active {
+    opacity: 0.5;
+}
+

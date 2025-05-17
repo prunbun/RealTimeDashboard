@@ -10,7 +10,7 @@
     justify-content: center;
     width: 100vw;
     background-image: linear-gradient(to bottom right, #c5005f71 25%, rgba(255, 166, 0, 0.841));
-    height: 600px;
+    height: 800px;
     padding-top: 50px;
 }
 
@@ -32,4 +32,25 @@
     height: 80%;
     background-color: white;
     box-shadow: 0px /*l-r*/ 0px /*up-down*/ 10px /*blur*/ 2px/*spread*/ rgba(0, 0, 0, 0.2 /*opacity*/);
+}
+
+.active_tab {
+    color: #C5005F;
+    background-color: white;
+    font-weight: bold;
+    border-bottom: 3px solid #C5005F;   
+    padding: 10px 20px;
+}
+
+.inactive_tab {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+/* Add some spacing between the tabs */
+.active_tab:first-child {
+    margin-right: 10px;
 }

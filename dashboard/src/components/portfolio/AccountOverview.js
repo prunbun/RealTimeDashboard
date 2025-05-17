@@ -33,10 +33,20 @@ export function AccountOverview({accountData, positions, stockData}) {
         accountData ? (
             <div>
                 <div className={styles.header}>Account Overview</div>
-                <div> <span className={styles.value_name}>Account ID</span>| {accountData.account_id} </div>
-                <div> <span className={styles.value_name}>Net Liquidity</span>| ${netLiquidity.toFixed(2)} </div>
-                <div> <span className={styles.value_name}>Available Cash</span>| ${accountData.available_cash.toFixed(2)} </div>
-                <div> <span className={styles.value_name}>Net Profit</span>| ${accountData.net_profit.toFixed(2)} </div>
+                <div className={styles.overview_stats_row}>
+                    <div className={styles.numeric_stat_box}>
+                        <div className={styles.stat_box_header}>NET LIQUIDITY</div>
+                        <div>$ {netLiquidity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                    </div>
+                    <div className={styles.numeric_stat_box}>
+                        <div className={styles.stat_box_header}>AVAILABLE CASH</div>
+                        <div>$ {accountData.available_cash.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                    </div>
+                    <div className={styles.numeric_stat_box}>
+                        <div className={styles.stat_box_header}>NET PROFIT</div>
+                        <div>$ {accountData.net_profit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                    </div>
+                </div>
             </div>
         ) : (
             <p>Loading account details...</p>

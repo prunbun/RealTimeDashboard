@@ -1,5 +1,6 @@
 import React, { useState, useEffect, PureComponent } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import styles from '../../style_modules/HistoricalChart.module.css'
 
 import { AVAILABLE_TICKERS, TimeInterval, BucketInterval, BUCKET_OPTIONS } from "../../constants";
 const CHART_TICKERS = [...AVAILABLE_TICKERS]
@@ -141,41 +142,49 @@ export function HistoricalPricesChart() {
 
 
     return (
-        <div>
-            <label>Ticker: </label>
-            <select value={ticker} onChange={(ticker_input) => setTicker(ticker_input.target.value)}>
-                <option value="">--</option> 
-                {CHART_TICKERS.map(choice => <option key={choice} value={choice}>{choice}</option>)}
-            </select>
+        <div className={styles.historical_chart}>
+            <div className={styles.header}>Historical Price Chart</div>
+            <div style={{display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 50}}>
+                <div style={{display: 'flex', gap: 15}}>
+                    <label style={{fontWeight: 'bold', color: "#686868", fontSize: 15}}>Ticker: </label>
+                    <select value={ticker} onChange={(ticker_input) => setTicker(ticker_input.target.value)}>
+                        <option value="">--</option> 
+                        {CHART_TICKERS.map(choice => <option key={choice} value={choice}>{choice}</option>)}
+                    </select>
+                </div>
 
-            <div>
-                <label>Time Interval: </label>
-                {
-                    Object.values(TimeInterval).map((interval) => (
-                        <label key={interval} style={{marginRight:"10px"}}>
-                            <input 
-                                type="radio"
-                                value={interval}
-                                checked={timeframe === interval}
-                                onChange={() => {
-                                    setTimeFrame(interval);
-                                    setBucket(BUCKET_OPTIONS[interval][0]);
-                                }}
-                            />
-                            {interval}
-                        </label>
-                    ))
-                }
+                <div>
+                    <label style={{fontWeight: 'bold', color: "#686868", fontSize: 15}}>Time Interval: </label>
+                    {
+                        Object.values(TimeInterval).map((interval) => (
+                            <label key={interval} style={{marginRight:"10px"}}>
+                                <input 
+                                    type="radio"
+                                    value={interval}
+                                    checked={timeframe === interval}
+                                    onChange={() => {
+                                        setTimeFrame(interval);
+                                        setBucket(BUCKET_OPTIONS[interval][0]);
+                                    }}
+                                />
+                                {interval}
+                            </label>
+                        ))
+                    }
+                </div>
+
+                <div>
+                    <label style={{fontWeight: 'bold', color: "#686868", fontSize: 15}} >Bucket Interval: </label>
+                    <select value={bucket} onChange={(bucket_input) => setBucket(bucket_input.target.value)}>
+                        {(BUCKET_OPTIONS[timeframe] || []).map((bucket_option => (
+                            <option key={bucket_option} value={bucket_option}>{bucket_option}</option>
+                        )))}
+
+                    </select>
+                </div>
+
+
             </div>
-
-            <label>Bucket Interval: </label>
-            <select value={bucket} onChange={(bucket_input) => setBucket(bucket_input.target.value)}>
-                {(BUCKET_OPTIONS[timeframe] || []).map((bucket_option => (
-                    <option key={bucket_option} value={bucket_option}>{bucket_option}</option>
-                )))}
-
-            </select>
-
             <div style={{height:300, width:800}}>
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart

@@ -83,11 +83,18 @@ export function Portfolio({stockData}) {
     return (
         <div>
             <AccountOverview accountData={accountData} positions={positions} stockData={stockData} />
-            <CurrentPositions accountData={accountData} positions={positions} stockData={stockData} />
-            <button className={styles.reset_button} onClick={() => resetAccount()}>Reset Account</button>
-            <button className={styles.trade_button} onClick={() => setTradePopupOpen(true)}>Trade Portal</button>
-            {tradePopupOpen && (<TradePopup onSubmit={placeTrade} onClose={() => setTradePopupOpen(false)}/>)}
-            <AllocationPie positions={memoizedPositions}/>
+            {/* <button className={styles.reset_button} onClick={() => resetAccount()}>Reset Account</button> */}
+            {/* <button className={styles.trade_button} onClick={() => setTradePopupOpen(true)}>Trade Portal</button> */}
+            <TradePopup onSubmit={placeTrade} onReset={resetAccount}/>
+            <div className={styles.current_positions_box}>
+                <div className={styles.current_positions_header}>
+                    CURRENT POSITIONS
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20}}>
+                    <CurrentPositions accountData={accountData} positions={positions} stockData={stockData} />
+                    <AllocationPie positions={memoizedPositions}/>
+                </div>
+            </div>
             
         </div>
     )

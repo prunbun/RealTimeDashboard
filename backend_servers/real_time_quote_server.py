@@ -5,7 +5,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from contextlib import asynccontextmanager
 from database_utils.redis_client import ConsumerRedisClient, RedisChannel
 from collections import defaultdict, deque
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import numpy as np
 import traceback
 
@@ -47,22 +47,28 @@ class QuotesWebsocketServer(ConsumerRedisClient):
             self.one_min_moving_averages[ticker][1] += mid_price
             self.one_min_moving_averages[ticker][2] += 1
 
+
+        incoming_time = datetime.fromisoformat(timestamp_string)
+        # time_difference = datetime.now(timezone.utc) - incoming_time
+        # print(f"Incoming vs Current Time Diff: {time_difference}")
+        time_difference = incoming_time - datetime.fromisoformat(self.one_min_moving_averages[ticker][0][0][0])
+        print(f"Incoming vs Oldest Window Time Diff: {time_difference}")
+
         # clean out queue and compute current moving average
-        one_minute_ago = datetime.now() - timedelta(minutes=1)
+        # one_minute_ago = datetime.now(timezone.utc) - timedelta(seconds=15)
+        one_minute_ago = incoming_time - timedelta(seconds=15)
         print('WINDOW HEALTH:', self.one_min_moving_averages[ticker][1], self.one_min_moving_averages[ticker][2])
         while self.one_min_moving_averages[ticker][0] and datetime.fromisoformat(self.one_min_moving_averages[ticker][0][0][0]) < one_minute_ago:
-
             old_timestamp, old_mid_price = self.one_min_moving_averages[ticker][0].popleft()
             self.one_min_moving_averages[ticker][1] -= old_mid_price
             self.one_min_moving_averages[ticker][2] -= 1
             
-
         one_min_moving_average = 0
         standard_deviation = 0
         if self.one_min_moving_averages[ticker][2]:
             one_min_moving_average = self.one_min_moving_averages[ticker][1] / self.one_min_moving_averages[ticker][2]
             standard_deviation = np.std(list(map(lambda x: x[1], self.one_min_moving_averages[ticker][0]))).item()
-        print('STATS', ticker, one_min_moving_average, standard_deviation)
+
         message['window_stats'] = {
             'one_min_ma': one_min_moving_average,
             'higher_band_2_sigma': one_min_moving_average + 2 * standard_deviation,
@@ -74,7 +80,10 @@ class QuotesWebsocketServer(ConsumerRedisClient):
         # print('server pubsub received:', message)
 
         ticker = message['ticker']
-        self._compute_moving_average(message)
+        try:
+            self._compute_moving_average(message)
+        except Exception as e:
+            traceback.print_exc()
         print('computed stats', message)
 
         try:
