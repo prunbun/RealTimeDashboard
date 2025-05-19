@@ -11,7 +11,10 @@
 - [Tradeoffs and Future Items](./README.md#tradeoffs-and-future-items)
 
 ## Introduction
+In this project, I explore how to build a real-time data streaming pipeline featuring a dashboard with a watchlist, P/L tracking, a trading gateway, and a historical prices chart. The code implements the data flow end-to-end, starting from receiving market data from the IEX exchange to displaying it dynamically on a dashboard with real-time updates. In the following sections, we break down the overall system design followed by deep-dives into each component and insights drawn from the implemention process. Lastly, we will recap the tradeoffs this project made as well as future extensions that are possible.
 
+![](RealTimeDashboardExample.png)
+![](HistoricalDashboardExample.png)
 
 
 - pip3 install websocket
