@@ -29,6 +29,41 @@ The table below describes the stack and function of each component, further deta
 | Database            | Postgres, SQL, TimeScale | Stores application state including user account info and time-bucketed market prices            |
 | Dashboard           | React, Websockets        | Displays data in a meaningful way for a trader, including a watchlist, P/L tracking, and metrics|
 
+## Market Data
+
+### Brokerage Background Info
+Typically, software cannot directly access exchanges; instead, brokers like Alpaca act as the middleman and provide access to market data through an API. This can be thought of as the 'data source' in a real-time data pipeline and could very well also be sensor data etc. in other fields and applications. In this case (through the free account), the IEX exchange provides several pieces of information regarding instrument prices including: historical bars (open, high, low, close), quotes (bid, ask, volume, status), and trades. For the purposes of this project, we use the historical bars (for historical price charts) and quotes streaming (for real-time data).
+
+### Websockets Explained
+In a naive approach, an application might want to keep checking the current stock price every `X` number of seconds in a process called 'polling'. But polling can be inefficient for several reasons, including wasting time, flooding the server with too many requests, and limiting the application data input rate to the worst-case polling increment. Instead, real-time applications would much rather use an 'event-driven' architecture. This can be done in three ways:
+
+1. WebHooks: Client gives the server a public endpoint saying 'Whenever your event data is ready, send a message to this endpoint!'
+   1. These are good for a lot of async applications, uni-directional, and with clients that are okay to expose a public endpoint
+2. WebSockets: Establish a long-running *bi-directional* TCP connection through an `UPGRADE` message
+   1. Pros: low-latency, reduced HTTP overhead, in which the client can also send messages to the server to modify server state
+   2. Cons: connections need to be re-established if the client ever disconnects and its hard to manage a lot of active websocket connections at scale
+3. HTTP Streaming: Client sends a request to the server, which responds with an infinitely long response
+   1. Typically uni-directional and data arrives in chunks
+ 
+### Streaming in the Project
+In this use-case, WebSockets was offered by the Alpaca API, but to communicate between the backend server and dashboard, WebSockets were also used there to allow the dashboard to (potentially) subscribe and unsubscribe to certain tickers. Note that when establishing a WebSocket connection with Alpaca, all tickers that you want to listen to need to be specified in advance and provided an async message handler; so in this case, because I had only a few tickers I was tracking, I chose to fetch all data at once and have the dashboard only selectively show data based on user preferences.
+
+#### WebSockets for Data Ingestion
+Below, I have included simplified snippets of the core logic:
+
+```python
+async def store_and_publish(self, key: str, data_dict, channels: list[RedisChannel], keyspace:str = 'ticker'):
+    self.redis_client.set(f"{keyspace}:{key}", json.dumps(data_dict))
+    
+    for channel in channels:
+        self.redis_client.publish(channel.value, json.dumps(data_dict))
+
+self.alpaca_client = StockDataStream(ALPACA_API_KEY, ALPACA_SECRET_KEY, raw_data=True)
+self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers)) 
+self.alpaca_client.run()
+await self.redis_client.store_and_publish(key=data['S'], data_dict=quote_dict, channels=[RedisChannel.QUOTE_UPDATES])
+```
+
 
 - pip3 install websocket
 - pip install aiolimiter
