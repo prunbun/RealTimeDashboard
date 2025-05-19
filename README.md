@@ -1,4 +1,15 @@
-# RealTimeDashboard
+# A Real-Time Trading Dashboard 
+
+## Contents
+- [Introduction](./README.md#introduction)
+- [System Design](./README.md#system-design)
+- [Market Data](./README.md#market-data)
+- [Data Pipeline](./README.md#data-pipeline)
+- [Database Tables](./README.md#database-tables)
+- [Backend Servers](./README.md#backend-servers)
+- [Dashboard](./README.md#dashboard)
+- [Future Work](./README.md#future-work)
+
 
 - pip3 install websocket
 - pip install aiolimiter
