@@ -3,11 +3,11 @@
 ## Contents
 - [Introduction](./README.md#introduction)
 - [System Design](./README.md#system-design)
-- [Market Data](./README.md#market-data)
-- [Data Pipeline](./README.md#data-pipeline)
-- [Database Tables](./README.md#database-tables)
-- [Backend Servers](./README.md#backend-servers)
-- [Dashboard](./README.md#dashboard)
+- [Part 1: Market Data](./README.md#market-data)
+- [Part 2: Data Pipeline](./README.md#data-pipeline)
+- [Part 3: Database Tables](./README.md#database-tables)
+- [Part 4: Backend Servers](./README.md#backend-servers)
+- [Part 5: Dashboard](./README.md#dashboard)
 - [Tradeoffs and Future Items](./README.md#tradeoffs-and-future-items)
 
 ## Introduction
