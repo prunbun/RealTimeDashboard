@@ -16,6 +16,19 @@ In this project, I explore how to build a real-time data streaming pipeline feat
 ![](RealTimeDashboardExample.png)
 ![](HistoricalDashboardExample.png)
 
+## System Design
+
+In this section, we discuss the system design at a high level. Note that this stack mainly uses Postgres SQL, Python, and React
+
+The table below describes the stack and function of each component, further details regarding the design are discussed in each respective section.
+
+| Component           | Specification            | Description                                                                                     |
+|---------------------|--------------------------|-------------------------------------------------------------------------------------------------|
+| Data Ingestor       | Alpaca API               | Creates a connection with the exchange through the broker middleman and streams live prices     |
+| Backend Servers     | Redis Pub/Sub, Fast API  | Receives the streamed data into the backend ecosytem and delivers data to subscribed components |
+| Database            | Postgres, SQL, TimeScale | Stores application state including user account info and time-bucketed market prices            |
+| Dashboard           | React, Websockets        | Displays data in a meaningful way for a trader, including a watchlist, P/L tracking, and metrics|
+
 
 - pip3 install websocket
 - pip install aiolimiter
