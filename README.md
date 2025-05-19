@@ -49,20 +49,48 @@ In a naive approach, an application might want to keep checking the current stoc
 In this use-case, WebSockets was offered by the Alpaca API, but to communicate between the backend server and dashboard, WebSockets were also used there to allow the dashboard to (potentially) subscribe and unsubscribe to certain tickers. Note that when establishing a WebSocket connection with Alpaca, all tickers that you want to listen to need to be specified in advance and provided an async message handler; so in this case, because I had only a few tickers I was tracking, I chose to fetch all data at once and have the dashboard only selectively show data based on user preferences.
 
 #### WebSockets for Data Ingestion
-Below, I have included simplified snippets of the core logic:
 
 ```python
+# cache the data by ticker (key) and publish on all channels (topics)
 async def store_and_publish(self, key: str, data_dict, channels: list[RedisChannel], keyspace:str = 'ticker'):
     self.redis_client.set(f"{keyspace}:{key}", json.dumps(data_dict))
     
     for channel in channels:
         self.redis_client.publish(channel.value, json.dumps(data_dict))
 
+# establish the connection
 self.alpaca_client = StockDataStream(ALPACA_API_KEY, ALPACA_SECRET_KEY, raw_data=True)
 self.alpaca_client.subscribe_quotes(self.quote_data_handler, *(tickers)) 
 self.alpaca_client.run()
+
+# preprocess the received data and send it to the producer component that will notifiy all listeners
 await self.redis_client.store_and_publish(key=data['S'], data_dict=quote_dict, channels=[RedisChannel.QUOTE_UPDATES])
 ```
+
+#### WebSockets for Dashboard Updates
+```javascript
+// establish the connection with server
+socket.current = new WebSocket("ws://localhost:8000/ws");
+const socket_obj = socket.current;
+
+// message handling
+const handle_message = (message) => {
+    const data = JSON.parse(message.data); // we get a message object, from which we need message.data
+
+    setStockData( (prevData) => {
+        const updated_data = {...prevData, [data.ticker]: {...data, timestamp: formatTime(data.timestamp)}};
+        localStorage.setItem('watchlist_stock_data', JSON.stringify(updated_data));
+        return updated_data;
+    });
+};
+
+// add the event listener
+socket_obj.addEventListener("message", handle_message);
+```
+
+## Data Pipeline
+There are several preprocessing steps the data must go through before being made available for clients to receive / query.
+
 
 
 - pip3 install websocket
