@@ -8,7 +8,10 @@
 - [Database Tables](./README.md#database-tables)
 - [Backend Servers](./README.md#backend-servers)
 - [Dashboard](./README.md#dashboard)
-- [Future Work](./README.md#future-work)
+- [Tradeoffs and Future Items](./README.md#tradeoffs-and-future-items)
+
+## Introduction
+
 
 
 - pip3 install websocket
