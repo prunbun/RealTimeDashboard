@@ -136,6 +136,32 @@ quote_dict = {
 
 ## Database Tables
 
+There are 4 core tables the dashboard uses; the schemas are fairly straightforward and queries used for setup are included in `database_utils/db.sql`. Below, I provide some notes on interesting design choices.
+
+### Time Series Data
+
+`quotes_time_series` is the core table here. Essentially for each (ticker, timestamp) combo, it generates a unique id and stores it along with other info, such as those found in the `quote_dict` above. Few things to note here:
+
+- Postgres actually supports the timestamp data-type which is very useful for timeseries data
+- Because of the large scale of data, I put an expiration date of 1 week, which query I could run to clean out the database manually at a later time
+- The data was also aggregated into smaller batches on the server side as it consumed from the stream and inserted periodically for efficiency; the tradeoff was that the batches themselves were in memory and would be lost if the server was halted abruptly, but the batches were fairly small.
+- A separate MATERIALIZED VIEW, `quotes_minute_buckets` was also created using Timescale DB continuous aggregates to help make the data more usable for calculations; the granularity set was 1 minute buckets 
+
+### Account and Trade Data
+
+Here, there are 3 core tables:
+
+1. `user_info`: Contains information regarding a unique user id and login information. This is a possible route for future work, learning how to make secure accounts. 
+2. `trading_account_info`: Core trading account diagnostic info such as available cash, P/L, and liquidity. The trading gateway directly interacts with this table for updating the results of placed trades and risk monitoring.
+3. `user_positions`: Info regarding the user's nonzero holdings. As trades are placed and the user either opens or closes positions, this table is updated and referenced for dashboard metrics. 
+
+> NOTES
+> In the user_info table, a user id must be unique, password hashes are also stored with salts. Currently, there is only one testing user, `honeykiwi`.
+> For the trading account, because it is a paper trading account, it can be reset. It doesn't fully connect with the exchange, but it would be a very simple extension to simply forward the trades entered into user_positions to the Alpaca client along with generated API keys from their website.
+> The `user_positions` table enforces a CONSTRAINT that each data record must have a unique (user_id, ticker) combination to avoid any bookkeeping issues.
+
+## Backend Servers
+
 
 - pip3 install websocket
 - pip install aiolimiter
