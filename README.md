@@ -156,8 +156,11 @@ Here, there are 3 core tables:
 3. `user_positions`: Info regarding the user's nonzero holdings. As trades are placed and the user either opens or closes positions, this table is updated and referenced for dashboard metrics. 
 
 > NOTES
+> 
 > In the user_info table, a user id must be unique, password hashes are also stored with salts. Currently, there is only one testing user, `honeykiwi`.
+> 
 > For the trading account, because it is a paper trading account, it can be reset. It doesn't fully connect with the exchange, but it would be a very simple extension to simply forward the trades entered into user_positions to the Alpaca client along with generated API keys from their website.
+> 
 > The `user_positions` table enforces a CONSTRAINT that each data record must have a unique (user_id, ticker) combination to avoid any bookkeeping issues.
 
 ## Backend Servers
