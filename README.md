@@ -231,22 +231,66 @@ In this section, I detail additional notes on tradeoffs and possible extensions 
 ### Market Data
 
 **Tradeoffs:** 
+
+- Equitable Leaky Bucket: Better distribution, more latency
+- Free-tier Broker: Not using most popular exchanges, data is likely not ultra-low latency
+- Redis Pub/Sub over alternatives: very simple to setup, but it is in-memory key-value store
+</br>
+
 **Extensions:** 
+
+- Incorporating more tickers and instruments
+- Leveraging time-buckets to do additional analysis using Pandas or window functions
+- Splitting up clients into individual sectors of tickers to avoid cluttering a single stream
 
 ### Backend
 
 **Tradeoffs:** 
+- Single websocket connection for all tickers: simplifies logic significantly but pushes filtering responsibility onto client, can be poor performance on edge devices (there is a subscribe/unsubscribe refactor I tried to make, little bit hard to get right)
+- Impressive modularization using the RedisClient base class with the async message handler
+
+</br>
+
 **Extensions:** 
+
+- Risk Engine: My proposed algorithm for an example metric (VaR) is below!
+
+> Example Value at Risk (VaR) risk calculation algorithm
+> 1. Risk engine has queues for every ticker the user currently has a position in
+> 2. At init, queries latest 60 minute-bars, calculates returns/differentials using pandas and also stores the latest price, calculates worst 5% return and sends snapshot of all percentages to the client in the web socket stream
+> 3. Subscribe to minute-bars from the exchange and every time a new price comes in for something in our portfolio, recalculate, so T * nlogn op for n = 60 ; T = num_unique_tickers_in_portfolio, if len(queue) > 60, popleft the queue before calculating so we have the latest window, update latest price
+> 4. Each time the user places a trade in the trading gateway, refresh the position, if it has disappeared, free the queue, if we are trading a new one, do step 2 for the newest ticker, else, do nothing (since client calculates the final VaR value)
+> 
+> - tradeoff might be having a global risk engine vs. an individual one per client, tradeoff is doing repeated work and refetching each time a client connects, extra logic
+> - upside of customized risk engine is faster updates bc less tickers, more granular control over hyperparameters like window, bucket size, percentiles, and method of calculations
 
 ### Database
 
 **Tradeoffs:** 
+
+- Stores price data and all user positions: fairly efficient, although estimating storage size and data retention policies must be done carefully to allow for scaling 
+
+</br>
+
 **Extensions:** 
+
+- Add capability for user logins and cookies
+- Offer end-to-end trading capability with Alpaca API paper trading (or a full brokerage account!) and use the database state to build out a full trading application (very ambitious, but useful extension!)
+- Look into database security with different 'admins' having access to only certain tables and assigning only certain admin credentials to server files (like AWS IAM roles)
 
 ### Dashboard
 
 **Tradeoffs:** 
+
+- Recalculating unrealized PnL on the fly: slows down client but unfeasible for backend to calculate for every price update per client
+
+</br>
+
 **Extensions:** 
+
+- Risk Metrics: VaR, Maximum Drawdown, Entry/Exit indicators
+- Charting: Moving average and real-time updating charting, volume bars, risk metrics indicators
+- Limit Orders: Offering users to place real trades and executing them at a certain price and displaying trade history
 
 - pip3 install websocket
 - pip install aiolimiter
@@ -388,10 +432,4 @@ line charting
 
 <br>
 
-1. risk engine has queues for every ticker the user currently has a position in
-2. at init, queries latest 60 minute-bars, calculates returns/differentials using pandas and also stores the latest price, calculates worst 5% return and sends snapshot of all percentages to the client in the web socket stream
-3. Subscribe to minute-bars from the exchange and every time a new price comes in for something in our portfolio, recalculate, so T * nlogn op for n = 60 ; T = num_unique_tickers_in_portfolio, if len(queue) > 60, popleft the queue before calculating so we have the latest window, update latest price
-4. Each time the user places a trade in the trading gateway, refresh the position, if it has disappeared, free the queue, if we are trading a new one, do step 2 for the newest ticker, else, do nothing (since client calculates the final VaR value)
 
-- tradeoff might be having a global risk engine vs. an individual one per client, tradeoff is doing repeated work and refetching each time a client connects, extra logic
-- upside of customized risk engine is faster updates bc less tickers, more granular control over hyperparameters like window, bucket size, percentiles, and method of calculations
