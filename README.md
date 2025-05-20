@@ -112,14 +112,14 @@ This method enqueues the message into the message queue accessed by `leak()`, bu
 #### async def refresh()
 This is where the magic occurs! We could set the threshold used in the `accept()` method to be fixed, however, that wouldn't respect the burst nature of the incoming stream. Instead, we can make this threshold dynamic! When the length of the queue is under some `IDLE_CAPACITY`, the longer it stays there, the more likely a burst is incoming. To accomodate this, at a `refresh_rate` we increase the accept threshold indefinitely until the burst arrives. When the burst finally arrives, we can accomodate up to the new accept threshold. At this point, the queue is likely much longer than the `IDLE_CAPACITY`, and `refresh()` does nothing here. Instead, whenever, `leak()` triggers, it sets the threshold to be `max(current_threshold - 1, IDLE_CAPACITY)`, this way, if the threshold is currently high due to burst, it will accommodate and slowly shrink it, otherwise, it will make sure it is at least at the `IDLE_CAPACITY` when in 'normal' mode.
 
-## Topic Listeners
+### Topic Listeners
 The second major challenge is being able to deliver messages on an event-driven basis to all the components of the system. Redis Pub/Sub is one such method! Essentially, there are message topics that producers can publish to and listeners can subscribe to. When a message is sent to the topic, all listeners are notified at once! This way, each time we `leak()` a message for a particular ticker, we will push it to the `QUOTES_UPDATES` topic and all data pipelines that depend on quotes data will be notified.
 
 </br>
 
 Each listener to these topics must implement their own form of event-driven logic. The magic happens using the Python `asyncio` package and the keywords `await` and `yield`. Essentially, the consumer will run an infinite loop in which they wait to run logic until a message arrives and when that data arrives, the main loop unblocks. But we don't want the program to hang when this function is called just waiting for a message, we want it to give up control to the Python main thread to execute other functions while we wait. Here, we have a helper function spawn a thread and `await` the message from the topic and subsequently `yield` it; while we await, the main Python thread is free to work on other tasks (requests in the case of a server)!
 
-## Data Cleaning
+### Data Cleaning
 
 As with any timeseries data, we will need to clean it from the raw format and produce a dict consumable by any applications. In this case, the data is eventually cleaned to be in this format:
 
