@@ -214,6 +214,40 @@ I choose to implement the logic assuming an average cost basis over the course o
 
 ## Dashboard
 
+The final component is the dashboard itself. It is built in React, which helps greatly to re-render only the components that have state changes. This is very helpful as when new data comes in, the entire page doesn't continuously reload repeatedly but rather has fast updates, perfect for a real-time dashboard. The dashboard itself has a few main features which are highlighted below. Please note that a full view of the dashboard is provided in the `.png` images in the introduction and also included in the root directory of the project. Traders use a combination of real-time, historical, and analytical data to make trading decisions and this dashboard aims to replicate what a trader might use day-to-day.
+
+### Watchlist
+This is a classic component in any trading dashboard. This is updated in real-time with bid and ask prices as well as moving average bands. Remember that the Leaky Bucket algorithm allows for equitable updates between all the listed tickers and their respective timestamps are also displayed for the latest updates. Generally, a separate risk engine would be running for each ticker per client in a more complex system.
+
+### Account Overview
+Lists critical account information like the cash balance, current portfolio holdings, and a trading gateway portal that will execute trades at the best available market prices. One of the coolest features here is the unrealized P/L metric which allows one to see the value of their portfolio components according to current market prices before placing trades!
+
+### Historical Pricing Chart
+This component leverages the `backend_servers/historical_bars_server.py` to query historical prices through the Alpaca API. Data can be displayed by `Ticker`, `Time Interval` (range of data), and the `Bucket Interval` (aggregated bucket size for prices). The chart itself is built through the ReCharts package which has great animations for new charts and smoothly renders huge amounts of data points, even the daily chart over a year! It comes with a nice tooltip to view the data from Alpaca including the Open (O), High (H), Low (L), Close (C) bars per bucket interval within the range.
+
+## Tradeoffs and Future Items
+In this section, I detail additional notes on tradeoffs and possible extensions to each component of this project.
+
+### Market Data
+
+**Tradeoffs:** 
+**Extensions:** 
+
+### Backend
+
+**Tradeoffs:** 
+**Extensions:** 
+
+### Database
+
+**Tradeoffs:** 
+**Extensions:** 
+
+### Dashboard
+
+**Tradeoffs:** 
+**Extensions:** 
+
 - pip3 install websocket
 - pip install aiolimiter
 - brew install postgresql@17
