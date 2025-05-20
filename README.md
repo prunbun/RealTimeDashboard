@@ -4,7 +4,7 @@
 - [Introduction](./README.md#introduction)
 - [System Design](./README.md#system-design)
 - [Part 1: Market Data](./README.md#market-data)
-- [Part 2: Data Pipeline](./README.md#data-pipeline)
+- [Part 2: Stream Handling](./README.md#stream-handling)
 - [Part 3: Database Tables](./README.md#database-tables)
 - [Part 4: Backend Servers](./README.md#backend-servers)
 - [Part 5: Dashboard](./README.md#dashboard)
@@ -88,9 +88,53 @@ const handle_message = (message) => {
 socket_obj.addEventListener("message", handle_message);
 ```
 
-## Data Pipeline
-There are several preprocessing steps the data must go through before being made available for clients to receive / query.
+## Stream Handling
+Raw data arrives in string format rapidly and it requires several layers of processing before it is viable to use for any application built on top of the stream. 
 
+### Rate Limiters (Leaky Bucket)
+The first major challenge is putting a limit on the amount of messages our backend can process within a certain time-interval. In particular, we would like to rate-limit two quantities:
+1. The total number of messages we process (through the `aiolimiter` python module)
+2. The number of messages per ticker (to provide an equitable amount per symbol)
+
+> The second is required because it quickly became apparent that the WebSocket stream most likely used a queue-like structure for updates and sent individual ticker market prices in bursts. This is not ideal for our application as we want all prices to update at equal rates and thus we explore the Leaky Bucket Algorithm in detail (can find implementation in `market_data_ingestors/quote_ingestor.py`). 
+
+</br>
+Below we see the specification of the Leaky Bucket Algorithm.
+
+> NOTE: To fully grasp how the concurrent nature of this algorithm works, it is helpful to have programming experience with locks, channels, and the python asyncio library.
+
+#### async def leak(leak_rate)
+At its core, the algorithm depends on a queue, which will 'leak' at a fixed interval specified by the `leak rate`. As messages come in, they are enqueued and as they leak, they are published to the appropriate channel through the Redis Pub/Sub channels.
+
+#### async def accept(message)
+This method enqueues the message into the message queue accessed by `leak()`, but we can't always queue all of the messages we get, else, the queue will become very long since we are maintaining a strict limit for how fast the queue can 'leak' per ticker. Thus, we will only accept messages if the length of the queue is less than some threshold, else we drop the message.
+
+#### async def refresh()
+This is where the magic occurs! We could set the threshold used in the `accept()` method to be fixed, however, that wouldn't respect the burst nature of the incoming stream. Instead, we can make this threshold dynamic! When the length of the queue is under some `IDLE_CAPACITY`, the longer it stays there, the more likely a burst is incoming. To accomodate this, at a `refresh_rate` we increase the accept threshold indefinitely until the burst arrives. When the burst finally arrives, we can accomodate up to the new accept threshold. At this point, the queue is likely much longer than the `IDLE_CAPACITY`, and `refresh()` does nothing here. Instead, whenever, `leak()` triggers, it sets the threshold to be `max(current_threshold - 1, IDLE_CAPACITY)`, this way, if the threshold is currently high due to burst, it will accommodate and slowly shrink it, otherwise, it will make sure it is at least at the `IDLE_CAPACITY` when in 'normal' mode.
+
+## Topic Listeners
+The second major challenge is being able to deliver messages on an event-driven basis to all the components of the system. Redis Pub/Sub is one such method! Essentially, there are message topics that producers can publish to and listeners can subscribe to. When a message is sent to the topic, all listeners are notified at once! This way, each time we `leak()` a message for a particular ticker, we will push it to the `QUOTES_UPDATES` topic and all data pipelines that depend on quotes data will be notified.
+
+</br>
+
+Each listener to these topics must implement their own form of event-driven logic. The magic happens using the Python `asyncio` package and the keywords `await` and `yield`. Essentially, the consumer will run an infinite loop in which they wait to run logic until a message arrives and when that data arrives, the main loop unblocks. But we don't want the program to hang when this function is called just waiting for a message, we want it to give up control to the Python main thread to execute other functions while we wait. Here, we have a helper function spawn a thread and `await` the message from the topic and subsequently `yield` it; while we await, the main Python thread is free to work on other tasks (requests in the case of a server)!
+
+## Data Cleaning
+
+As with any timeseries data, we will need to clean it from the raw format and produce a dict consumable by any applications. In this case, the data is eventually cleaned to be in this format:
+
+```python
+quote_dict = {
+    'ticker': data['S'], 
+    'bid_price': data['bp'], 
+    'bid_qty': data['bs'],
+    'ask_price': data['ap'],
+    'ask_qty': data['as'], 
+    'timestamp': str(data['t'].to_datetime())
+}
+```
+
+## Database Tables
 
 
 - pip3 install websocket
