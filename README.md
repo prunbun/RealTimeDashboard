@@ -165,6 +165,54 @@ Here, there are 3 core tables:
 
 ## Backend Servers
 
+These servers perform a variety of roles, primarily being the 'bridge' between the dashboard 'client' and data stores populated by the stream-handling components. Below, I highlight some of the core functionalities. Importantly, some servers accept WebSocket connections for streaming, while others rely on basic REST requests for one-time tasks.
+
+### Real-Time Quote Server `backend_servers/real_time_quote_server.py`
+Recall that there were standardized stream consumers that were described in the `Stream Handling: Topic Listeners` section. Now, it is really easy to leverage this abstraction by simply passing in a function pointer for a `message_handler` argument that is called inside the infinite stream-processing loop. This server receives the data from the `QUOTES_UPDATES` channel and does data checking / sorting and forwards the data to registered listeners. It also computes several risk metrics including moving averages. The most interesting is how the server establishes the WebSocket connection; note that these are client-initiated and thus (besides any server errors or maintenance) the server is expected to maintain the connection until the client decides to disconnect.
+
+```python
+@app.websocket("/ws")
+async def subscribe_stock_data(websocket: WebSocket):
+    await websocket.accept()
+    runner.connect(websocket)
+
+    try:
+        while True:
+            await asyncio.sleep(1000)
+    except WebSocketDisconnect:
+        runner.disconnect(websocket)
+```
+
+### Trading Gateway: `backend_servers/trading_gateway_server,py`
+Rather than accepting WebSocket connections, this server is more of the common REST request handler type. Here, you will find classic access patterns like taking in parameters from the request and using format strings to create dynamic SQL queries into the database and returning a dict that will be delivered to the client. Two notable patterns are below.
+
+#### Database Access Pattern (Postgres)
+```python
+try:
+    with psycopg2.connect(**self.db_config) as conn:
+        with conn.cursor() as cur:
+            cur.execute(SQL_QUERY, (args,))
+            cur.execute(SQL_QUERY_2, (args,))
+
+            conn.commit()
+            return {'message': "Action performed successfully!"}
+        
+except Exception as e:
+    print(e)
+    return {'message': "Error performing action..."}
+```
+
+#### Trading Logic
+I choose to implement the logic assuming an average cost basis over the course of the position and execute liquidating orders at the market prices from the Redis cache. My system doesn't support limit orders yet, and is a possible future extension. The simple flow is listed below:
+
+1. Extract necessary info from the trade request
+2. Either open a new position or calculate the new position
+   1. Liquidate any open position using old vs. market cost basis if needed
+   2. If the position becomes larger, update cost basis of trades
+3. Update trading account info and record trades in the respective tables
+4. Return receipt of trade (or error) to the client
+
+## Dashboard
 
 - pip3 install websocket
 - pip install aiolimiter
